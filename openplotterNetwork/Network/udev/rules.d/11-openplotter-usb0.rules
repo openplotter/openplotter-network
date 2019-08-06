@@ -1,0 +1,1 @@
+KERNEL=="usb0", SUBSYSTEMS=="net", RUN+="/bin/bash ~/.openplotter/Network/11-openplotter-usb0.sh"

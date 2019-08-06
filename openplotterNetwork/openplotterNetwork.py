@@ -15,16 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
 
-import wx, os, webbrowser, subprocess
+import wx, os, webbrowser, subprocess, time
 import wx.richtext as rt
 
 from openplotterSettings import conf
 from openplotterSettings import language
 from openplotterSettings import ports
+from openplotterSettings import platform
 
 class MyFrame(wx.Frame):
 	def __init__(self):
 		self.conf = conf.Conf()
+		self.conf_folder = self.conf.conf_folder
+		self.platform = platform.Platform()
 		self.currentdir = os.path.dirname(__file__)
 		currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-network',currentLanguage)
@@ -37,6 +40,7 @@ class MyFrame(wx.Frame):
 		self.toolbar1 = wx.ToolBar(self, style=wx.TB_TEXT)
 		toolHelp = self.toolbar1.AddTool(101, _('Help'), wx.Bitmap(self.currentdir+"/data/help.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolHelp, toolHelp)
+		if not self.platform.isInstalled('openplotter-doc'): self.toolbar1.EnableTool(101,False)
 		toolSettings = self.toolbar1.AddTool(102, _('Settings'), wx.Bitmap(self.currentdir+"/data/settings.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolSettings, toolSettings)
 		self.toolbar1.AddSeparator()
@@ -74,6 +78,7 @@ class MyFrame(wx.Frame):
 
 		self.pageAp()
 		self.pageOutput()
+		self.read_wifi_conf()
 
 	def ShowStatusBar(self, w_msg, colour):
 		self.GetStatusBar().SetForegroundColour(colour)
@@ -108,9 +113,470 @@ class MyFrame(wx.Frame):
 		self.output.SetSizer(sizer)
 
 	def pageAp(self):
-		pass
+
+		modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
+		self.rpimodel = modelfile.read()
+		modelfile.close()
+			
+		leftbox = wx.StaticBox(self.ap, label=_('Network mode')+'  '+self.rpimodel)
+	
+		self.available_share = []
+		self.available_ap_device2 = []
+
+		self.ap_device_label = wx.StaticText(self.ap, label=_('AP'))
+		self.ap_device = wx.ComboBox(self.ap, choices=self.available_ap_device2, style=wx.CB_READONLY, size=(265, -1))
+		self.ap_device.Bind(wx.EVT_COMBOBOX, self.on_ap_device)
+
+		h_ap = wx.BoxSizer(wx.HORIZONTAL)
+		h_ap.Add(self.ap_device_label, 0, wx.TOP | wx.BOTTOM, 6)
+		h_ap.Add(self.ap_device, 0, wx.LEFT, 5) 
+		#h_ap.Add(self.ap_device_label, 0, wx.RIGHT | wx.UP |wx.EXPAND, 10)
+		#h_ap.Add(self.ap_device, 0, wx.RIGHT | wx.EXPAND, 10)  
+		
+		self.ap_5 = wx.CheckBox(self.ap, label=_('5 GHz'))
+		self.bridge = wx.CheckBox(self.ap, label=_('Add ethernet port to the AP'))
+		
+		h_set = wx.BoxSizer(wx.HORIZONTAL)
+		h_set.Add(self.ap_5, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 6)
+		h_set.AddSpacer(10)
+		h_set.Add(self.bridge, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 6)
+
+		self.wifi_button_apply1 = wx.Button(self.ap, label=_('Apply')+' 1')
+		self.wifi_button_apply1.Bind(wx.EVT_BUTTON, self.on_wifi_apply1)
+
+		h_button0 = wx.BoxSizer(wx.HORIZONTAL)
+		h_button0.AddStretchSpacer(1)
+		h_button0.Add(self.wifi_button_apply1, 0, wx.ALL | wx.EXPAND, 10)
+
+		v_leftbox = wx.StaticBoxSizer(leftbox, wx.VERTICAL)
+		v_leftbox.AddSpacer(5)
+		v_leftbox.Add(h_ap, 0, wx.LEFT, 10)
+		v_leftbox.Add(h_set, 0, wx.LEFT | wx.EXPAND, 8)
+		v_leftbox.AddStretchSpacer(1)
+		v_leftbox.Add(h_button0, 0, wx.ALL | wx.EXPAND, 10)
+		
+		leftbox2 = wx.StaticBox(self.ap, label=_('Access point settings'))
+
+		self.share = wx.ComboBox(self.ap, choices=self.available_share, style=wx.CB_READONLY, size=(120, -1))
+		self.share.Bind(wx.EVT_COMBOBOX, self.on_share)
+		self.share_label = wx.StaticText(self.ap, label=_('Sharing Internet device'))
+
+		h_share = wx.BoxSizer(wx.HORIZONTAL)
+		h_share.Add(self.share, 0)
+		h_share.AddSpacer(5)
+		h_share.Add(self.share_label, 0, wx.TOP | wx.BOTTOM, 5)
+		
+		self.ssid = wx.TextCtrl(self.ap, -1, size=(120, -1))
+		self.ssid_label = wx.StaticText(self.ap, label=_('SSID \nmaximum 32 characters'))
+
+		h_ssid = wx.BoxSizer(wx.HORIZONTAL)
+		h_ssid.Add(self.ssid, 0)
+		h_ssid.AddSpacer(5)
+		h_ssid.Add(self.ssid_label, 0)
+
+		self.passw = wx.TextCtrl(self.ap, -1, size=(120, -1))
+		self.passw_label = wx.StaticText(self.ap, label=_('Password \nminimum 8 characters required'))
+		
+		h_passw = wx.BoxSizer(wx.HORIZONTAL)
+		h_passw.Add(self.passw, 0)
+		#h_passw.Add(self.passw, 0, wx.TOP | wx.BOTTOM, 1)
+		h_passw.AddSpacer(5)
+		h_passw.Add(self.passw_label, 0)
+		
+		self.wifi_channel_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13','36','40','44','48','149','153','157','161','165']
+		self.wifi_channel = wx.ComboBox(self.ap, choices=self.wifi_channel_list, style=wx.CB_READONLY, size=(120, -1))
+		self.wifi_channel_label = wx.StaticText(self.ap, label=_('Channel'))
+
+		h_wifi_channel = wx.BoxSizer(wx.HORIZONTAL)
+		h_wifi_channel.Add(self.wifi_channel, 0)
+		h_wifi_channel.AddSpacer(5)
+		h_wifi_channel.Add(self.wifi_channel_label, 0, wx.TOP | wx.BOTTOM, 6)
+
+		self.wifi_button_apply = wx.Button(self.ap, label=_('Apply')+' 2')
+		self.wifi_button_apply.Bind(wx.EVT_BUTTON, self.on_wifi_apply2)
+
+		h_button = wx.BoxSizer(wx.HORIZONTAL)
+		h_button.AddStretchSpacer(1)
+		h_button.Add(self.wifi_button_apply, 0, wx.ALL | wx.EXPAND, 10)
+
+		v_leftbox2 = wx.StaticBoxSizer(leftbox2, wx.VERTICAL)
+		v_leftbox2.AddSpacer(5)
+		v_leftbox2.Add(h_share, 0, wx.LEFT | wx.EXPAND, 10)
+		v_leftbox2.AddSpacer(5)
+		v_leftbox2.Add(h_ssid, 0, wx.LEFT | wx.EXPAND, 10)
+		v_leftbox2.AddSpacer(3)
+		v_leftbox2.Add(h_passw, 0, wx.LEFT | wx.EXPAND, 10)
+		v_leftbox2.AddSpacer(3)
+		v_leftbox2.Add(h_wifi_channel, 0, wx.LEFT | wx.EXPAND, 10)
+		v_leftbox2.AddStretchSpacer(1)
+		v_leftbox2.Add(h_button, 0, wx.ALL | wx.EXPAND, 10)
+		
+		main = wx.BoxSizer(wx.HORIZONTAL)
+		main.Add(v_leftbox, 1, wx.ALL | wx.EXPAND, 10)
+		main.Add(v_leftbox2, 1, wx.ALL | wx.EXPAND, 10)
+		
+		self.ap.SetSizer(main)
+
+	def read_wifi_conf(self):
+		self.conf_network = self.conf_folder + '/Network'
+		self.AP_aktiv = False
+		self.bak_passw = ''
+		self.bak_share = ''
+		self.hostapd_interface = ''
+		self.hostapd_bridge = ''
+		#read settings from hostapd.conf  GHz, bridge, ssid, password, channel and check if AP is activ
+		try:
+			wififile = open(self.conf_network+'/hostapd/hostapd.conf', 'r', 2000)
+			bak = wififile.read()
+			wififile.close()
+			self.AP_aktiv = True
+		except:
+			bak=''
+		
+		#on AP
+		if self.AP_aktiv:
+			self.ap_enable2()
+			if len(bak)>0:
+				self.find_line_split_set(bak,"wpa_passphrase",self.passw,1)
+				self.bak_passw=self.passw.GetValue()
+				if len(self.bak_passw) > 0:
+					self.passw.SetValue('**********')
+				self.find_line_split_set(bak,"ssid",self.ssid,1)
+				self.hostapd_interface = self.find_line_split(bak,"interface",1)
+				if (self.find_line_split(bak,"hw_mode",1))[0:1] == "a":
+					self.ap_5.SetValue(True)
+					self.wifi_channel_list = ['36','40','44','48','149','153','157','161','165']
+				else:
+					self.ap_5.SetValue(False)
+					self.wifi_channel_list = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13']
+				
+				self.wifi_channel.Clear()
+				for i in self.wifi_channel_list:
+					self.wifi_channel.Append(i)
+				self.find_line_split_set(bak,"channel",self.wifi_channel,1)
+				
+				i=bak.find("bridge=br0")
+				if i>=0:
+					i=bak.find("#bridge=br0")
+					if i>=0:
+						self.bridge.SetValue(False)
+					else:
+						self.bridge.SetValue(True)
+			self.read_network_interfaces()
+
+			try:
+				wififile = open(self.conf_network+'/udev/rules.d/72-wireless.rules', 'r', 2000)
+				bak = wififile.read()
+				wififile.close()
+			except:
+				bak=''
+			found = False
+			if 'brcmfmac' in bak:
+				for i in self.available_ap_device:
+					if 'on board' == i[2]:
+						self.ap_device.SetStringSelection(i[0])
+						self.ap_5.Disable()
+						if i[3]>=1: self.ap_5.Enable()
+						found = True;
+			if not found:
+				for i in self.available_ap_device:
+					if i[1] in bak and len(i[1])>10:
+						self.ap_device.SetStringSelection(i[0])
+						self.ap_5.Disable()
+						if i[3]>=1: self.ap_5.Enable()
+						found = True;
+			if not found:
+				try:
+					wififile = open(self.conf_network+'/.openplotter/start1.sh', 'r', 2000)
+					bak2 = wififile.read()
+					wififile.close()
+				except:
+					bak2 = ''
+				if '__ap' in bak2:
+					for i in self.available_ap_device:
+						if 'AP and Station' == i[2]:
+							self.ap_device.SetStringSelection(i[0])
+							self.on_ap_device(0)
+							found = True;
+			if not found:
+				self.ap_device.SetStringSelection(_('none'))
+				self.ap_disable()
+			else:
+				self.ap_enable()
+			
+			#search shared device from iptables.sh
+			
+			i=' '
+			try:
+				wififile = open(self.conf_network+'/.openplotter/start-ap-managed-wifi.sh', 'r', 2000)
+				bak = wififile.read()
+				wififile.close()
+			except:
+				bak=''
+			i=self.find_line_split(bak,"internet=",1)
+			if i!=None:
+				if i in self.available_share:
+					pass
+				else: self.share.Append(i)
+				self.share.SetValue(i)
+			else:
+				self.share.SetValue(_('none'))
+		
+		#on client only
+		else:
+			self.ap_disable()
+			self.read_network_interfaces()
+			self.ap_device.SetStringSelection(_('none'))
+
+	def find_line_split_set(self,data,search,_setvalue,pos):
+		i=data.find(search)
+		if i>=0:
+			j=data[i:].find("\n")
+			if j==0:j=data[i:].length
+			line = data[i:i+j]
+			sline = line.split('=')
+			if len(sline)>1:
+				_setvalue.SetValue(sline[pos])
+
+	def find_line_split(self,data,search,pos):
+		i=data.find(search)
+		if i>=0:
+			j=data[i:].find("\n")
+			if j==0:j=data[i:].length
+			line = data[i:i+j]
+			sline = line.split('=')
+			if len(sline)>1:
+				return sline[pos]
+			else:
+				return ""
+
+	def ap_disable(self):
+		self.ap_5.Disable()
+		self.bridge.Disable()
+
+		self.ap_5.SetValue(False)
+		self.bridge.SetValue(False)
+		
+		self.share.Disable()
+		self.ssid.Disable()
+		self.passw.Disable()
+		self.wifi_channel.Disable()
+		
+		self.wifi_channel.SetValue('')
+		self.passw.SetValue('')
+		self.ssid.SetValue('')
+		self.share.SetValue('')
+	
+	def ap_enable(self):
+		self.bridge.Enable()
+		#if 'AP and Station' in self.ap_device.GetValue():
+		#	self.bridge.Disable()
+
+	def ap_enable2(self):
+		self.share.Enable()
+		self.ssid.Enable()
+		self.passw.Enable()
+		self.wifi_channel.Enable()
+
+	def on_ap_device(self, e):
+		j = self.ap_device.GetValue()
+		self.ap_enable()
+		self.ap_5.Disable()
+		for i in self.available_ap_device:
+			if _('none') == j:
+				self.ap_disable()
+			if i[0] == j:
+				if i[3] >0:
+					self.ap_5.Enable()
+
+	def on_wifi_apply1(self, e):
+		self.ShowStatusBarBLACK(_('wait'))
+		j = self.ap_device.GetValue()
+		for i in self.available_ap_device:
+			if i[0] == j:
+				if self.bridge.GetValue():
+					text = 'br0'
+				else:
+					text = 'no'
+				text += ' '+i[4]+' '+i[1]+' '
+				if self.ap_5.GetValue():
+					text += '5'
+				else:
+					text += '2.4'
+				if i[2] == 'usb':
+					text += ' e'
+				else:
+					text += ' i'
+				text += ' '+self.currentdir
+				process = subprocess.Popen(('bash '+self.currentdir+'/Network/copy_main.sh '+text).split())
+				time.sleep(2)
+		self.read_wifi_conf()
+		self.ShowStatusBarBLACK('')
+
+	def read_network_interfaces(self):
+		network_info = ''
+		try:
+			network_info = subprocess.check_output('ls /sys/class/net'.split()).decode()
+		except:
+			pass
+
+		self.available_share = [_('none'),'auto']
+		unavailable_net = ['wlan9','lo']
+		if self.bridge.GetValue():
+			unavailable_net.append('eth0')
+
+		for i in network_info.split():
+			if i in unavailable_net:
+				pass
+			else:
+				self.available_share.append(i)
+
+		self.share.Clear()
+		for i in self.available_share:
+			self.share.Append(i)
+		
+		type=''
+		phy=''
+		AP=-1
+		GHz=-1
+		
+		self.available_ap_device = []
+		self.available_ap_device.append([_('none'),'',-1,-1,'none'])
+		
+		for i in network_info.split():
+			if 'wlan' in i:
+				wlan = 'wlan9'
+				mac = subprocess.check_output(('cat /sys/class/net/'+i+'/address').split()).decode()[:-1]
+				if b'usb' in subprocess.check_output(('ls -l /sys/class/net/'+i).split()):
+					type  = 'usb'
+					ni = subprocess.check_output(('ls -l /sys/class/net/'+i+'/').split()).decode()
+					phy = ni[ni.find('/phy')+1:ni.find('/phy')+5]
+					ni = subprocess.check_output(('iw '+phy+' info').split()).decode()
+					AP = ni.find('* AP\n')
+					GHz = ni.find('Band 2:')
+					if AP > -1:
+							self.available_ap_device.append([mac+' '+type, mac, type, GHz, wlan])
+				else:
+					type = 'on board'
+					if 'Raspberry Pi 3 Model B Plus' in self.rpimodel or 'Raspberry Pi 4 Model B R' in self.rpimodel:
+						GHz = 1
+					else:
+						GHz = -1
+					do_exist = False
+					for j in self.available_ap_device:
+						if j[1] == mac: do_exist = True
+					if not do_exist:
+						self.available_ap_device.append([mac+' '+type, mac, type, GHz, wlan])
+
+		if not ('Raspberry Pi 2' in self.rpimodel) and len(self.available_ap_device) == 2:
+			for i in self.available_ap_device:
+				if 'on board' == i[2]:
+					type = 'AP and Station'
+					wlan = 'uap'
+					self.available_ap_device.append([i[1]+' '+type, i[1], type, i[3], wlan])
+
+		self.available_ap_device2 = []
+		for i in self.available_ap_device:
+			self.available_ap_device2.append(i[0])
+			
+		self.ap_device.Clear()
+		for i in self.available_ap_device2:
+			self.ap_device.Append(i)
+
+	def on_share(self, e):
+		share = self.share.GetValue()
+		
+		dlg = wx.MessageDialog(None, _(
+			'Do you want to change the internet connection directly?'),
+			_('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
+		if dlg.ShowModal() != wx.ID_YES:
+			dlg.Destroy()
+			return
+		
+		j = self.ap_device.GetValue()
+		for i in self.available_ap_device:
+			if i[0] == j:
+				text = i[4]
+				if self.bridge.GetValue():
+					text = 'br0'
+		process = subprocess.Popen(['bash', self.currentdir+'/Network/.openplotter/iptables.sh',share,text])
+
+	def on_wifi_apply2(self, e):
+		if self.AP_aktiv:
+			if '*****' in self.passw.GetValue():
+				passw = self.bak_passw
+			else:
+				passw = self.passw.GetValue()
+				
+			ssid = self.ssid.GetValue()
+			channel = self.wifi_channel.GetValue()
+			share = self.share.GetValue()
+			
+			#check length
+			if self.AP_aktiv:
+				if (len(ssid) > 32 or len(passw) < 8):
+					self.ShowStatusBarRED(_('Your SSID must have a maximum of 32 characters and your password a minimum of 8.'))
+					return
+
+			#everything checked give warning
+			if not self.wifi_apply2_Message(): return
+
+			#set hostapd
+			hostapd_file = self.conf_network+'/hostapd/hostapd.conf'
+			if os.path.isfile(hostapd_file):
+				wififile = open(hostapd_file, 'r', 2000)
+				lines = wififile.readlines()
+				wififile.close()
+				
+				wififile = open(hostapd_file, 'w')
+				for line in lines:
+					if 0<=line.find("wpa_passphrase"): line = "wpa_passphrase="+passw+'\n'
+					if 0<=line.find("channel"): line = "channel="+channel+'\n'
+					if 0<=line.find("ssid"): 
+						sline = line.split('=')
+						if sline[0][:4]== "ssid":
+							line = "ssid="+ssid+'\n'
+					wififile.write(line)
+				wififile.close()
+			
+			#set start script
+			script_file = self.conf_network+'/.openplotter/start-ap-managed-wifi.sh'
+			if os.path.isfile(script_file):
+				if self.bak_share!=share:
+					wififile = open(script_file, 'r', 2000)
+					lines = wififile.readlines()
+					wififile.close()
+
+					wififile = open(script_file, 'w')
+					for line in lines:
+						if 0<=line.find("internet="): line = "internet="+share+"\n"
+						wififile.write(line)
+					wififile.close()
+
+			#install files
+			process = subprocess.Popen(['bash', self.currentdir+'/Network/install.sh','install', self.currentdir], cwd = self.conf_network)
+
+		#on no AP
+		else:
+			if not self.wifi_apply2_Message(): return
+			#set back to default
+			process = subprocess.Popen(['bash', self.currentdir+'/Network/install.sh','uninstall', self.currentdir], cwd = self.conf_network)
+	
+	def wifi_apply2_Message(self):
+		dlg = wx.MessageDialog(None, _(
+			'Changes will be applied after next reboot.\n\nIf something goes wrong and you are on a headless system,\nyou may not be able to reconnect again.\n\nAre you sure?'),
+			_('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
+		if dlg.ShowModal() == wx.ID_YES:
+			dlg.Destroy()
+			return True
+		else:
+			dlg.Destroy()
+			return False
 
 	def OnToolCheck(self, e):
+		self.logger.Clear()
+		self.notebook.ChangeSelection(1)
+
 		msg = ''
 		msg1 = ''
 
@@ -170,20 +636,18 @@ class MyFrame(wx.Frame):
 				network_info = ''
 		msg += _('IP address\n') + msg1 + '\n'
 
-		self.logger.Clear()
 		self.logger.WriteText(msg)
-		self.notebook.ChangeSelection(1)
 		self.logger.ShowPosition(self.logger.GetLastPosition())
 
 	def OnToolDrivers(self, e):
 		self.logger.Clear()
+		self.notebook.ChangeSelection(1)
 		command = ' sudo install-wifi'
 		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
 		for line in popen.stdout:
 			self.logger.WriteText(line)
 			self.ShowStatusBarYELLOW(_('Installing Wifi modules... ')+line)
-		self.notebook.ChangeSelection(1)
-		self.logger.ShowPosition(self.logger.GetLastPosition())
+			self.logger.ShowPosition(self.logger.GetLastPosition())
 		self.ShowStatusBarGREEN(_('Done.'))
 
 
@@ -194,6 +658,7 @@ class MyFrame(wx.Frame):
 		ip_info = subprocess.check_output(['hostname', '-I']).decode('utf-8')
 		ips = ip_info.split()
 		self.logger.Clear()
+		self.notebook.ChangeSelection(1)
 		self.logger.BeginTextColour((55, 55, 55))
 		for i in usedPorts:
 			self.logger.BeginBold()
@@ -211,7 +676,7 @@ class MyFrame(wx.Frame):
 						self.logger.Newline()
 			else: self.logger.WriteText(i['type']+' '+i['address']+':'+i['port'])
 		self.logger.EndTextColour()
-		self.notebook.ChangeSelection(1)
+		
 
 def main():
 	app = wx.App()

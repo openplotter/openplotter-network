@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+#set openplotter.local
+sed -i -e '$ a\' -e "10.10.10.1	openplotter.local openplotter" /etc/hosts
+
+#set hostapd conf
+echo 'DAEMON_CONF="/etc/hostapd/hostapd.conf"' > /etc/default/hostapd
+
+#start hostapd server
+systemctl enable hostapd
+
+#start vnc server
+systemctl enable vncserver-x11-serviced.service
+
+#create service
+cat >/etc/systemd/system/openplotter-network.service <<EOL
+[Service]
+ExecStart=/home/pi/.openplotter/start-ap-managed-wifi.sh
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+User=pi
+[Install]
+WantedBy=multi-user.target
+EOL
+chmod 644 /etc/systemd/system/openplotter-network.service
+systemctl enable openplotter-network

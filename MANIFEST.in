@@ -2,3 +2,4 @@ include LICENSE
 include README.md
 recursive-include openplotterNetwork/data *
 recursive-include openplotterNetwork/locale *
+recursive-include openplotterNetwork/Network *

@@ -32,5 +32,6 @@ setup (
 	'Programming Language :: Python :: 3'],
 	include_package_data=True,
 	entry_points={'console_scripts': ['openplotter-network=openplotterNetwork.openplotterNetwork:main']},
-	scripts=['bin/install-wifi']
+	scripts=['bin/install-wifi','bin/networkPostInstallation'],
+	data_files=[('share/applications', ['openplotterNetwork/data/openplotter-network.desktop']),('share/pixmaps', ['openplotterNetwork/data/openplotter-network.png']),],
 	)
