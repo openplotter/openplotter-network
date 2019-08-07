@@ -19,6 +19,7 @@ import subprocess
 class Ports:
 	def __init__(self,conf):
 		self.usedPorts=[]
-		out = subprocess.check_output(['systemctl', 'is-active', 'vncserver-x11-serviced.service']).decode('utf-8')
-		if not 'inactive' in out: 
+		try:
+			subprocess.check_output(['systemctl', 'is-active', 'vncserver-x11-serviced.service']).decode('utf-8')
 			self.usedPorts=[{'description':_('VNC Remote Desktop'), 'type':'TCP', 'address':'localhost', 'port':'5900', 'direction':'out'}]
+		except:pass

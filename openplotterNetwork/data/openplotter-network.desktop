@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Network
+Name=OpenPlotter Network
 Exec=openplotter-network
 Icon=openplotter-network
 StartupNotify=true

@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
-import time, subprocess
+import time, subprocess, os
 
 #TODO set network startup
 class Start():
@@ -34,12 +34,34 @@ class Start():
 class Check():
 	def __init__(self, conf):
 		self.conf = conf
+		self.conf_folder = self.conf.conf_folder
 		self.initialMessage = ''
+		wifi = self.conf_folder+'/Network/dnsmasq.conf'
+		if os.path.isfile(wifi):
+			self.initialMessage =_('Checking WIFI Access Point password...')
 
 	def check(self):
 		green = ''
 		black = ''
 		red = ''
+
+		wifi_pass = ''
+		try:
+			hostapd = open('/etc/hostapd/hostapd.conf', 'r')
+			data = hostapd.read()
+			hostapd.close()
+			i=data.find("wpa_passphrase")
+			if i>=0:
+				j=data[i:].find("\n")
+				if j==0:j=data[i:].length
+				line = data[i:i+j]
+				sline = line.split('=')
+				if len(sline)>1:
+					wifi_pass=sline[1]
+		except: pass
+		if wifi_pass == '12345678':
+			red=_('Security warning: You are using the default WIFI Access Point password.\nPlease change password in OpenPlotter Network.')
+		else: green = _('changed')
 
 		return {'green': green,'black': black,'red': red}
 

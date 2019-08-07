@@ -32,7 +32,7 @@ class MyFrame(wx.Frame):
 		currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-network',currentLanguage)
 
-		wx.Frame.__init__(self, None, title=_('OpenCPN Network'), size=(800,444))
+		wx.Frame.__init__(self, None, title=_('OpenPlotter Network'), size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/openplotter-network.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
@@ -97,7 +97,7 @@ class MyFrame(wx.Frame):
 		self.ShowStatusBar(w_msg,(255,140,0)) 
 
 	def OnToolHelp(self, event): 
-		url = "/usr/share/openplotter-doc/xxx/xxx.html"
+		url = "/usr/share/openplotter-doc/network/network_app.html"
 		webbrowser.open(url, new=2)
 
 	def OnToolSettings(self, event): 
@@ -398,7 +398,9 @@ class MyFrame(wx.Frame):
 					text = 'br0'
 				else:
 					text = 'no'
-				text += ' '+i[4]+' '+i[1]+' '
+				if not i[1]: mac = '0'
+				else: mac = i[1]
+				text += ' '+i[4]+' '+mac+' '
 				if self.ap_5.GetValue():
 					text += '5'
 				else:
