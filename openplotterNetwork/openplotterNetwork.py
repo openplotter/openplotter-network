@@ -44,7 +44,7 @@ class MyFrame(wx.Frame):
 		toolSettings = self.toolbar1.AddTool(102, _('Settings'), wx.Bitmap(self.currentdir+"/data/settings.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolSettings, toolSettings)
 		self.toolbar1.AddSeparator()
-		toolAddresses = self.toolbar1.AddTool(103, _('Ports'), wx.Bitmap(self.currentdir+"/data/ports.png"))
+		toolAddresses = self.toolbar1.AddTool(103, _('Addresses and Ports'), wx.Bitmap(self.currentdir+"/data/ports.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolAddresses, toolAddresses)
 		toolCheck = self.toolbar1.AddTool(104, _('Check Network'), wx.Bitmap(self.currentdir+"/data/check.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolCheck, toolCheck)
@@ -118,7 +118,7 @@ class MyFrame(wx.Frame):
 		self.rpimodel = modelfile.read()
 		modelfile.close()
 			
-		leftbox = wx.StaticBox(self.ap, label=_('Network mode')+'  '+self.rpimodel)
+		leftbox = wx.StaticBox(self.ap, label=_('Network Mode')+'  '+self.rpimodel)
 	
 		self.available_share = []
 		self.available_ap_device2 = []
@@ -141,7 +141,8 @@ class MyFrame(wx.Frame):
 		h_set.AddSpacer(10)
 		h_set.Add(self.bridge, 0, wx.TOP | wx.BOTTOM | wx.EXPAND, 6)
 
-		self.wifi_button_apply1 = wx.Button(self.ap, label=_('Apply')+' 1')
+		nextButton = wx.Bitmap(self.currentdir+"/data/next.png", wx.BITMAP_TYPE_ANY)
+		self.wifi_button_apply1 = wx.BitmapButton(self.ap, bitmap=nextButton, size=(nextButton.GetWidth()+40, nextButton.GetHeight()+10))
 		self.wifi_button_apply1.Bind(wx.EVT_BUTTON, self.on_wifi_apply1)
 
 		h_button0 = wx.BoxSizer(wx.HORIZONTAL)
@@ -149,13 +150,13 @@ class MyFrame(wx.Frame):
 		h_button0.Add(self.wifi_button_apply1, 0, wx.ALL | wx.EXPAND, 10)
 
 		v_leftbox = wx.StaticBoxSizer(leftbox, wx.VERTICAL)
-		v_leftbox.AddSpacer(5)
+		v_leftbox.AddSpacer(10)
 		v_leftbox.Add(h_ap, 0, wx.LEFT, 10)
 		v_leftbox.Add(h_set, 0, wx.LEFT | wx.EXPAND, 8)
 		v_leftbox.AddStretchSpacer(1)
 		v_leftbox.Add(h_button0, 0, wx.ALL | wx.EXPAND, 10)
 		
-		leftbox2 = wx.StaticBox(self.ap, label=_('Access point settings'))
+		leftbox2 = wx.StaticBox(self.ap, label=_('Access Point Settings'))
 
 		self.share = wx.ComboBox(self.ap, choices=self.available_share, style=wx.CB_READONLY, size=(120, -1))
 		self.share.Bind(wx.EVT_COMBOBOX, self.on_share)
@@ -192,7 +193,8 @@ class MyFrame(wx.Frame):
 		h_wifi_channel.AddSpacer(5)
 		h_wifi_channel.Add(self.wifi_channel_label, 0, wx.TOP | wx.BOTTOM, 6)
 
-		self.wifi_button_apply = wx.Button(self.ap, label=_('Apply')+' 2')
+		okButton = wx.Bitmap(self.currentdir+"/data/ok.png", wx.BITMAP_TYPE_ANY)
+		self.wifi_button_apply = wx.BitmapButton(self.ap, bitmap=okButton, size=(okButton.GetWidth()+40, okButton.GetHeight()+10))
 		self.wifi_button_apply.Bind(wx.EVT_BUTTON, self.on_wifi_apply2)
 
 		h_button = wx.BoxSizer(wx.HORIZONTAL)
@@ -200,7 +202,7 @@ class MyFrame(wx.Frame):
 		h_button.Add(self.wifi_button_apply, 0, wx.ALL | wx.EXPAND, 10)
 
 		v_leftbox2 = wx.StaticBoxSizer(leftbox2, wx.VERTICAL)
-		v_leftbox2.AddSpacer(5)
+		v_leftbox2.AddSpacer(10)
 		v_leftbox2.Add(h_share, 0, wx.LEFT | wx.EXPAND, 10)
 		v_leftbox2.AddSpacer(5)
 		v_leftbox2.Add(h_ssid, 0, wx.LEFT | wx.EXPAND, 10)
@@ -390,7 +392,7 @@ class MyFrame(wx.Frame):
 					self.ap_5.Enable()
 
 	def on_wifi_apply1(self, e):
-		self.ShowStatusBarBLACK(_('wait'))
+		self.ShowStatusBarYELLOW(_('Wait please... '))
 		j = self.ap_device.GetValue()
 		for i in self.available_ap_device:
 			if i[0] == j:
@@ -413,7 +415,7 @@ class MyFrame(wx.Frame):
 				process = subprocess.Popen(('bash '+self.currentdir+'/Network/copy_main.sh '+text).split())
 				time.sleep(2)
 		self.read_wifi_conf()
-		self.ShowStatusBarBLACK('')
+		self.ShowStatusBarYELLOW('Edit settings and validate')
 
 	def read_network_interfaces(self):
 		network_info = ''
@@ -557,13 +559,14 @@ class MyFrame(wx.Frame):
 
 			#install files
 			process = subprocess.Popen(['bash', self.currentdir+'/Network/install.sh','install', self.currentdir], cwd = self.conf_network)
-
+			self.ShowStatusBarGREEN(_('Validated, please reboot'))
+			
 		#on no AP
 		else:
 			if not self.wifi_apply2_Message(): return
 			#set back to default
 			process = subprocess.Popen(['bash', self.currentdir+'/Network/install.sh','uninstall', self.currentdir], cwd = self.conf_network)
-	
+			self.ShowStatusBarGREEN(_('Validated, please reboot'))
 	def wifi_apply2_Message(self):
 		dlg = wx.MessageDialog(None, _(
 			'Changes will be applied after next reboot.\n\nIf something goes wrong and you are on a headless system,\nyou may not be able to reconnect again.\n\nAre you sure?'),
