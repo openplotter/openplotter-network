@@ -15,10 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
 import time, subprocess, os
+from openplotterSettings import language
 
 #TODO set network startup
 class Start():
-	def __init__(self, conf):
+	def __init__(self, conf, currentLanguage):
 		self.conf = conf
 		self.initialMessage = ''
 
@@ -32,9 +33,11 @@ class Start():
 		return {'green': green,'black': black,'red': red}
 
 class Check():
-	def __init__(self, conf):
+	def __init__(self, conf, currentLanguage):
 		self.conf = conf
 		self.conf_folder = self.conf.conf_folder
+		currentdir = os.path.dirname(__file__)
+		language.Language(currentdir,'openplotter-network',currentLanguage)
 		self.initialMessage = ''
 		wifi = self.conf_folder+'/Network/dnsmasq.conf'
 		if os.path.isfile(wifi):

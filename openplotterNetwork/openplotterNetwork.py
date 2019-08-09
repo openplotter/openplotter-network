@@ -676,10 +676,12 @@ class MyFrame(wx.Frame):
 				for ip in ips:
 					if ip[0:7]=='169.254': pass
 					elif ':' in ip: pass
-					else:
+					else: 
 						self.logger.WriteText(i['type']+' '+str(ip)+':'+i['port'])
 						self.logger.Newline()
-			else: self.logger.WriteText(i['type']+' '+i['address']+':'+i['port'])
+			else: 
+				self.logger.WriteText(i['type']+' '+i['address']+':'+i['port'])
+				self.logger.Newline()
 		self.logger.EndTextColour()
 		
 
