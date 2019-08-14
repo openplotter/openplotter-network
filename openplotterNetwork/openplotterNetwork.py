@@ -85,10 +85,10 @@ class MyFrame(wx.Frame):
 		self.SetStatusText(w_msg)
 
 	def ShowStatusBarRED(self, w_msg):
-		self.ShowStatusBar(w_msg, wx.RED)
+		self.ShowStatusBar(w_msg, (130,0,0))
 
 	def ShowStatusBarGREEN(self, w_msg):
-		self.ShowStatusBar(w_msg, wx.GREEN)
+		self.ShowStatusBar(w_msg, (0,130,0))
 
 	def ShowStatusBarBLACK(self, w_msg):
 		self.ShowStatusBar(w_msg, wx.BLACK) 
@@ -650,9 +650,10 @@ class MyFrame(wx.Frame):
 		command = ' sudo install-wifi'
 		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
 		for line in popen.stdout:
-			self.logger.WriteText(line)
-			self.ShowStatusBarYELLOW(_('Installing Wifi modules... ')+line)
-			self.logger.ShowPosition(self.logger.GetLastPosition())
+			if not 'Warning' in line and not 'WARNING' in line:
+				self.logger.WriteText(line)
+				self.ShowStatusBarYELLOW(_('Installing Wifi modules... ')+line)
+				self.logger.ShowPosition(self.logger.GetLastPosition())
 		self.ShowStatusBarGREEN(_('Done.'))
 
 
