@@ -22,9 +22,11 @@ class Ports:
 		self.conf = conf
 		currentdir = os.path.dirname(__file__)
 		language.Language(currentdir,'openplotter-network',currentLanguage)
+		self.connections = []
+		self.connections.append({'id':'conn1', 'description':_('VNC Remote Desktop'), 'data':[], 'type':'TCP', 'mode':'server', 'address':'localhost', 'port':'5900', 'editable':'0'})
 
-		self.usedPorts=[]
+	def usedPorts(self):
 		try:
 			subprocess.check_output(['systemctl', 'is-active', 'vncserver-x11-serviced.service']).decode('utf-8')
-			self.usedPorts=[{'description':_('VNC Remote Desktop'), 'type':'TCP', 'address':'localhost', 'port':'5900', 'direction':'out'}]
+			return self.connections
 		except:pass

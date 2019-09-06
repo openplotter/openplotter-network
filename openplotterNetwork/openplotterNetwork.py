@@ -36,6 +36,10 @@ class MyFrame(wx.Frame):
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/openplotter-network.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
+		self.CreateStatusBar()
+		font_statusBar = self.GetStatusBar().GetFont()
+		font_statusBar.SetWeight(wx.BOLD)
+		self.GetStatusBar().SetFont(font_statusBar)
 
 		self.toolbar1 = wx.ToolBar(self, style=wx.TB_TEXT)
 		toolHelp = self.toolbar1.AddTool(101, _('Help'), wx.Bitmap(self.currentdir+"/data/help.png"))
@@ -53,6 +57,7 @@ class MyFrame(wx.Frame):
 		self.Bind(wx.EVT_TOOL, self.OnToolDrivers, toolDrivers)
 
 		self.notebook = wx.Notebook(self)
+		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
 		self.ap = wx.Panel(self.notebook)
 		self.output = wx.Panel(self.notebook)
 		self.notebook.AddPage(self.ap, _('Access Point'))
@@ -69,12 +74,7 @@ class MyFrame(wx.Frame):
 		vbox.Add(self.notebook, 1, wx.EXPAND)
 		self.SetSizer(vbox)
 
-		self.CreateStatusBar()
-		font_statusBar = self.GetStatusBar().GetFont()
-		font_statusBar.SetWeight(wx.BOLD)
-		self.GetStatusBar().SetFont(font_statusBar)
 		self.Centre(True) 
-		self.Show(True)
 
 		self.pageAp()
 		self.pageOutput()
@@ -94,7 +94,10 @@ class MyFrame(wx.Frame):
 		self.ShowStatusBar(w_msg, wx.BLACK) 
 
 	def ShowStatusBarYELLOW(self, w_msg):
-		self.ShowStatusBar(w_msg,(255,140,0)) 
+		self.ShowStatusBar(w_msg,(255,140,0))
+
+	def onTabChange(self, event):
+		self.SetStatusText('')
 
 	def OnToolHelp(self, event): 
 		url = "/usr/share/openplotter-doc/network/network_app.html"
@@ -672,16 +675,16 @@ class MyFrame(wx.Frame):
 			self.logger.EndBold()
 			self.logger.Newline()
 			if i['address'] == 'localhost' or i['address'] == '127.0.0.1':
-				self.logger.WriteText(i['type']+' '+str(ip_hostname)+'.local:'+i['port'])
+				self.logger.WriteText(i['type']+' '+str(ip_hostname)+'.local:'+str(i['port']))
 				self.logger.Newline()
 				for ip in ips:
 					if ip[0:7]=='169.254': pass
 					elif ':' in ip: pass
 					else: 
-						self.logger.WriteText(i['type']+' '+str(ip)+':'+i['port'])
+						self.logger.WriteText(i['type']+' '+str(ip)+':'+str(i['port']))
 						self.logger.Newline()
 			else: 
-				self.logger.WriteText(i['type']+' '+i['address']+':'+i['port'])
+				self.logger.WriteText(i['type']+' '+i['address']+':'+str(i['port']))
 				self.logger.Newline()
 		self.logger.EndTextColour()
 		
