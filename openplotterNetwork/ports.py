@@ -23,7 +23,7 @@ class Ports:
 		currentdir = os.path.dirname(__file__)
 		language.Language(currentdir,'openplotter-network',currentLanguage)
 		self.connections = []
-		self.connections.append({'id':'conn1', 'description':_('VNC Remote Desktop'), 'data':[], 'type':'TCP', 'mode':'server', 'address':'localhost', 'port':'5900', 'editable':'0'})
+		self.connections.append({'id':'networkConn1', 'description':_('VNC Remote Desktop'), 'data':[], 'type':'TCP', 'mode':'server', 'address':'localhost', 'port':'5900', 'editable':'0'})
 
 	def usedPorts(self):
 		try:

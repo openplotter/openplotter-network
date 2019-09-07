@@ -659,7 +659,6 @@ class MyFrame(wx.Frame):
 				self.logger.ShowPosition(self.logger.GetLastPosition())
 		self.ShowStatusBarGREEN(_('Done.'))
 
-
 	def OnToolAddresses(self, e):
 		allPorts = ports.Ports()
 		usedPorts = allPorts.getUsedPorts()
@@ -671,7 +670,7 @@ class MyFrame(wx.Frame):
 		self.logger.BeginTextColour((55, 55, 55))
 		for i in usedPorts:
 			self.logger.BeginBold()
-			self.logger.WriteText(i['description'])
+			self.logger.WriteText(i['description']+' ('+i['mode']+')')
 			self.logger.EndBold()
 			self.logger.Newline()
 			if i['address'] == 'localhost' or i['address'] == '127.0.0.1':
@@ -688,6 +687,17 @@ class MyFrame(wx.Frame):
 				self.logger.Newline()
 		self.logger.EndTextColour()
 		
+		conflicts = allPorts.conflicts()
+		if conflicts:
+			red = ''
+			self.logger.BeginTextColour((130, 0, 0))
+			for i in conflicts:
+				self.logger.Newline()
+				self.logger.WriteText(i['description']+' ('+i['mode']+'): '+i['type']+' '+i['address']+':'+i['port'])
+			self.logger.EndTextColour()
+			self.ShowStatusBarRED(_('There are conflicts between server connections'))
+		else: self.ShowStatusBarBLACK(_('No conflicts between server connections'))
+		self.logger.ShowPosition(self.logger.GetLastPosition())
 
 def main():
 	app = wx.App()
