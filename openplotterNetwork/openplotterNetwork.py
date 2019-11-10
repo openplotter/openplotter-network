@@ -97,7 +97,10 @@ class MyFrame(wx.Frame):
 		self.ShowStatusBar(w_msg,(255,140,0))
 
 	def onTabChange(self, event):
-		self.SetStatusText('')
+		try:
+			self.SetStatusText('')
+		except: 
+			pass
 
 	def OnToolHelp(self, event): 
 		url = "/usr/share/openplotter-doc/network/network_app.html"
@@ -116,10 +119,11 @@ class MyFrame(wx.Frame):
 		self.output.SetSizer(sizer)
 
 	def pageAp(self):
-
-		modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
-		self.rpimodel = modelfile.read()
-		modelfile.close()
+		self.rpimodel = 'no raspberry'
+		if self.platform.isRPI:
+			modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
+			self.rpimodel = modelfile.read()
+			modelfile.close()
 			
 		leftbox = wx.StaticBox(self.ap, label=_('Network Mode')+'  '+self.rpimodel)
 	
