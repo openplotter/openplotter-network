@@ -36,6 +36,10 @@ def main():
 		fo.write( '[Service]\nExecStart='+conf2.home+'/.openplotter/start-ap-managed-wifi.sh\nStandardOutput=syslog\nStandardError=syslog\nUser='+conf2.user+'\n\n[Install]\nWantedBy=multi-user.target\n')
 		fo.close()
 
+		fo = open(currentdir+'/Network/udev/rules.d/11-openplotter-usb0.rules', "w")
+		fo.write( 'KERNEL=="usb0", SUBSYSTEMS=="net", RUN+="/bin/bash '+conf2.home+'/.openplotter/Network/11-openplotter-usb0.sh"\n')
+		fo.close()
+
 		subprocess.call(['systemctl', 'daemon-reload'])
 		subprocess.call(['systemctl', 'unmask', 'hostapd.service'])
 		subprocess.call(['systemctl', 'enable', 'openplotter-network'])
