@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
 
-import wx, os, webbrowser, subprocess, time
+import wx, os, webbrowser, subprocess, time, sys
 import wx.richtext as rt
 
 from openplotterSettings import conf
@@ -74,11 +74,14 @@ class MyFrame(wx.Frame):
 		vbox.Add(self.notebook, 1, wx.EXPAND)
 		self.SetSizer(vbox)
 
-		self.Centre(True) 
-
 		self.pageAp()
 		self.pageOutput()
 		self.read_wifi_conf()
+
+		maxi = self.conf.get('GENERAL', 'maximize')
+		if maxi == '1': self.Maximize()
+		
+		self.Centre() 
 
 	def ShowStatusBar(self, w_msg, colour):
 		self.GetStatusBar().SetForegroundColour(colour)
@@ -97,7 +100,9 @@ class MyFrame(wx.Frame):
 		self.ShowStatusBar(w_msg,(255,140,0))
 
 	def onTabChange(self, event):
-		self.SetStatusText('')
+		try:
+			self.SetStatusText('')
+		except:pass
 
 	def OnToolHelp(self, event): 
 		url = "/usr/share/openplotter-doc/network/network_app.html"
@@ -117,9 +122,11 @@ class MyFrame(wx.Frame):
 
 	def pageAp(self):
 
-		modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
-		self.rpimodel = modelfile.read()
-		modelfile.close()
+		self.rpimodel = 'no raspberry'
+		if self.platform.isRPI:
+			modelfile = open('/sys/firmware/devicetree/base/model', 'r', 2000)
+			self.rpimodel = modelfile.read()
+			modelfile.close()
 			
 		leftbox = wx.StaticBox(self.ap, label=_('Network Mode')+'  '+self.rpimodel)
 	
@@ -423,7 +430,7 @@ class MyFrame(wx.Frame):
 	def read_network_interfaces(self):
 		network_info = ''
 		try:
-			network_info = subprocess.check_output('ls /sys/class/net'.split()).decode()
+			network_info = subprocess.check_output('ls /sys/class/net'.split()).decode(sys.stdin.encoding)
 		except:
 			pass
 
@@ -456,9 +463,9 @@ class MyFrame(wx.Frame):
 				mac = subprocess.check_output(('cat /sys/class/net/'+i+'/address').split()).decode()[:-1]
 				if b'usb' in subprocess.check_output(('ls -l /sys/class/net/'+i).split()):
 					type  = 'usb'
-					ni = subprocess.check_output(('ls -l /sys/class/net/'+i+'/').split()).decode()
+					ni = subprocess.check_output(('ls -l /sys/class/net/'+i+'/').split()).decode(sys.stdin.encoding)
 					phy = ni[ni.find('/phy')+1:ni.find('/phy')+5]
-					ni = subprocess.check_output(('iw '+phy+' info').split()).decode()
+					ni = subprocess.check_output(('iw '+phy+' info').split()).decode(sys.stdin.encoding)
 					AP = ni.find('* AP\n')
 					GHz = ni.find('Band 2:')
 					if AP > -1:
@@ -593,7 +600,7 @@ class MyFrame(wx.Frame):
 		for i in wlan_interfaces:
 			network_info = ''
 			try:
-				network_info = subprocess.check_output(('iw '+i+' info').split()).decode('utf-8')
+				network_info = subprocess.check_output(('iw '+i+' info').split()).decode(sys.stdin.encoding)
 			except:
 				pass
 			if 'AP' in network_info: msg1 += _('wifi access point: ')+i
@@ -603,7 +610,7 @@ class MyFrame(wx.Frame):
 		msg1 = ''
 		network_info = ''
 		try:
-			network_info = subprocess.check_output('ifconfig'.split()).decode('utf-8')
+			network_info = subprocess.check_output('ifconfig'.split()).decode(sys.stdin.encoding)
 		except:
 			pass
 		net=['wlan0','wlan1','wlan2','wlan9','usb0','br0','eth0','eth1']
@@ -623,7 +630,7 @@ class MyFrame(wx.Frame):
 			msg1 = ''
 			network_info = ''
 			try:
-				network_info = subprocess.check_output(('service '+service[j]+' status').split()).decode('utf-8')
+				network_info = subprocess.check_output(('service '+service[j]+' status').split()).decode(sys.stdin.encoding)
 			except:
 				pass
 			for i in network_info.split('\n'):
@@ -636,7 +643,7 @@ class MyFrame(wx.Frame):
 
 		for j in range(7):
 			if netactiv[j]:
-				network_info = subprocess.check_output(('ip addr show '+net[j]).split()).decode('utf-8')
+				network_info = subprocess.check_output(('ip addr show '+net[j]).split()).decode(sys.stdin.encoding)
 				for i in network_info.split('\n'):
 					if 'inet ' in i:
 						if not '169.254' in i.split(' ')[5]: 
@@ -662,8 +669,8 @@ class MyFrame(wx.Frame):
 	def OnToolAddresses(self, e):
 		allPorts = ports.Ports()
 		usedPorts = allPorts.getUsedPorts()
-		ip_hostname = subprocess.check_output(['hostname']).decode('utf-8')[:-1]
-		ip_info = subprocess.check_output(['hostname', '-I']).decode('utf-8')
+		ip_hostname = subprocess.check_output(['hostname']).decode(sys.stdin.encoding)[:-1]
+		ip_info = subprocess.check_output(['hostname', '-I']).decode(sys.stdin.encoding)
 		ips = ip_info.split()
 		self.logger.Clear()
 		self.notebook.ChangeSelection(1)

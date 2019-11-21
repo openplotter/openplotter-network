@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Openplotter. If not, see <http://www.gnu.org/licenses/>.
-import subprocess, os
+import subprocess, os, sys
 from openplotterSettings import language
 
 class Ports:
@@ -27,6 +27,6 @@ class Ports:
 
 	def usedPorts(self):
 		try:
-			subprocess.check_output(['systemctl', 'is-active', 'vncserver-x11-serviced.service']).decode('utf-8')
+			subprocess.check_output(['systemctl', 'is-active', 'vncserver-x11-serviced.service']).decode(sys.stdin.encoding)
 			return self.connections
 		except:pass
