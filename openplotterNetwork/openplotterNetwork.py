@@ -513,7 +513,7 @@ class MyFrame(wx.Frame):
 				text = i[4]
 				if self.bridge.GetValue():
 					text = 'br0'
-		process = subprocess.Popen(['bash', self.currentdir+'/Network/.openplotter/iptables.sh',share,text])
+		process = subprocess.Popen([self.platform.admin, 'bash', self.currentdir+'/Network/.openplotter/iptables.sh',share,text])
 
 	def on_wifi_apply2(self, e):
 		if self.AP_aktiv:

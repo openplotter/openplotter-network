@@ -18,7 +18,7 @@ fi
 
 #echo "$internet"
 
-sudo iptables -F
-sudo iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
-sudo iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
-sudo iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
+iptables -F
+iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
