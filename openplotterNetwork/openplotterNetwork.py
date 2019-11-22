@@ -61,7 +61,7 @@ class MyFrame(wx.Frame):
 		self.ap = wx.Panel(self.notebook)
 		self.output = wx.Panel(self.notebook)
 		self.notebook.AddPage(self.ap, _('Access Point'))
-		self.notebook.AddPage(self.output, _('Output'))
+		self.notebook.AddPage(self.output, '')
 		self.il = wx.ImageList(24, 24)
 		img0 = self.il.Add(wx.Bitmap(self.currentdir+"/data/ap.png", wx.BITMAP_TYPE_PNG))
 		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
@@ -703,7 +703,7 @@ class MyFrame(wx.Frame):
 				self.logger.WriteText(i['description']+' ('+i['mode']+'): '+i['type']+' '+i['address']+':'+i['port'])
 			self.logger.EndTextColour()
 			self.ShowStatusBarRED(_('There are conflicts between server connections'))
-		else: self.ShowStatusBarBLACK(_('No conflicts between server connections'))
+		else: self.ShowStatusBarGREEN(_('No conflicts between servers connections'))
 		self.logger.ShowPosition(self.logger.GetLastPosition())
 
 def main():
