@@ -36,6 +36,7 @@ def main():
 		subprocess.call(['rm', '-f', '/etc/systemd/network/bridge-br0.network'])
 		subprocess.call(['rm', '-f', '/etc/systemd/network/bridge-br0-slave.network'])
 		subprocess.call(['rm', '-f', '/etc/systemd/network/bridge-br0.netdev'])
+		subprocess.call(['rm', '-rf', conf2.home+'/.openplotter/Network'])
 
 		print(_('Removing openplotter-network service...'))
 		subprocess.call(['systemctl', 'disable', 'dnsmasq'])
