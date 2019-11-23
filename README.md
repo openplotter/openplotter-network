@@ -12,7 +12,7 @@ Install [openplotter-settings](https://github.com/openplotter/openplotter-settin
 
 Install dependencies:
 
-`sudo apt install openplotter-settings python3-wxgtk4.0 hostapd dnsmasq bridge-utils dialog usbmuxd libnss-mdns avahi-utils libavahi-compat-libdnssd-dev`
+`sudo apt install openplotter-settings hostapd dnsmasq bridge-utils dialog usbmuxd libnss-mdns avahi-utils libavahi-compat-libdnssd-dev`
 
 Clone the repository:
 

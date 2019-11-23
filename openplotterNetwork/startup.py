@@ -39,7 +39,7 @@ class Check():
 		currentdir = os.path.dirname(__file__)
 		language.Language(currentdir,'openplotter-network',currentLanguage)
 		self.initialMessage = ''
-		wifi = self.conf_folder+'/Network/dnsmasq.conf'
+		wifi = self.conf_folder+'/Network/hostapd/hostapd.conf'
 		if os.path.isfile(wifi):
 			self.initialMessage =_('Checking WIFI Access Point password...')
 
