@@ -27,6 +27,7 @@ def main():
 
 	try:	
 		print(_('Restoring network Debian defaults...'))
+		subprocess.call(['bash', currentdir+'/Network/hostname_dot_local.sh', 'n'])
 		subprocess.call(['cp', currentdir+'/Network/dhcpcd_default.conf', '/etc/dhcpcd.conf'])
 		subprocess.call(['rm', '-f', '/etc/network/interfaces.d/ap'])
 		subprocess.call(['rm', '-f', '/etc/udev/rules.d/72-wireless.rules'])

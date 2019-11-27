@@ -29,11 +29,11 @@ mkdir $targetfolder/systemd/network
 #echo $extern
 
 if [ "$AP" = "none" ]; then
-	#bash "${loadfolder}/hostname_dot_local.sh" "n"
+	bash "${loadfolder}/hostname_dot_local.sh" "n"
 	cp "${loadfolder}/dhcpcd_default.conf" "${targetfolder}/dhcpcd.conf"
 #	cp "${loadfolder}/network/interfaces_standard" "${targetfolder}/network/interfaces"	
 else
-	#bash "${loadfolder}/hostname_dot_local.sh" "y"
+	bash "${loadfolder}/hostname_dot_local.sh" "y"
 	cp "${loadfolder}/udev/rules.d/11-openplotter-usb0.rules" "${targetfolder}/udev/rules.d/11-openplotter-usb0.rules"
 	cp "${loadfolder}/11-openplotter-usb0.sh" "${targetfolder}/11-openplotter-usb0.sh"
 	cp "${loadfolder}/.openplotter/iptables.sh" "${targetfolder}/.openplotter/iptables.sh"
