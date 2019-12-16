@@ -1,27 +1,214 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: openplotter-network\n"
-"POT-Creation-Date: 2019-08-05 13:15+0200\n"
-"PO-Revision-Date: 2019-08-05 13:15+0200\n"
+"Project-Id-Version: openplotter\n"
+"POT-Creation-Date: 2019-11-23 16:44+0100\n"
+"PO-Revision-Date: 2019-12-16 12:45+0100\n"
 "Last-Translator: \n"
-"Language-Team: \n"
-"Language: en\n"
+"Language-Team: Finnish\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Crowdin-Project: openplotter\n"
+"X-Crowdin-Language: fi\n"
+"X-Crowdin-File: openplotter-network.po\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: openplotterNetwork.py:31
-msgid "OpenCPN Network"
-msgstr ""
+#: networkPostInstall.py:30
+msgid "Editing config files..."
+msgstr "Muokataan asetus tiedostoja..."
 
-#: openplotterNetwork.py:37
-msgid "Help"
-msgstr ""
+#: networkPostInstall.py:49
+msgid "DONE"
+msgstr "VALMIS"
+
+#: networkPostInstall.py:51 networkPreUninstall.py:49
+msgid "FAILED: "
+msgstr "EPÄONNISTUNUT: "
+
+#: networkPreUninstall.py:29
+msgid "Restoring network Debian defaults..."
+msgstr "Palautetaan vakio Debian verkko..."
+
+#: networkPreUninstall.py:40
+msgid "Removing openplotter-network service..."
+msgstr "Poistetaan openplotter-verkko palvelu..."
+
+#: networkPreUninstall.py:48
+msgid "DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS"
+msgstr "TEHTY. KÄYNNISTÄ, NIIN TALLENNETAAN VERKKOASETUKSET"
+
+#: openplotterNetwork.py:36
+msgid "OpenPlotter Network"
+msgstr "OpenPlotter Verkko"
 
 #: openplotterNetwork.py:46
-msgid "Output"
+msgid "Help"
+msgstr "Ohje"
+
+#: openplotterNetwork.py:49
+msgid "Settings"
+msgstr "Asetukset"
+
+#: openplotterNetwork.py:52
+msgid "Addresses and Ports"
+msgstr "Osoitteet ja portit"
+
+#: openplotterNetwork.py:54
+msgid "Check Network"
+msgstr "Tarkista verkko"
+
+#: openplotterNetwork.py:57
+msgid "Install Wifi Drivers"
+msgstr "Asenna Wifi ohjain"
+
+#: openplotterNetwork.py:64
+msgid "Access Point"
+msgstr "Liitospiste"
+
+#: openplotterNetwork.py:132
+msgid "Network Mode"
+msgstr "Verkkotila"
+
+#: openplotterNetwork.py:137
+msgid "AP"
+msgstr "AP"
+
+#: openplotterNetwork.py:147
+msgid "5 GHz"
+msgstr "5 GHz"
+
+#: openplotterNetwork.py:148
+msgid "Add ethernet port to the AP"
+msgstr "Lisää ethernetportti AP:een"
+
+#: openplotterNetwork.py:170
+msgid "Access Point Settings"
+msgstr "Liitospisteen asetukset"
+
+#: openplotterNetwork.py:174
+msgid "Sharing Internet device"
+msgstr "Jaetaan internetlaite"
+
+#: openplotterNetwork.py:182
+msgid ""
+"SSID \n"
+"maximum 32 characters"
 msgstr ""
+"SSID \n"
+"enintään 32 merkkiä"
+
+#: openplotterNetwork.py:190
+msgid ""
+"Password \n"
+"minimum 8 characters required"
+msgstr ""
+"Salasana \n"
+"pituus vähintäin 8 merkkiä"
+
+#: openplotterNetwork.py:200
+msgid "Channel"
+msgstr "Kanava"
+
+#: openplotterNetwork.py:315 openplotterNetwork.py:336
+#: openplotterNetwork.py:342 openplotterNetwork.py:399
+#: openplotterNetwork.py:438 openplotterNetwork.py:459
+#: openplotterNetwork.py:608
+msgid "none"
+msgstr "ei mitään"
+
+#: openplotterNetwork.py:406
+msgid "Wait please... "
+msgstr "Odottele... "
+
+#: openplotterNetwork.py:505
+msgid "Do you want to change the internet connection directly?"
+msgstr "Haluatko vaihtaa nettiliittymän suoraksi?"
+
+#: openplotterNetwork.py:506 openplotterNetwork.py:584
+msgid "Question"
+msgstr "Kysymys"
+
+#: openplotterNetwork.py:533
+msgid "Your SSID must have a maximum of 32 characters and your password a minimum of 8."
+msgstr "Sinun SSIDsi täytyy olla enintään 32 merkkiä ja salasanassasi vähintään 8 merkkiä."
+
+#: openplotterNetwork.py:573 openplotterNetwork.py:580
+msgid "Validated, please reboot"
+msgstr "On voimassa, käynnistä"
+
+#: openplotterNetwork.py:583
+msgid ""
+"Changes will be applied after next reboot.\n"
+"\n"
+"If something goes wrong and you are on a headless system,\n"
+"you may not be able to reconnect again.\n"
+"\n"
+"Are you sure?"
+msgstr ""
+"Muutokset lisätään seuraavan käynnistyksen jälkeen.\n"
+"\n"
+"Jos jotain menee pieleen ja olet päätteettömässä järjestelmässä,\n"
+"et välttämättä saa yhteyttä uudelleen.\n"
+"\n"
+"Oletko varma?"
+
+#: openplotterNetwork.py:607 openplotterNetwork.py:608
+msgid "wifi access point: "
+msgstr "wifi liitospiste: "
+
+#: openplotterNetwork.py:625
+msgid "wifi client: "
+msgstr "wifi asiakas: "
+
+#: openplotterNetwork.py:638
+msgid "running"
+msgstr "käynnissä"
+
+#: openplotterNetwork.py:639
+msgid "stopped"
+msgstr "pysäytetty"
+
+#: openplotterNetwork.py:653
+msgid "IP address\n"
+msgstr "IP osoite\n"
+
+#: openplotterNetwork.py:666
+msgid "Installing Wifi modules... "
+msgstr "Asennetaan Wifi moduulit... "
+
+#: openplotterNetwork.py:668
+msgid "Done."
+msgstr " Tehty."
+
+#: openplotterNetwork.py:706
+msgid "There are conflicts between server connections"
+msgstr "Serverikytkentöjen välillä on ristiriitoja"
+
+#: openplotterNetwork.py:707
+msgid "No conflicts between servers connections"
+msgstr "Serverien kytkennöissä ei ole ristiriitoja"
+
+#: ports.py:28
+msgid "VNC Remote Desktop"
+msgstr "VNC Etätyöpöytä"
+
+#: startup.py:46
+msgid "Checking WIFI Access Point password..."
+msgstr "Tarkistetaan WIFI-tukiaseman salasana..."
+
+#: startup.py:68
+msgid ""
+"Security warning: You are using the default WIFI Access Point password.\n"
+"Please change password in OpenPlotter Network."
+msgstr ""
+"Suojausvaroitus: käytät WIFI-tukiaseman oletussalasanaa.\n"
+"Vaihda salasana OpenPlotter verkossa."
+
+#: startup.py:69
+msgid "changed"
+msgstr "muutettu"
