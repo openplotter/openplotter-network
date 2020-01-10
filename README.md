@@ -6,23 +6,35 @@ OpenPlotter app to manage network connections in Raspberry Pi
 
 #### For production
 
-Install [openplotter-settings](https://github.com/openplotter/openplotter-settings) and just install this app from *OpenPlotter Apps* tab.
+Install [openplotter-settings](https://github.com/openplotter/openplotter-settings) for **production** and just install this app from *OpenPlotter Apps* tab.
 
 #### For development
 
+Install [openplotter-settings](https://github.com/openplotter/openplotter-settings) for **development**.
+
 Install dependencies:
 
-`sudo apt install openplotter-settings hostapd dnsmasq bridge-utils dialog usbmuxd libnss-mdns avahi-utils libavahi-compat-libdnssd-dev`
+`sudo apt install hostapd dnsmasq bridge-utils dialog usbmuxd libnss-mdns avahi-utils libavahi-compat-libdnssd-dev`
 
 Clone the repository:
 
 `git clone https://github.com/openplotter/openplotter-network.git`
 
-Make your changes and test them:
+Install:
 
-`sudo python3 setup.py install`
+```
+cd openplotter-network
+sudo python3 setup.py install
+```
+Run post-installation script:
 
-Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://launchpad.net/~openplotter/+archive/ubuntu/openplotter/).
+`sudo networkPostInstall`
+
+Run:
+
+`openplotter-network`
+
+Make your changes and repeat installation and post-installation steps to test. Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://launchpad.net/~openplotter/+archive/ubuntu/openplotter/).
 
 ### Documentation
 
