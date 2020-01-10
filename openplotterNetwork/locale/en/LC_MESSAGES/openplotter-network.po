@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter-network\n"
-"POT-Creation-Date: 2019-11-23 16:44+0100\n"
-"PO-Revision-Date: 2019-11-23 16:44+0100\n"
+"POT-Creation-Date: 2020-01-10 20:06+0100\n"
+"PO-Revision-Date: 2020-01-10 20:06+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -23,7 +23,7 @@ msgstr ""
 msgid "DONE"
 msgstr ""
 
-#: networkPostInstall.py:51 networkPreUninstall.py:49
+#: networkPostInstall.py:51 networkPreUninstall.py:51
 msgid "FAILED: "
 msgstr ""
 
@@ -31,11 +31,11 @@ msgstr ""
 msgid "Restoring network Debian defaults..."
 msgstr ""
 
-#: networkPreUninstall.py:40
+#: networkPreUninstall.py:42
 msgid "Removing openplotter-network service..."
 msgstr ""
 
-#: networkPreUninstall.py:48
+#: networkPreUninstall.py:50
 msgid "DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS"
 msgstr ""
 
@@ -79,106 +79,100 @@ msgstr ""
 msgid "5 GHz"
 msgstr ""
 
-#: openplotterNetwork.py:148
+#: openplotterNetwork.py:149
 msgid "Add ethernet port to the AP"
 msgstr ""
 
-#: openplotterNetwork.py:170
+#: openplotterNetwork.py:172
 msgid "Access Point Settings"
 msgstr ""
 
-#: openplotterNetwork.py:174
+#: openplotterNetwork.py:176
 msgid "Sharing Internet device"
 msgstr ""
 
-#: openplotterNetwork.py:182
+#: openplotterNetwork.py:184
 msgid ""
 "SSID \n"
 "maximum 32 characters"
 msgstr ""
 
-#: openplotterNetwork.py:190
+#: openplotterNetwork.py:192
 msgid ""
 "Password \n"
 "minimum 8 characters required"
 msgstr ""
 
-#: openplotterNetwork.py:200
+#: openplotterNetwork.py:201
 msgid "Channel"
 msgstr ""
 
-#: openplotterNetwork.py:315 openplotterNetwork.py:336
-#: openplotterNetwork.py:342 openplotterNetwork.py:399
-#: openplotterNetwork.py:438 openplotterNetwork.py:459
-#: openplotterNetwork.py:608
+#: openplotterNetwork.py:311 openplotterNetwork.py:331
+#: openplotterNetwork.py:336 openplotterNetwork.py:386
+#: openplotterNetwork.py:420 openplotterNetwork.py:451
+#: openplotterNetwork.py:472 openplotterNetwork.py:619
 msgid "none"
 msgstr ""
 
-#: openplotterNetwork.py:406
+#: openplotterNetwork.py:396
 msgid "Wait please... "
 msgstr ""
 
-#: openplotterNetwork.py:505
+#: openplotterNetwork.py:518
 msgid "Do you want to change the internet connection directly?"
 msgstr ""
 
-#: openplotterNetwork.py:506 openplotterNetwork.py:584
+#: openplotterNetwork.py:519 openplotterNetwork.py:595
 msgid "Question"
 msgstr ""
 
-#: openplotterNetwork.py:533
+#: openplotterNetwork.py:543
 msgid ""
 "Your SSID must have a maximum of 32 characters and your password a minimum "
 "of 8."
 msgstr ""
 
-#: openplotterNetwork.py:573 openplotterNetwork.py:580
-msgid "Validated, please reboot"
-msgstr ""
-
-#: openplotterNetwork.py:583
+#: openplotterNetwork.py:594
 msgid ""
-"Changes will be applied after next reboot.\n"
-"\n"
-"If something goes wrong and you are on a headless system,\n"
-"you may not be able to reconnect again.\n"
+"OpenPlotter will reboot. If something goes wrong and you are on a headless "
+"system, you may not be able to reconnect again.\n"
 "\n"
 "Are you sure?"
 msgstr ""
 
-#: openplotterNetwork.py:607 openplotterNetwork.py:608
+#: openplotterNetwork.py:618 openplotterNetwork.py:619
 msgid "wifi access point: "
 msgstr ""
 
-#: openplotterNetwork.py:625
+#: openplotterNetwork.py:636
 msgid "wifi client: "
 msgstr ""
 
-#: openplotterNetwork.py:638
+#: openplotterNetwork.py:649
 msgid "running"
 msgstr ""
 
-#: openplotterNetwork.py:639
+#: openplotterNetwork.py:650
 msgid "stopped"
 msgstr ""
 
-#: openplotterNetwork.py:653
+#: openplotterNetwork.py:664
 msgid "IP address\n"
 msgstr ""
 
-#: openplotterNetwork.py:666
+#: openplotterNetwork.py:677
 msgid "Installing Wifi modules... "
 msgstr ""
 
-#: openplotterNetwork.py:668
+#: openplotterNetwork.py:679
 msgid "Done."
 msgstr ""
 
-#: openplotterNetwork.py:706
+#: openplotterNetwork.py:717
 msgid "There are conflicts between server connections"
 msgstr ""
 
-#: openplotterNetwork.py:707
+#: openplotterNetwork.py:718
 msgid "No conflicts between servers connections"
 msgstr ""
 
