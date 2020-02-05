@@ -18,6 +18,7 @@
 
 import wx, os, webbrowser, subprocess, time, sys
 import wx.richtext as rt
+import pyric.pyw as pyw
 
 from openplotterSettings import conf
 from openplotterSettings import language
@@ -54,7 +55,7 @@ class MyFrame(wx.Frame):
 		toolCheck = self.toolbar1.AddTool(104, _('Check Network'), wx.Bitmap(self.currentdir+"/data/check.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolCheck, toolCheck)
 		self.toolbar1.AddSeparator()
-		toolDrivers = self.toolbar1.AddTool(105, _('Install Wifi Drivers'), wx.Bitmap(self.currentdir+"/data/package.png"))
+		toolDrivers = self.toolbar1.AddTool(105, _('Install Wifi Drivers'), wx.Bitmap(self.currentdir+"/data/package.png"), shortHelp=_('This does only help for unrecognized usb wlan type:') + ' 8188eu,8188fu,8192eu,8192su,8812au,8822bu,mt7610,mt7612')
 		self.Bind(wx.EVT_TOOL, self.OnToolDrivers, toolDrivers)
 
 		self.notebook = wx.Notebook(self)
@@ -172,13 +173,16 @@ class MyFrame(wx.Frame):
 		leftbox2 = wx.StaticBox(self.ap, label=_('Access Point Settings'))
 
 		self.share = wx.ComboBox(self.ap, choices=self.available_share, style=wx.CB_READONLY, size=(120, -1))
-		self.share.Bind(wx.EVT_COMBOBOX, self.on_share)
 		self.share_label = wx.StaticText(self.ap, label=_('Sharing Internet device'))
+		self.share_button = wx.Button(self.ap, label=_('Update Sharing'))
+		self.share_button.Bind(wx.EVT_BUTTON, self.on_share_button)		
 
 		h_share = wx.BoxSizer(wx.HORIZONTAL)
 		h_share.Add(self.share, 0)
 		h_share.AddSpacer(5)
 		h_share.Add(self.share_label, 0, wx.TOP | wx.BOTTOM, 5)
+		h_share.AddSpacer(5)
+		h_share.Add(self.share_button, 0)
 		
 		self.ssid = wx.TextCtrl(self.ap, -1, size=(120, -1))
 		self.ssid_label = wx.StaticText(self.ap, label=_('SSID \nmaximum 32 characters'))
@@ -385,6 +389,13 @@ class MyFrame(wx.Frame):
 		self.ap_disable()
 		if _('none') == j: self.ap_disable1()
 		else: self.ap_enable1()
+		self.ap_5.Disable()
+		for i in self.available_ap_device:
+			if _('none') == j:
+				self.ap_disable()
+			if i[0] == j:
+				if i[3] >0:
+					self.ap_5.Enable()		
 
 	def on_ap_5(self,e):
 		self.on_ap_device()
@@ -444,7 +455,7 @@ class MyFrame(wx.Frame):
 	def read_network_interfaces(self):
 		network_info = ''
 		try:
-			network_info = subprocess.check_output('ls /sys/class/net'.split()).decode(sys.stdin.encoding)
+			network_info = pyw.interfaces()
 		except:
 			pass
 
@@ -453,7 +464,7 @@ class MyFrame(wx.Frame):
 		if self.bridge.GetValue():
 			unavailable_net.append('eth0')
 
-		for i in network_info.split():
+		for i in network_info:
 			if i in unavailable_net:
 				pass
 			else:
@@ -471,25 +482,24 @@ class MyFrame(wx.Frame):
 		self.available_ap_device = []
 		self.available_ap_device.append([_('none'),'',-1,-1,'none'])
 		
-		for i in network_info.split():
+		for i in pyw.winterfaces():
 			if 'wlan' in i:
-				wlan = 'wlan9'
+				wlan = 'wlan9'  #AP allways on wlan9
+				w0 = pyw.getcard(i)
 				mac = subprocess.check_output(('cat /sys/class/net/'+i+'/address').split()).decode()[:-1]
+
+				AP = -1
+				if 'AP' in pyw.phyinfo(w0)['modes']:AP = 0
+
+				GHz = -1
+				if 'a' in pyw.devstds(w0): GHz = 1
+
 				if b'usb' in subprocess.check_output(('ls -l /sys/class/net/'+i).split()):
 					type  = 'usb'
-					ni = subprocess.check_output(('ls -l /sys/class/net/'+i+'/').split()).decode(sys.stdin.encoding)
-					phy = ni[ni.find('/phy')+1:ni.find('/phy')+5]
-					ni = subprocess.check_output(('iw '+phy+' info').split()).decode(sys.stdin.encoding)
-					AP = ni.find('* AP\n')
-					GHz = ni.find('Band 2:')
 					if AP > -1:
 							self.available_ap_device.append([mac+' '+type, mac, type, GHz, wlan])
 				else:
 					type = 'on board'
-					if 'Raspberry Pi 3 Model B Plus' in self.rpimodel or 'Raspberry Pi 4 Model B R' in self.rpimodel:
-						GHz = 1
-					else:
-						GHz = -1
 					do_exist = False
 					for j in self.available_ap_device:
 						if j[1] == mac: do_exist = True
@@ -510,24 +520,15 @@ class MyFrame(wx.Frame):
 		self.ap_device.Clear()
 		for i in self.available_ap_device2:
 			self.ap_device.Append(i)
-
-	def on_share(self, e):
-		share = self.share.GetValue()
 		
-		dlg = wx.MessageDialog(None, _(
-			'Do you want to change the internet connection directly?'),
-			_('Question'), wx.YES_NO | wx.NO_DEFAULT | wx.ICON_QUESTION)
-		if dlg.ShowModal() != wx.ID_YES:
-			dlg.Destroy()
-			return
-		
+	def on_share_button(self, e):
 		j = self.ap_device.GetValue()
 		for i in self.available_ap_device:
 			if i[0] == j:
 				text = i[4]
 				if self.bridge.GetValue():
 					text = 'br0'
-		process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/.openplotter/iptables.sh',share,text])
+		process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/.openplotter/iptables.sh','auto',text])
 
 	def on_wifi_apply2(self, e):
 		if self.AP_aktiv:

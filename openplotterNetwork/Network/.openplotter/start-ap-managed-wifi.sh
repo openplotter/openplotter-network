@@ -1,5 +1,5 @@
 #!/bin/sh
-internet=wlan0
+internet=auto
 router=
 sysctl -w net.ipv4.ip_forward=1
 /bin/bash start1.sh
