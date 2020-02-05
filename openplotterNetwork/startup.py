@@ -38,7 +38,7 @@ class Check():
 	def __init__(self, conf, currentLanguage):
 		self.conf = conf
 		self.conf_folder = self.conf.conf_folder
-		currentdir = os.path.dirname(__file__)
+		currentdir = os.path.dirname(os.path.abspath(__file__))
 		language.Language(currentdir,'openplotter-network',currentLanguage)
 		self.initialMessage = ''
 		wifi = self.conf_folder+'/Network/hostapd/hostapd.conf'
