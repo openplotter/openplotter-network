@@ -25,6 +25,12 @@ def main():
 	currentLanguage = conf2.get('GENERAL', 'lang')
 	language.Language(currentdir,'openplotter-network',currentLanguage)
 
+	print(_('Removing python packages...'))
+	try:
+		subprocess.call(['pip3', 'uninstall', '-y', 'pyric'])
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
+
 	try:	
 		print(_('Restoring network Debian defaults...'))
 		subprocess.call(['bash', currentdir+'/Network/hostname_dot_local.sh', 'n'])

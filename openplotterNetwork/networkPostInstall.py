@@ -26,6 +26,12 @@ def main():
 	currentLanguage = conf2.get('GENERAL', 'lang')
 	language.Language(currentdir,'openplotter-network',currentLanguage)
 
+	print(_('Installing python packages...'))
+	try:
+		subprocess.call(['pip3', 'install', 'pyric'])
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
+
 	try:
 		print(_('Editing config files...'))
 
