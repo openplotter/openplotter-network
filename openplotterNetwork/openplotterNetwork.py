@@ -458,7 +458,6 @@ class MyFrame(wx.Frame):
 		network_info = ''
 		try:
 			network_info = pyw.interfaces()
-			print (network_info)
 		except:
 			pass
 
@@ -468,10 +467,7 @@ class MyFrame(wx.Frame):
 			unavailable_net.append('eth0')
 
 		for i in network_info:
-			if i in unavailable_net:
-				pass
-			else:
-				self.available_share.append(i)
+			if not 'can' in i and not 'canable' in i and not i in unavailable_net: self.available_share.append(i)
 
 		self.share.Clear()
 		for i in self.available_share:
