@@ -161,14 +161,14 @@ class MyFrame(wx.Frame):
 
 		h_button0 = wx.BoxSizer(wx.HORIZONTAL)
 		h_button0.AddStretchSpacer(1)
-		h_button0.Add(self.wifi_button_apply1, 0, wx.ALL | wx.EXPAND, 10)
+		h_button0.Add(self.wifi_button_apply1, 0, wx.ALL | wx.EXPAND, 5)
 
 		v_leftbox = wx.StaticBoxSizer(leftbox, wx.VERTICAL)
 		v_leftbox.AddSpacer(10)
 		v_leftbox.Add(h_ap, 0, wx.LEFT, 10)
 		v_leftbox.Add(h_set, 0, wx.LEFT | wx.EXPAND, 8)
 		v_leftbox.AddStretchSpacer(1)
-		v_leftbox.Add(h_button0, 0, wx.ALL | wx.EXPAND, 10)
+		v_leftbox.Add(h_button0, 0, wx.ALL | wx.EXPAND, 5)
 		
 		leftbox2 = wx.StaticBox(self.ap, label=_('Access Point Settings'))
 
@@ -181,8 +181,6 @@ class MyFrame(wx.Frame):
 		h_share.Add(self.share, 0)
 		h_share.AddSpacer(5)
 		h_share.Add(self.share_label, 0, wx.TOP | wx.BOTTOM, 5)
-		h_share.AddSpacer(5)
-		h_share.Add(self.share_button, 0)
 		
 		self.ssid = wx.TextCtrl(self.ap, -1, size=(120, -1))
 		self.ssid_label = wx.StaticText(self.ap, label=_('SSID \nmaximum 32 characters'))
@@ -215,19 +213,21 @@ class MyFrame(wx.Frame):
 
 		h_button = wx.BoxSizer(wx.HORIZONTAL)
 		h_button.AddStretchSpacer(1)
-		h_button.Add(self.wifi_button_apply, 0, wx.ALL | wx.EXPAND, 10)
+		h_button.Add(self.wifi_button_apply, 0, wx.ALL | wx.EXPAND, 5)
 
 		v_leftbox2 = wx.StaticBoxSizer(leftbox2, wx.VERTICAL)
 		v_leftbox2.AddSpacer(10)
 		v_leftbox2.Add(h_share, 0, wx.LEFT | wx.EXPAND, 10)
 		v_leftbox2.AddSpacer(5)
+		v_leftbox2.Add(self.share_button, 0, wx.LEFT, 10)
+		v_leftbox2.AddSpacer(10)
 		v_leftbox2.Add(h_ssid, 0, wx.LEFT | wx.EXPAND, 10)
-		v_leftbox2.AddSpacer(3)
+		v_leftbox2.AddSpacer(5)
 		v_leftbox2.Add(h_passw, 0, wx.LEFT | wx.EXPAND, 10)
-		v_leftbox2.AddSpacer(3)
+		v_leftbox2.AddSpacer(5)
 		v_leftbox2.Add(h_wifi_channel, 0, wx.LEFT | wx.EXPAND, 10)
 		v_leftbox2.AddStretchSpacer(1)
-		v_leftbox2.Add(h_button, 0, wx.ALL | wx.EXPAND, 10)
+		v_leftbox2.Add(h_button, 0, wx.ALL | wx.EXPAND, 5)
 		
 		main = wx.BoxSizer(wx.HORIZONTAL)
 		main.Add(v_leftbox, 1, wx.ALL | wx.EXPAND, 10)
@@ -372,12 +372,14 @@ class MyFrame(wx.Frame):
 
 	def ap_disable(self):
 		self.share.Disable()
+		self.share_button.Disable()
 		self.ssid.Disable()
 		self.passw.Disable()
 		self.wifi_channel.Disable()
 
 	def ap_enable(self):
 		self.share.Enable()
+		self.share_button.Enable()
 		self.ssid.Enable()
 		self.passw.Enable()
 		self.wifi_channel.Enable()
@@ -456,6 +458,7 @@ class MyFrame(wx.Frame):
 		network_info = ''
 		try:
 			network_info = pyw.interfaces()
+			print (network_info)
 		except:
 			pass
 
