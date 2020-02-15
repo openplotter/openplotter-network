@@ -24,6 +24,7 @@ from openplotterSettings import conf
 from openplotterSettings import language
 from openplotterSettings import ports
 from openplotterSettings import platform
+from .version import version
 
 class MyFrame(wx.Frame):
 	def __init__(self):
@@ -34,7 +35,7 @@ class MyFrame(wx.Frame):
 		currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-network',currentLanguage)
 
-		wx.Frame.__init__(self, None, title=_('OpenPlotter Network'), size=(800,444))
+		wx.Frame.__init__(self, None, title=_('OpenPlotter Network')+' '+version, size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/openplotter-network.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
@@ -719,6 +720,13 @@ class MyFrame(wx.Frame):
 		self.logger.ShowPosition(self.logger.GetLastPosition())
 
 def main():
+	try:
+		platform2 = platform.Platform()
+		if not platform2.postInstall(version,'network'):
+			subprocess.Popen(['openplotterPostInstall', platform2.admin+' networkPostInstall'])
+			return
+	except: pass
+
 	app = wx.App()
 	MyFrame().Show()
 	time.sleep(1)

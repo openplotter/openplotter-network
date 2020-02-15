@@ -56,6 +56,11 @@ def main():
 		print(_('DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 
-
+	print(_('Removing version...'))
+	try:
+		conf2.set('APPS', 'network', '')
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
+	
 if __name__ == '__main__':
 	main()

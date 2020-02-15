@@ -19,6 +19,7 @@
 import subprocess, os
 from openplotterSettings import conf
 from openplotterSettings import language
+from .version import version
 
 def main():
 	conf2 = conf.Conf()
@@ -51,10 +52,14 @@ def main():
 		subprocess.call(['systemctl', 'unmask', 'hostapd.service'])
 		subprocess.call(['systemctl', 'enable', 'openplotter-network'])
 
-		print(' ')
 		print(_('DONE'))
-
 	except Exception as e: print(_('FAILED: ')+str(e))
 
+	print(_('Setting version...'))
+	try:
+		conf2.set('APPS', 'network', version)
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
+	
 if __name__ == '__main__':
 	main()
