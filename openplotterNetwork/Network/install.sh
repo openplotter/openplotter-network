@@ -4,14 +4,14 @@ function disable_dhcp_server_and_ap {
 	chrlen=${#erg}
 	if [ $chrlen -gt 0 ]
 	then
-		sudo systemctl disable dnsmasq
+		systemctl disable dnsmasq
 	fi
 	
 	erg=$(systemctl status hostapd | grep 'enabled;')
 	chrlen=${#erg}
 	if [ $chrlen -gt 0 ]
 	then
-		sudo systemctl disable hostapd
+		systemctl disable hostapd
 	fi	
 }
 
@@ -20,14 +20,14 @@ function enable_dhcp_server_and_ap {
 	chrlen=${#erg}
 	if [ $chrlen -gt 0 ]
 	then
-		sudo systemctl enable dnsmasq
+		systemctl enable dnsmasq
 	fi
 
 	erg=$(systemctl status hostapd | grep disabled)
 	chrlen=${#erg}
 	if [ $chrlen -gt 0 ]
 	then
-		sudo systemctl enable hostapd
+		systemctl enable hostapd
 	fi	
 }
 
@@ -36,7 +36,7 @@ function disable_bridge {
 	chrlen=${#erg}
 	if [ $chrlen -gt 0 ]
 	then
-		sudo systemctl disable systemd-networkd
+		systemctl disable systemd-networkd
 	fi
 }
 
@@ -45,35 +45,36 @@ function enable_bridge {
 	chrlen=${#erg}
 	if [ $chrlen -gt 0 ]
 	then
-		sudo systemctl enable systemd-networkd
+		systemctl enable systemd-networkd
 	fi
 }
 
 function delete_file {
 	if [ -e $1 ]
 	then
-		sudo rm $1
+		rm $1
 	fi
 }
 
 function copy_file {
 	if [ -e $1 ]
 	then
-		sudo cp $1 $2
+		cp $1 $2
 	fi
 }
 
 #main
 response=$1
 currentdir=$2
+home=$3
 
 #set back to default debian
 if [[ "$response" = "uninstall" ]]; then
 	#no AP (set back to original setting)
 	disable_dhcp_server_and_ap
 
-	sudo cp dhcpcd.conf /etc
-	sudo echo '#!/bin/sh' > ~/.openplotter/start-ap-managed-wifi.sh
+	cp dhcpcd.conf /etc
+	echo '#!/bin/sh' > $home/.openplotter/start-ap-managed-wifi.sh
 	#sudo cp network/interfaces /etc/network
 
 	delete_file /etc/network/interfaces.d/ap
@@ -82,8 +83,8 @@ if [[ "$response" = "uninstall" ]]; then
 	
 	if [ -e /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant_wlan9 ]
 	then
-		sudo rm /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant_wlan9
-		sudo cp $currentdir/Network/dhcpcd-hooks/10-wpa_supplicant /lib/dhcpcd/dhcpcd-hooks
+		rm /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant_wlan9
+		cp $currentdir/Network/dhcpcd-hooks/10-wpa_supplicant /lib/dhcpcd/dhcpcd-hooks
 	fi
 
 	#uninstall bridge
@@ -94,23 +95,23 @@ if [[ "$response" = "uninstall" ]]; then
 	
 #set to access point
 else
-	sudo cp dhcpcd.conf /etc
-	sudo cp dnsmasq.conf /etc
-	cp .openplotter/start-ap-managed-wifi.sh ~/.openplotter
-	cp .openplotter/iptables.sh ~/.openplotter
-	cp .openplotter/start1.sh ~/.openplotter
-	chmod +x ~/.openplotter/start-ap-managed-wifi.sh
-	chmod +x ~/.openplotter/iptables.sh
-	chmod +x ~/.openplotter/start1.sh
+	cp dhcpcd.conf /etc
+	cp dnsmasq.conf /etc
+	cp .openplotter/start-ap-managed-wifi.sh $home/.openplotter
+	cp .openplotter/iptables.sh $home/.openplotter
+	cp .openplotter/start1.sh $home/.openplotter
+	chmod +x $home/.openplotter/start-ap-managed-wifi.sh
+	chmod +x $home/.openplotter/iptables.sh
+	chmod +x $home/.openplotter/start1.sh
 
-	sudo cp hostapd/hostapd.conf /etc/hostapd
+	cp hostapd/hostapd.conf /etc/hostapd
 #	sudo cp network/interfaces /etc/network
 #	sudo cp network/interfaces.d/ap /etc/network/interfaces.d
 
 	if [ -e /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant ]
 	then
-		sudo rm /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant
-		sudo cp $currentdir/Network/dhcpcd-hooks/10-wpa_supplicant_wlan9 /lib/dhcpcd/dhcpcd-hooks
+		rm /lib/dhcpcd/dhcpcd-hooks/10-wpa_supplicant
+		cp $currentdir/Network/dhcpcd-hooks/10-wpa_supplicant_wlan9 /lib/dhcpcd/dhcpcd-hooks
 	fi
 
 	copy_file udev/rules.d/11-openplotter-usb0.rules /etc/udev/rules.d
@@ -133,14 +134,14 @@ else
 	fi
 	
 	#station and ap yes/no
-	if [ -e ~/.openplotter/Network/.openplotter/start1.sh ]
+	if [ -e $home/.openplotter/Network/.openplotter/start1.sh ]
 	then
-		result=$(cat ~/.openplotter/Network/.openplotter/start1.sh | grep __ap)
+		result=$(cat $home/.openplotter/Network/.openplotter/start1.sh | grep __ap)
 		#result2=$(expr length $result)
 		#echo $result2
 		if [ -z "$result" ]
 		then
-			sudo cp udev/rules.d/72-wireless.rules /etc/udev/rules.d
+			cp udev/rules.d/72-wireless.rules /etc/udev/rules.d
 		else
 			delete_file /etc/udev/rules.d/72-wireless.rules
 		fi

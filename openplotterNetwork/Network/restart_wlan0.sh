@@ -1,5 +1,5 @@
 #!/bin/bash
-sudo dhclient -r wlan0
-sudo ifdown wlan0
-sudo ifup wlan0
-sudo dhclient -v wlan0
+dhclient -r wlan0
+ifdown wlan0
+ifup wlan0
+dhclient -v wlan0

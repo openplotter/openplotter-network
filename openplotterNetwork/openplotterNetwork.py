@@ -427,6 +427,11 @@ class MyFrame(wx.Frame):
 				else:
 					text += ' i'
 				text += ' '+self.currentdir
+				text2 = text.split()
+				if text2[1] ==  "none":
+					subprocess.call((self.platform.admin+' bash '+self.currentdir+'/Network/hostname_dot_local.sh n').split())
+				else:
+					subprocess.call((self.platform.admin+' bash '+self.currentdir+'/Network/hostname_dot_local.sh y').split())
 				process = subprocess.call(('bash '+self.currentdir+'/Network/copy_main.sh '+text).split())
 				time.sleep(2)
 				self.wifi_button_apply1.Disable()
@@ -580,14 +585,14 @@ class MyFrame(wx.Frame):
 					wififile.close()
 
 			#install files
-			process = subprocess.call(['bash', self.currentdir+'/Network/install.sh','install', self.currentdir], cwd = self.conf_network)
+			process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/install.sh','install', self.currentdir, self.conf.home], cwd = self.conf_network)
 			os.system('shutdown -r now')
 			
 		#on no AP
 		else:
 			if not self.wifi_apply2_Message(): return
 			#set back to default
-			process = subprocess.call(['bash', self.currentdir+'/Network/install.sh','uninstall', self.currentdir], cwd = self.conf_network)
+			process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/install.sh','uninstall', self.currentdir, self.conf.home], cwd = self.conf_network)
 			os.system('shutdown -r now')
 
 	def wifi_apply2_Message(self):
@@ -670,7 +675,7 @@ class MyFrame(wx.Frame):
 	def OnToolDrivers(self, e):
 		self.logger.Clear()
 		self.notebook.ChangeSelection(1)
-		command = ' sudo install-wifi'
+		command = self.platform.admin+' install-wifi'
 		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
 		for line in popen.stdout:
 			if not 'Warning' in line and not 'WARNING' in line:

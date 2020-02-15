@@ -7,7 +7,7 @@ oldline=$(grep -F 'bridge=' ~/.openplotter/Network/hostapd/hostapd.conf)
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]
 then
-	sudo sed -i "s/${oldline}/bridge=br0/g" ~/.openplotter/Network/hostapd/hostapd.conf
+	sed -i "s/${oldline}/bridge=br0/g" ~/.openplotter/Network/hostapd/hostapd.conf
 else
-	sudo sed -i "s/${oldline}/#bridge=br0/g" ~/.openplotter/Network/hostapd/hostapd.conf
+	sed -i "s/${oldline}/#bridge=br0/g" ~/.openplotter/Network/hostapd/hostapd.conf
 fi

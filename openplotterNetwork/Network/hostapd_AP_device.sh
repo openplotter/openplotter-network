@@ -6,4 +6,4 @@ newline="interface=${devicename}"
 
 oldline=$(grep -F 'interface=' ~/.openplotter/Network/hostapd/hostapd.conf)
   
-sudo sed -i "s/${oldline}/${newline}/g" ~/.openplotter/Network/hostapd/hostapd.conf
+sed -i "s/${oldline}/${newline}/g" ~/.openplotter/Network/hostapd/hostapd.conf

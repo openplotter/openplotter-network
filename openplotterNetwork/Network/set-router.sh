@@ -5,5 +5,5 @@ router=$1
 
 oldline=$(grep -F 'router=' ~/.openplotter/Network/.openplotter/start-ap-managed-wifi.sh)
 newline="router=${router}"
-sudo sed -i "s/${oldline}/${newline}/g" ~/.openplotter/Network/.openplotter/start-ap-managed-wifi.sh
+sed -i "s/${oldline}/${newline}/g" ~/.openplotter/Network/.openplotter/start-ap-managed-wifi.sh
 

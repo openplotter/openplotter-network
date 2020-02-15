@@ -17,15 +17,15 @@ if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 	  
 	  if grep -q -F '.local' /etc/hosts
 	  then 
-		sudo sed -i "s/${oldline}/${line}/g" /etc/hosts
+		sed -i "s/${oldline}/${line}/g" /etc/hosts
 	  else
-		sudo sed -i -e '$ a\' -e "${line}" /etc/hosts
+		sed -i -e '$ a\' -e "${line}" /etc/hosts
 	  fi
 	fi
 else
 	if grep -q -F "$hlname" /etc/hosts
 	then
 	  oldline=$(grep -F '.local' /etc/hosts)
-	  sudo sed -i "/${oldline}/d" /etc/hosts
+	  sed -i "/${oldline}/d" /etc/hosts
 	fi
 fi
