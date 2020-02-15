@@ -23,12 +23,20 @@ Clone the repository:
 
 `git clone https://github.com/openplotter/openplotter-network.git`
 
-Install:
+Make your changes and create the package:
 
 ```
 cd openplotter-network
-sudo python3 setup.py install
+dpkg-buildpackage -b
 ```
+
+Install the package:
+
+```
+cd ..
+sudo dpkg -i openplotter-network_x.x.x-xxx_all.deb
+```
+
 Run post-installation script:
 
 `sudo networkPostInstall`
@@ -37,7 +45,7 @@ Run:
 
 `openplotter-network`
 
-Make your changes and repeat installation and post-installation steps to test. Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://launchpad.net/~openplotter/+archive/ubuntu/openplotter/).
+Make your changes and repeat package, installation and post-installation steps to test. Pull request your changes to github and we will check and add them to the next version of the [Debian package](https://cloudsmith.io/~openplotter/repos/openplotter/packages/).
 
 ### Documentation
 
