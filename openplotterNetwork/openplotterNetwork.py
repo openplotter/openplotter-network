@@ -18,8 +18,6 @@
 
 import wx, os, webbrowser, subprocess, time, sys
 import wx.richtext as rt
-import pyric.pyw as pyw
-
 from openplotterSettings import conf
 from openplotterSettings import language
 from openplotterSettings import ports
@@ -28,6 +26,8 @@ from .version import version
 
 class MyFrame(wx.Frame):
 	def __init__(self):
+		import pyric.pyw as pyw
+		
 		self.conf = conf.Conf()
 		self.conf_folder = self.conf.conf_folder
 		self.platform = platform.Platform()
@@ -35,7 +35,7 @@ class MyFrame(wx.Frame):
 		currentLanguage = self.conf.get('GENERAL', 'lang')
 		self.language = language.Language(self.currentdir,'openplotter-network',currentLanguage)
 
-		wx.Frame.__init__(self, None, title=_('OpenPlotter Network')+' '+version, size=(800,444))
+		wx.Frame.__init__(self, None, title=_('Network')+' '+version, size=(800,444))
 		self.SetFont(wx.Font(10, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL))
 		icon = wx.Icon(self.currentdir+"/data/openplotter-network.png", wx.BITMAP_TYPE_PNG)
 		self.SetIcon(icon)
