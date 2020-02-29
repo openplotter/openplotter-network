@@ -461,6 +461,8 @@ class MyFrame(wx.Frame):
 		self.ShowStatusBarYELLOW('Edit settings and validate')
 
 	def read_network_interfaces(self):
+		import pyric.pyw as pyw
+		
 		network_info = ''
 		try:
 			network_info = pyw.interfaces()
