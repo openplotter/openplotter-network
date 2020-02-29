@@ -1,4 +1,10 @@
-openplotter-network (2.0.11-beta) buster; urgency=medium
+openplotter-network (2.1.0-stable) bionic; urgency=medium
+
+  * Initial release
+
+ -- Sailoog <info@sailoog.com>  Sat, 29 Feb 2020 16:23:10 +0100
+
+openplotter-network (2.0.11-beta) bionic; urgency=medium
 
   * Candidate release
 
