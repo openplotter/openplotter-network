@@ -148,7 +148,7 @@ class MyFrame(wx.Frame):
 		
 		self.ap_5 = wx.CheckBox(self.ap, label=_('5 GHz'))
 		self.ap_5.Bind(wx.EVT_CHECKBOX, self.on_ap_5)
-		self.bridge = wx.CheckBox(self.ap, label=_('Add ethernet port to the AP'))
+		self.bridge = wx.CheckBox(self.ap, label=_('Add Ethernet port to the AP'))
 		self.bridge.Bind(wx.EVT_CHECKBOX, self.on_bridge)
 		
 		h_set = wx.BoxSizer(wx.HORIZONTAL)
@@ -723,7 +723,7 @@ class MyFrame(wx.Frame):
 				self.logger.WriteText(i['description']+' ('+i['mode']+'): '+i['type']+' '+i['address']+':'+i['port'])
 			self.logger.EndTextColour()
 			self.ShowStatusBarRED(_('There are conflicts between server connections'))
-		else: self.ShowStatusBarGREEN(_('No conflicts between servers connections'))
+		else: self.ShowStatusBarGREEN(_('No conflicts between server connections'))
 		self.logger.ShowPosition(self.logger.GetLastPosition())
 
 def main():
