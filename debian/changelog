@@ -1,3 +1,11 @@
+openplotter-network (2.1.2-stable) bionic; urgency=medium
+
+  * prevent hostapd errors and huge log files
+  * fix errors with wifi dongles
+  * update translations
+
+ -- Sailoog <info@sailoog.com>  Sun, 22 Mar 2020 19:05:32 +0100
+
 openplotter-network (2.1.1-stable) bionic; urgency=medium
 
   * Fix error importing pyw
