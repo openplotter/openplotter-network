@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2020-02-16 00:26+0100\n"
-"PO-Revision-Date: 2020-02-29 16:19+0100\n"
+"POT-Creation-Date: 2020-02-29 16:19+0100\n"
+"PO-Revision-Date: 2020-03-22 19:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: Swedish\n"
 "Language: sv\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: networkPostInstall.py:30
 msgid "Installing python packages..."
-msgstr ""
+msgstr "Installerar python-paket..."
 
 #: networkPostInstall.py:33 networkPostInstall.py:55 networkPostInstall.py:61
 #: networkPreUninstall.py:31 networkPreUninstall.py:62
@@ -39,11 +39,11 @@ msgstr "Editerar konfigurationsfiler..."
 
 #: networkPostInstall.py:58
 msgid "Setting version..."
-msgstr ""
+msgstr "Ställer in version..."
 
 #: networkPreUninstall.py:28
 msgid "Removing python packages..."
-msgstr ""
+msgstr "Tar bort python-paket..."
 
 #: networkPreUninstall.py:35
 msgid "Restoring network Debian defaults..."
@@ -59,11 +59,11 @@ msgstr "KLART. VÄNLIGEN STARTA OM FÖR ATT ÅTERSTÄLLA NÄTVERKSINSTÄLLNINGAR
 
 #: networkPreUninstall.py:59
 msgid "Removing version..."
-msgstr ""
+msgstr "Tar bort version..."
 
 #: openplotterNetwork.py:38
-msgid "OpenPlotter Network"
-msgstr "OpenPlotter Nätverk"
+msgid "Network"
+msgstr "Nätverk"
 
 #: openplotterNetwork.py:48
 msgid "Help"
@@ -87,7 +87,7 @@ msgstr "Installera Wifi Drivrutiner"
 
 #: openplotterNetwork.py:59
 msgid "This does only help for unrecognized usb wlan type:"
-msgstr ""
+msgstr "Detta hjälper bara för oigenkända usb wlan-nätverkskort typ:"
 
 #: openplotterNetwork.py:66
 msgid "Access Point"
@@ -119,7 +119,7 @@ msgstr "Dela internet från enhet"
 
 #: openplotterNetwork.py:178
 msgid "Update Sharing"
-msgstr ""
+msgstr "Uppdatera delning"
 
 #: openplotterNetwork.py:187
 msgid ""

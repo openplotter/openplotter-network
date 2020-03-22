@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2020-02-16 00:26+0100\n"
-"PO-Revision-Date: 2020-02-29 16:18+0100\n"
+"POT-Creation-Date: 2020-02-29 16:19+0100\n"
+"PO-Revision-Date: 2020-03-22 19:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -62,8 +62,8 @@ msgid "Removing version..."
 msgstr "Eliminando versión..."
 
 #: openplotterNetwork.py:38
-msgid "OpenPlotter Network"
-msgstr "Red OpenPlotter"
+msgid "Network"
+msgstr "Red"
 
 #: openplotterNetwork.py:48
 msgid "Help"

@@ -2,10 +2,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2020-02-29 16:19+0100\n"
-"PO-Revision-Date: 2020-03-22 19:03+0100\n"
+"PO-Revision-Date: 2020-03-22 19:04+0100\n"
 "Last-Translator: \n"
-"Language-Team: Galician\n"
-"Language: gl\n"
+"Language-Team: Danish\n"
+"Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -14,128 +14,132 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Crowdin-Project: openplotter\n"
-"X-Crowdin-Language: gl\n"
+"X-Crowdin-Language: da\n"
 "X-Crowdin-File: openplotter-network.po\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: networkPostInstall.py:30
 msgid "Installing python packages..."
-msgstr ""
+msgstr "Installerer python-pakker..."
 
 #: networkPostInstall.py:33 networkPostInstall.py:55 networkPostInstall.py:61
 #: networkPreUninstall.py:31 networkPreUninstall.py:62
 msgid "DONE"
-msgstr ""
+msgstr "UDFØRT"
 
 #: networkPostInstall.py:34 networkPostInstall.py:56 networkPostInstall.py:62
 #: networkPreUninstall.py:32 networkPreUninstall.py:57
 #: networkPreUninstall.py:63
 msgid "FAILED: "
-msgstr ""
+msgstr "MISLYKKET: "
 
 #: networkPostInstall.py:37
 msgid "Editing config files..."
-msgstr ""
+msgstr "Redigerer konfigurationsfiler..."
 
 #: networkPostInstall.py:58
 msgid "Setting version..."
-msgstr ""
+msgstr "Indstiller version..."
 
 #: networkPreUninstall.py:28
 msgid "Removing python packages..."
-msgstr ""
+msgstr "Fjerner python-pakker..."
 
 #: networkPreUninstall.py:35
 msgid "Restoring network Debian defaults..."
-msgstr ""
+msgstr "Gendanner netværk til Debian standard..."
 
 #: networkPreUninstall.py:48
 msgid "Removing openplotter-network service..."
-msgstr ""
+msgstr "Fjerner openplotter-netværks service..."
 
 #: networkPreUninstall.py:56
 msgid "DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS"
-msgstr ""
+msgstr "FÆRDIG, GENSTART SYSTEMET FOR AT GENDANNE NETVÆRKSINDSTILLINGER"
 
 #: networkPreUninstall.py:59
 msgid "Removing version..."
-msgstr ""
+msgstr "Fjerner version..."
 
 #: openplotterNetwork.py:38
 msgid "Network"
-msgstr ""
+msgstr "Netværk"
 
 #: openplotterNetwork.py:48
 msgid "Help"
-msgstr ""
+msgstr "Hjælp"
 
 #: openplotterNetwork.py:51
 msgid "Settings"
-msgstr ""
+msgstr "Indstillinger"
 
 #: openplotterNetwork.py:54
 msgid "Addresses and Ports"
-msgstr ""
+msgstr "Adresser og porte"
 
 #: openplotterNetwork.py:56
 msgid "Check Network"
-msgstr ""
+msgstr "Kontroller netværk"
 
 #: openplotterNetwork.py:59
 msgid "Install Wifi Drivers"
-msgstr ""
+msgstr "Installer Wifi Drivere"
 
 #: openplotterNetwork.py:59
 msgid "This does only help for unrecognized usb wlan type:"
-msgstr ""
+msgstr "Dette hjælper kun ved ukendte Usb-wlan-typer:"
 
 #: openplotterNetwork.py:66
 msgid "Access Point"
-msgstr ""
+msgstr "Adgangspunkt"
 
 #: openplotterNetwork.py:134
 msgid "Network Mode"
-msgstr ""
+msgstr "Netværks tilstand"
 
 #: openplotterNetwork.py:139
 msgid "AP"
-msgstr ""
+msgstr "AP"
 
 #: openplotterNetwork.py:149
 msgid "5 GHz"
-msgstr ""
+msgstr "5 GHz"
 
 #: openplotterNetwork.py:151
 msgid "Add ethernet port to the AP"
-msgstr ""
+msgstr "Føj ethernet-port til AP"
 
 #: openplotterNetwork.py:174
 msgid "Access Point Settings"
-msgstr ""
+msgstr "Adgangspunkts Indstillinger"
 
 #: openplotterNetwork.py:177
 msgid "Sharing Internet device"
-msgstr ""
+msgstr "Deling af internetenhed"
 
 #: openplotterNetwork.py:178
 msgid "Update Sharing"
-msgstr ""
+msgstr "Opdater deling"
 
 #: openplotterNetwork.py:187
 msgid ""
 "SSID \n"
 "maximum 32 characters"
 msgstr ""
+"SSID\n"
+"højst 32 tegn"
 
 #: openplotterNetwork.py:195
 msgid ""
 "Password \n"
 "minimum 8 characters required"
 msgstr ""
+"Adgangskode\n"
+"minimum 8 tegn påkrævet"
 
 #: openplotterNetwork.py:204
 msgid "Channel"
-msgstr ""
+msgstr "Kanal"
 
 #: openplotterNetwork.py:316 openplotterNetwork.py:336
 #: openplotterNetwork.py:341 openplotterNetwork.py:393
@@ -143,15 +147,15 @@ msgstr ""
 #: openplotterNetwork.py:470 openplotterNetwork.py:488
 #: openplotterNetwork.py:625
 msgid "none"
-msgstr ""
+msgstr "ingen"
 
 #: openplotterNetwork.py:410
 msgid "Wait please... "
-msgstr ""
+msgstr "Vent venligst... "
 
 #: openplotterNetwork.py:549
 msgid "Your SSID must have a maximum of 32 characters and your password a minimum of 8."
-msgstr ""
+msgstr "Din SSID skal maksimalt have 32 karakterer og din adgangskode mindst 8."
 
 #: openplotterNetwork.py:600
 msgid ""
@@ -159,61 +163,66 @@ msgid ""
 "\n"
 "Are you sure?"
 msgstr ""
+"OpenPlotter genstarter. Hvis noget går galt, og du er i et \"hovedløst\" system, er du muligvis ikke i stand til at oprette forbindelse igen?\n"
+"\n"
+"Er du sikker?"
 
 #: openplotterNetwork.py:601
 msgid "Question"
-msgstr ""
+msgstr "Spørgsmål"
 
 #: openplotterNetwork.py:624 openplotterNetwork.py:625
 msgid "wifi access point: "
-msgstr ""
+msgstr "wifi adgangspunkt: "
 
 #: openplotterNetwork.py:642
 msgid "wifi client: "
-msgstr ""
+msgstr "wifi klient: "
 
 #: openplotterNetwork.py:655
 msgid "running"
-msgstr ""
+msgstr "kører"
 
 #: openplotterNetwork.py:656
 msgid "stopped"
-msgstr ""
+msgstr "stoppet"
 
 #: openplotterNetwork.py:670
 msgid "IP address\n"
-msgstr ""
+msgstr "IP-adresse\n"
 
 #: openplotterNetwork.py:683
 msgid "Installing Wifi modules... "
-msgstr ""
+msgstr "Installerer Wifi modul... "
 
 #: openplotterNetwork.py:685
 msgid "Done."
-msgstr ""
+msgstr "Udført."
 
 #: openplotterNetwork.py:723
 msgid "There are conflicts between server connections"
-msgstr ""
+msgstr "Der er konflikter mellem serverforbindelserne"
 
 #: openplotterNetwork.py:724
 msgid "No conflicts between servers connections"
-msgstr ""
+msgstr "Ingen konflikter mellem serverforbindelserne"
 
 #: ports.py:28
 msgid "VNC Remote Desktop"
-msgstr ""
+msgstr "VNC Fjernskrivebord"
 
 #: startup.py:46
 msgid "Checking WIFI Access Point password..."
-msgstr ""
+msgstr "Kontrollerer WIFI adgangspunktets adgangskode..."
 
 #: startup.py:68
 msgid ""
 "Security warning: You are using the default WIFI Access Point password.\n"
 "Please change password in OpenPlotter Network."
 msgstr ""
+"Sikkerhedsadvarsel: Du bruger standard adgangskode til WIFI Adgangspunkt.\n"
+"Skift venligst adgangskode i OpenPlotter Network."
 
 #: startup.py:69
 msgid "changed"
-msgstr ""
+msgstr "ændret"

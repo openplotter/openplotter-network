@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2020-02-16 00:26+0100\n"
-"PO-Revision-Date: 2020-02-29 16:18+0100\n"
+"POT-Creation-Date: 2020-02-29 16:19+0100\n"
+"PO-Revision-Date: 2020-03-22 19:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it\n"
@@ -20,7 +20,7 @@ msgstr ""
 
 #: networkPostInstall.py:30
 msgid "Installing python packages..."
-msgstr ""
+msgstr "Installazione pacchetti python..."
 
 #: networkPostInstall.py:33 networkPostInstall.py:55 networkPostInstall.py:61
 #: networkPreUninstall.py:31 networkPreUninstall.py:62
@@ -39,11 +39,11 @@ msgstr "Modifica file di configurazione..."
 
 #: networkPostInstall.py:58
 msgid "Setting version..."
-msgstr ""
+msgstr "Impostazione versione..."
 
 #: networkPreUninstall.py:28
 msgid "Removing python packages..."
-msgstr ""
+msgstr "Rimozione pacchetti python..."
 
 #: networkPreUninstall.py:35
 msgid "Restoring network Debian defaults..."
@@ -59,11 +59,11 @@ msgstr "FATTO. ESEGUIRE RIAVVIO PER RIPRISTINARE IMPOSTAZIONI DI RETE"
 
 #: networkPreUninstall.py:59
 msgid "Removing version..."
-msgstr ""
+msgstr "Rimozione versione..."
 
 #: openplotterNetwork.py:38
-msgid "OpenPlotter Network"
-msgstr "Rete OpenPlotter"
+msgid "Network"
+msgstr "Rete"
 
 #: openplotterNetwork.py:48
 msgid "Help"
@@ -87,7 +87,7 @@ msgstr "Installa Driver WiFi"
 
 #: openplotterNetwork.py:59
 msgid "This does only help for unrecognized usb wlan type:"
-msgstr ""
+msgstr "Questo aiuta solo per gli adattatori usb WiFi non riconosciuti:"
 
 #: openplotterNetwork.py:66
 msgid "Access Point"
@@ -119,7 +119,7 @@ msgstr "Condivisione dispositivo Internet"
 
 #: openplotterNetwork.py:178
 msgid "Update Sharing"
-msgstr ""
+msgstr "Aggiorna Condivisione"
 
 #: openplotterNetwork.py:187
 msgid ""
@@ -163,6 +163,9 @@ msgid ""
 "\n"
 "Are you sure?"
 msgstr ""
+"OpenPlotter si riavvierà. Se qualcosa va storto e sei su un sistema senza monitor, potresti non essere in grado di riconnetterti di nuovo.\n"
+"\n"
+"Sei sicuro?"
 
 #: openplotterNetwork.py:601
 msgid "Question"

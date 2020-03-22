@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2020-02-16 00:26+0100\n"
-"PO-Revision-Date: 2020-02-29 16:18+0100\n"
+"POT-Creation-Date: 2020-02-29 16:19+0100\n"
+"PO-Revision-Date: 2020-03-22 19:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -47,7 +47,7 @@ msgstr "Suppression des paquets python..."
 
 #: networkPreUninstall.py:35
 msgid "Restoring network Debian defaults..."
-msgstr "Restauration des valeurs par défaut du réseau pour Debian..."
+msgstr "Rétablissement des valeurs par défaut du réseau pour Debian..."
 
 #: networkPreUninstall.py:48
 msgid "Removing openplotter-network service..."
@@ -55,15 +55,15 @@ msgstr "Suppression du service openplotter-network..."
 
 #: networkPreUninstall.py:56
 msgid "DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS"
-msgstr "TERMINÉ. VEUILLEZ REDÉMARRER POUR RESTAURER LES PARAMÈTRES DU RÉSEAU"
+msgstr "TERMINÉ. VEUILLEZ REDÉMARRER POUR RÉTABLIR LES PARAMÈTRES DU RÉSEAU"
 
 #: networkPreUninstall.py:59
 msgid "Removing version..."
 msgstr "Suppression de la version..."
 
 #: openplotterNetwork.py:38
-msgid "OpenPlotter Network"
-msgstr "Réseau OpenPlotter"
+msgid "Network"
+msgstr "Réseau"
 
 #: openplotterNetwork.py:48
 msgid "Help"
@@ -99,7 +99,7 @@ msgstr "Mode réseau"
 
 #: openplotterNetwork.py:139
 msgid "AP"
-msgstr "pilote"
+msgstr "Point d'accès"
 
 #: openplotterNetwork.py:149
 msgid "5 GHz"
@@ -107,7 +107,7 @@ msgstr "5 GHz"
 
 #: openplotterNetwork.py:151
 msgid "Add ethernet port to the AP"
-msgstr "Ajouter un port Ethernet au pilote"
+msgstr "Ajouter un port Ethernet au point d'accès"
 
 #: openplotterNetwork.py:174
 msgid "Access Point Settings"
@@ -119,7 +119,7 @@ msgstr "Partage du périphérique Internet"
 
 #: openplotterNetwork.py:178
 msgid "Update Sharing"
-msgstr "Mise à jour du partage"
+msgstr "Mettre à jour le partage"
 
 #: openplotterNetwork.py:187
 msgid ""
@@ -201,11 +201,11 @@ msgstr "Terminé."
 
 #: openplotterNetwork.py:723
 msgid "There are conflicts between server connections"
-msgstr "Il y a des conflits entre les connexions au serveur"
+msgstr "Il y a des conflits entre les connexions serveur"
 
 #: openplotterNetwork.py:724
 msgid "No conflicts between servers connections"
-msgstr "Aucun conflit entre les connexions de serveurs"
+msgstr "Aucun conflit entre les connexions serveur"
 
 #: ports.py:28
 msgid "VNC Remote Desktop"

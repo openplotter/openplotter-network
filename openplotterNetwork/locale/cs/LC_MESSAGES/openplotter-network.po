@@ -2,140 +2,144 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
 "POT-Creation-Date: 2020-02-29 16:19+0100\n"
-"PO-Revision-Date: 2020-03-22 19:03+0100\n"
+"PO-Revision-Date: 2020-03-22 19:04+0100\n"
 "Last-Translator: \n"
-"Language-Team: Galician\n"
-"Language: gl\n"
+"Language-Team: Czech\n"
+"Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-Basepath: ../../..\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Crowdin-Project: openplotter\n"
-"X-Crowdin-Language: gl\n"
+"X-Crowdin-Language: cs\n"
 "X-Crowdin-File: openplotter-network.po\n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: networkPostInstall.py:30
 msgid "Installing python packages..."
-msgstr ""
+msgstr "Instalování balíčků pro Python..."
 
 #: networkPostInstall.py:33 networkPostInstall.py:55 networkPostInstall.py:61
 #: networkPreUninstall.py:31 networkPreUninstall.py:62
 msgid "DONE"
-msgstr ""
+msgstr "Hotovo"
 
 #: networkPostInstall.py:34 networkPostInstall.py:56 networkPostInstall.py:62
 #: networkPreUninstall.py:32 networkPreUninstall.py:57
 #: networkPreUninstall.py:63
 msgid "FAILED: "
-msgstr ""
+msgstr "Chyba: "
 
 #: networkPostInstall.py:37
 msgid "Editing config files..."
-msgstr ""
+msgstr "Upravuji konfiguraci..."
 
 #: networkPostInstall.py:58
 msgid "Setting version..."
-msgstr ""
+msgstr "Nastavuji verzi..."
 
 #: networkPreUninstall.py:28
 msgid "Removing python packages..."
-msgstr ""
+msgstr "Odstraňování balíčků pro Python..."
 
 #: networkPreUninstall.py:35
 msgid "Restoring network Debian defaults..."
-msgstr ""
+msgstr "Obnovování výchozích nastavení sítě Debianu..."
 
 #: networkPreUninstall.py:48
 msgid "Removing openplotter-network service..."
-msgstr ""
+msgstr "Odstraňuji službu OpenPlotter-síť..."
 
 #: networkPreUninstall.py:56
 msgid "DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS"
-msgstr ""
+msgstr "Hotovo. Prosím proveďte restart systému pro obnovení nastavení sítě"
 
 #: networkPreUninstall.py:59
 msgid "Removing version..."
-msgstr ""
+msgstr "Odstraňuji verzi..."
 
 #: openplotterNetwork.py:38
 msgid "Network"
-msgstr ""
+msgstr "Síť"
 
 #: openplotterNetwork.py:48
 msgid "Help"
-msgstr ""
+msgstr "Nápověda"
 
 #: openplotterNetwork.py:51
 msgid "Settings"
-msgstr ""
+msgstr "Nastavení"
 
 #: openplotterNetwork.py:54
 msgid "Addresses and Ports"
-msgstr ""
+msgstr "Adresy a porty"
 
 #: openplotterNetwork.py:56
 msgid "Check Network"
-msgstr ""
+msgstr "Zkontrolovat síť"
 
 #: openplotterNetwork.py:59
 msgid "Install Wifi Drivers"
-msgstr ""
+msgstr "Instalovat Wifi ovladače"
 
 #: openplotterNetwork.py:59
 msgid "This does only help for unrecognized usb wlan type:"
-msgstr ""
+msgstr "Toto pomáhá pouze nerozpoznaným typů Usb Wlan:"
 
 #: openplotterNetwork.py:66
 msgid "Access Point"
-msgstr ""
+msgstr "Přístupový bod"
 
 #: openplotterNetwork.py:134
 msgid "Network Mode"
-msgstr ""
+msgstr "Režim sítě"
 
 #: openplotterNetwork.py:139
 msgid "AP"
-msgstr ""
+msgstr "AP"
 
 #: openplotterNetwork.py:149
 msgid "5 GHz"
-msgstr ""
+msgstr "5 GHz"
 
 #: openplotterNetwork.py:151
 msgid "Add ethernet port to the AP"
-msgstr ""
+msgstr "Přidat ethernetový port do AP"
 
 #: openplotterNetwork.py:174
 msgid "Access Point Settings"
-msgstr ""
+msgstr "Nastavení přístupového bodu"
 
 #: openplotterNetwork.py:177
 msgid "Sharing Internet device"
-msgstr ""
+msgstr "Zařízení pro sdílení Internetu"
 
 #: openplotterNetwork.py:178
 msgid "Update Sharing"
-msgstr ""
+msgstr "Aktualizovat sdílení"
 
 #: openplotterNetwork.py:187
 msgid ""
 "SSID \n"
 "maximum 32 characters"
 msgstr ""
+"SSID\n"
+"maximálně 32 znaků"
 
 #: openplotterNetwork.py:195
 msgid ""
 "Password \n"
 "minimum 8 characters required"
 msgstr ""
+"Heslo \n"
+"minimálně 8 znaků"
 
 #: openplotterNetwork.py:204
 msgid "Channel"
-msgstr ""
+msgstr "Vysílací kanál"
 
 #: openplotterNetwork.py:316 openplotterNetwork.py:336
 #: openplotterNetwork.py:341 openplotterNetwork.py:393
@@ -143,15 +147,15 @@ msgstr ""
 #: openplotterNetwork.py:470 openplotterNetwork.py:488
 #: openplotterNetwork.py:625
 msgid "none"
-msgstr ""
+msgstr "žádný"
 
 #: openplotterNetwork.py:410
 msgid "Wait please... "
-msgstr ""
+msgstr "Počkejte prosím... "
 
 #: openplotterNetwork.py:549
 msgid "Your SSID must have a maximum of 32 characters and your password a minimum of 8."
-msgstr ""
+msgstr "Vaše SSID být maximálně 32 znaků a heslo alespoň 8 znaků."
 
 #: openplotterNetwork.py:600
 msgid ""
@@ -159,61 +163,68 @@ msgid ""
 "\n"
 "Are you sure?"
 msgstr ""
+"Změny budou aplikovány po příštím restartu.\n"
+"\n"
+"Pokud se něco pokazí a používáte systém bez displeje, je možné, že se nebudete moct znova připojit.\n"
+"\n"
+"Jste si jisti?"
 
 #: openplotterNetwork.py:601
 msgid "Question"
-msgstr ""
+msgstr "Otázka"
 
 #: openplotterNetwork.py:624 openplotterNetwork.py:625
 msgid "wifi access point: "
-msgstr ""
+msgstr "přístupový bod wifi: "
 
 #: openplotterNetwork.py:642
 msgid "wifi client: "
-msgstr ""
+msgstr "wifi klient: "
 
 #: openplotterNetwork.py:655
 msgid "running"
-msgstr ""
+msgstr "běží"
 
 #: openplotterNetwork.py:656
 msgid "stopped"
-msgstr ""
+msgstr "zastaveno"
 
 #: openplotterNetwork.py:670
 msgid "IP address\n"
-msgstr ""
+msgstr "IP adresa\n"
 
 #: openplotterNetwork.py:683
 msgid "Installing Wifi modules... "
-msgstr ""
+msgstr "Instalace modulů Wifi... "
 
 #: openplotterNetwork.py:685
 msgid "Done."
-msgstr ""
+msgstr "Hotovo."
 
 #: openplotterNetwork.py:723
 msgid "There are conflicts between server connections"
-msgstr ""
+msgstr "Byli nalezeny konflikty v připojení k serveru"
 
 #: openplotterNetwork.py:724
 msgid "No conflicts between servers connections"
-msgstr ""
+msgstr "Nebyli nalezeny žádné konflikty v připojení k serveru"
 
 #: ports.py:28
 msgid "VNC Remote Desktop"
-msgstr ""
+msgstr "VNC - Vzálená plocha"
 
 #: startup.py:46
 msgid "Checking WIFI Access Point password..."
-msgstr ""
+msgstr "Kontroluji heslo přístupového bodu..."
 
 #: startup.py:68
 msgid ""
 "Security warning: You are using the default WIFI Access Point password.\n"
 "Please change password in OpenPlotter Network."
 msgstr ""
+"Bezpečnostní varování: Používáte výchozí heslo k přístupovém bodu WIFI.\n"
+"Prosím změňte heslo v OpenPlotter - Nastavení sítě."
 
 #: startup.py:69
 msgid "changed"
-msgstr ""
+msgstr "upraveno"
