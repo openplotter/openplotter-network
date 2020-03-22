@@ -491,27 +491,29 @@ class MyFrame(wx.Frame):
 		
 		for i in pyw.winterfaces():
 			if 'wlan' in i:
-				wlan = 'wlan9'  #AP allways on wlan9
-				w0 = pyw.getcard(i)
-				mac = subprocess.check_output(('cat /sys/class/net/'+i+'/address').split()).decode()[:-1]
+				try:
+					wlan = 'wlan9'  #AP allways on wlan9
+					w0 = pyw.getcard(i)
+					mac = subprocess.check_output(('cat /sys/class/net/'+i+'/address').split()).decode()[:-1]
 
-				AP = -1
-				if 'AP' in pyw.phyinfo(w0)['modes']:AP = 0
+					AP = -1
+					if 'AP' in pyw.phyinfo(w0)['modes']:AP = 0
 
-				GHz = -1
-				if 'a' in pyw.devstds(w0): GHz = 1
+					GHz = -1
+					if 'a' in pyw.devstds(w0): GHz = 1
 
-				if b'usb' in subprocess.check_output(('ls -l /sys/class/net/'+i).split()):
-					type  = 'usb'
-					if AP > -1:
+					if b'usb' in subprocess.check_output(('ls -l /sys/class/net/'+i).split()):
+						type  = 'usb'
+						if AP > -1:
+								self.available_ap_device.append([mac+' '+type, mac, type, GHz, wlan])
+					else:
+						type = 'on board'
+						do_exist = False
+						for j in self.available_ap_device:
+							if j[1] == mac: do_exist = True
+						if not do_exist:
 							self.available_ap_device.append([mac+' '+type, mac, type, GHz, wlan])
-				else:
-					type = 'on board'
-					do_exist = False
-					for j in self.available_ap_device:
-						if j[1] == mac: do_exist = True
-					if not do_exist:
-						self.available_ap_device.append([mac+' '+type, mac, type, GHz, wlan])
+				except: pass
 
 		if not ('Raspberry Pi 2' in self.rpimodel) and len(self.available_ap_device) == 2:
 			for i in self.available_ap_device:
