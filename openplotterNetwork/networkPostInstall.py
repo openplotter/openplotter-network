@@ -48,12 +48,19 @@ def main():
 		fo.write( 'KERNEL=="usb0", SUBSYSTEMS=="net", RUN+="/bin/bash '+conf2.home+'/.openplotter/Network/11-openplotter-usb0.sh"\n')
 		fo.close()
 
+		print(_('DONE'))
+	except Exception as e: print(_('FAILED: ')+str(e))
+
+	try:
+		print(_('Enabling services...'))
+
 		subprocess.call(['systemctl', 'daemon-reload'])
 		subprocess.call(['systemctl', 'unmask', 'hostapd.service'])
 		subprocess.call(['systemctl', 'enable', 'openplotter-network'])
 		if not os.path.exists('/etc/hostapd/hostapd.conf'):
 			subprocess.call(['systemctl', 'disable', 'hostapd'])
-
+		subprocess.call(['rfkill', 'unblock', 'all'])
+		
 		print(_('DONE'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 

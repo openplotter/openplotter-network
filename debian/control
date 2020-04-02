@@ -10,6 +10,6 @@ X-Python3-Version: >= 3.2
 Package: openplotter-network
 Architecture: all
 Multi-Arch: foreign
-Depends: ${misc:Depends}, ${python3:Depends}, openplotter-settings, hostapd, dnsmasq, bridge-utils, dialog, usbmuxd, libnss-mdns, avahi-utils, libavahi-compat-libdnssd-dev
+Depends: ${misc:Depends}, ${python3:Depends}, openplotter-settings, hostapd, dnsmasq, bridge-utils, dialog, usbmuxd, libnss-mdns, avahi-utils, libavahi-compat-libdnssd-dev, rfkill
 Description: OpenPlotter app to manage network connections in Raspberry Pi
  OpenPlotter app to manage network connections in Raspberry Pi
