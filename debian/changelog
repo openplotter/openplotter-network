@@ -1,3 +1,10 @@
+openplotter-network (2.1.3-stable) bionic; urgency=medium
+
+  * Unblock network devices
+  * Update translations
+
+ -- Sailoog <info@sailoog.com>  Sun, 05 Apr 2020 14:08:59 +0200
+
 openplotter-network (2.1.2-stable) bionic; urgency=medium
 
   * prevent hostapd errors and huge log files
