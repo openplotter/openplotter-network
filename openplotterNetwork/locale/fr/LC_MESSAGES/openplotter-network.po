@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2020-02-29 16:19+0100\n"
-"PO-Revision-Date: 2020-03-22 19:03+0100\n"
+"POT-Creation-Date: 2020-04-02 21:00+0200\n"
+"PO-Revision-Date: 2020-04-05 14:06+0200\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
 "Language: fr\n"
@@ -22,13 +22,13 @@ msgstr ""
 msgid "Installing python packages..."
 msgstr "Installation des paquets python..."
 
-#: networkPostInstall.py:33 networkPostInstall.py:55 networkPostInstall.py:61
-#: networkPreUninstall.py:31 networkPreUninstall.py:62
+#: networkPostInstall.py:33 networkPostInstall.py:51 networkPostInstall.py:64
+#: networkPostInstall.py:70 networkPreUninstall.py:31 networkPreUninstall.py:62
 msgid "DONE"
 msgstr "TERMINÉ"
 
-#: networkPostInstall.py:34 networkPostInstall.py:56 networkPostInstall.py:62
-#: networkPreUninstall.py:32 networkPreUninstall.py:57
+#: networkPostInstall.py:34 networkPostInstall.py:52 networkPostInstall.py:65
+#: networkPostInstall.py:71 networkPreUninstall.py:32 networkPreUninstall.py:57
 #: networkPreUninstall.py:63
 msgid "FAILED: "
 msgstr "ÉCHEC: "
@@ -37,7 +37,11 @@ msgstr "ÉCHEC: "
 msgid "Editing config files..."
 msgstr "Modification des fichiers de configuration..."
 
-#: networkPostInstall.py:58
+#: networkPostInstall.py:55
+msgid "Enabling services..."
+msgstr "Activation des services..."
+
+#: networkPostInstall.py:67
 msgid "Setting version..."
 msgstr "Réglage de la version..."
 
@@ -106,8 +110,8 @@ msgid "5 GHz"
 msgstr "5 GHz"
 
 #: openplotterNetwork.py:151
-msgid "Add ethernet port to the AP"
-msgstr "Ajouter un port Ethernet au point d'accès"
+msgid "Add Ethernet port to the AP"
+msgstr "Ajouter un port Ethernet à l'AP"
 
 #: openplotterNetwork.py:174
 msgid "Access Point Settings"
@@ -144,8 +148,8 @@ msgstr "Canal"
 #: openplotterNetwork.py:316 openplotterNetwork.py:336
 #: openplotterNetwork.py:341 openplotterNetwork.py:393
 #: openplotterNetwork.py:397 openplotterNetwork.py:439
-#: openplotterNetwork.py:470 openplotterNetwork.py:488
-#: openplotterNetwork.py:625
+#: openplotterNetwork.py:472 openplotterNetwork.py:490
+#: openplotterNetwork.py:629
 msgid "none"
 msgstr "aucun"
 
@@ -153,11 +157,11 @@ msgstr "aucun"
 msgid "Wait please... "
 msgstr "Veuillez patienter... "
 
-#: openplotterNetwork.py:549
+#: openplotterNetwork.py:553
 msgid "Your SSID must have a maximum of 32 characters and your password a minimum of 8."
 msgstr "Le SSID doit comporter un maximum de 32 caractères et le mot de passe un minimum de 8."
 
-#: openplotterNetwork.py:600
+#: openplotterNetwork.py:604
 msgid ""
 "OpenPlotter will reboot. If something goes wrong and you are on a headless system, you may not be able to reconnect again.\n"
 "\n"
@@ -167,44 +171,44 @@ msgstr ""
 "\n"
 "Êtes-vous sûr de vouloir continuer?"
 
-#: openplotterNetwork.py:601
+#: openplotterNetwork.py:605
 msgid "Question"
 msgstr "Question"
 
-#: openplotterNetwork.py:624 openplotterNetwork.py:625
+#: openplotterNetwork.py:628 openplotterNetwork.py:629
 msgid "wifi access point: "
 msgstr "point d'accès wifi: "
 
-#: openplotterNetwork.py:642
+#: openplotterNetwork.py:646
 msgid "wifi client: "
 msgstr "client wifi: "
 
-#: openplotterNetwork.py:655
+#: openplotterNetwork.py:659
 msgid "running"
 msgstr "en cours"
 
-#: openplotterNetwork.py:656
+#: openplotterNetwork.py:660
 msgid "stopped"
 msgstr "arrêté"
 
-#: openplotterNetwork.py:670
+#: openplotterNetwork.py:674
 msgid "IP address\n"
 msgstr "Adresse IP\n"
 
-#: openplotterNetwork.py:683
+#: openplotterNetwork.py:687
 msgid "Installing Wifi modules... "
 msgstr "Installation des modules WiFi... "
 
-#: openplotterNetwork.py:685
+#: openplotterNetwork.py:689
 msgid "Done."
 msgstr "Terminé."
 
-#: openplotterNetwork.py:723
+#: openplotterNetwork.py:727
 msgid "There are conflicts between server connections"
 msgstr "Il y a des conflits entre les connexions serveur"
 
-#: openplotterNetwork.py:724
-msgid "No conflicts between servers connections"
+#: openplotterNetwork.py:728
+msgid "No conflicts between server connections"
 msgstr "Aucun conflit entre les connexions serveur"
 
 #: ports.py:28

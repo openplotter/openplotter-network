@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2020-02-29 16:19+0100\n"
-"PO-Revision-Date: 2020-03-22 19:04+0100\n"
+"POT-Creation-Date: 2020-04-02 21:00+0200\n"
+"PO-Revision-Date: 2020-04-05 14:07+0200\n"
 "Last-Translator: \n"
 "Language-Team: Czech\n"
 "Language: cs\n"
@@ -22,13 +22,13 @@ msgstr ""
 msgid "Installing python packages..."
 msgstr "Instalování balíčků pro Python..."
 
-#: networkPostInstall.py:33 networkPostInstall.py:55 networkPostInstall.py:61
-#: networkPreUninstall.py:31 networkPreUninstall.py:62
+#: networkPostInstall.py:33 networkPostInstall.py:51 networkPostInstall.py:64
+#: networkPostInstall.py:70 networkPreUninstall.py:31 networkPreUninstall.py:62
 msgid "DONE"
 msgstr "Hotovo"
 
-#: networkPostInstall.py:34 networkPostInstall.py:56 networkPostInstall.py:62
-#: networkPreUninstall.py:32 networkPreUninstall.py:57
+#: networkPostInstall.py:34 networkPostInstall.py:52 networkPostInstall.py:65
+#: networkPostInstall.py:71 networkPreUninstall.py:32 networkPreUninstall.py:57
 #: networkPreUninstall.py:63
 msgid "FAILED: "
 msgstr "Chyba: "
@@ -37,7 +37,11 @@ msgstr "Chyba: "
 msgid "Editing config files..."
 msgstr "Upravuji konfiguraci..."
 
-#: networkPostInstall.py:58
+#: networkPostInstall.py:55
+msgid "Enabling services..."
+msgstr "Povoluji služby..."
+
+#: networkPostInstall.py:67
 msgid "Setting version..."
 msgstr "Nastavuji verzi..."
 
@@ -106,7 +110,7 @@ msgid "5 GHz"
 msgstr "5 GHz"
 
 #: openplotterNetwork.py:151
-msgid "Add ethernet port to the AP"
+msgid "Add Ethernet port to the AP"
 msgstr "Přidat ethernetový port do AP"
 
 #: openplotterNetwork.py:174
@@ -144,8 +148,8 @@ msgstr "Vysílací kanál"
 #: openplotterNetwork.py:316 openplotterNetwork.py:336
 #: openplotterNetwork.py:341 openplotterNetwork.py:393
 #: openplotterNetwork.py:397 openplotterNetwork.py:439
-#: openplotterNetwork.py:470 openplotterNetwork.py:488
-#: openplotterNetwork.py:625
+#: openplotterNetwork.py:472 openplotterNetwork.py:490
+#: openplotterNetwork.py:629
 msgid "none"
 msgstr "žádný"
 
@@ -153,11 +157,11 @@ msgstr "žádný"
 msgid "Wait please... "
 msgstr "Počkejte prosím... "
 
-#: openplotterNetwork.py:549
+#: openplotterNetwork.py:553
 msgid "Your SSID must have a maximum of 32 characters and your password a minimum of 8."
 msgstr "Vaše SSID být maximálně 32 znaků a heslo alespoň 8 znaků."
 
-#: openplotterNetwork.py:600
+#: openplotterNetwork.py:604
 msgid ""
 "OpenPlotter will reboot. If something goes wrong and you are on a headless system, you may not be able to reconnect again.\n"
 "\n"
@@ -169,45 +173,45 @@ msgstr ""
 "\n"
 "Jste si jisti?"
 
-#: openplotterNetwork.py:601
+#: openplotterNetwork.py:605
 msgid "Question"
 msgstr "Otázka"
 
-#: openplotterNetwork.py:624 openplotterNetwork.py:625
+#: openplotterNetwork.py:628 openplotterNetwork.py:629
 msgid "wifi access point: "
 msgstr "přístupový bod wifi: "
 
-#: openplotterNetwork.py:642
+#: openplotterNetwork.py:646
 msgid "wifi client: "
 msgstr "wifi klient: "
 
-#: openplotterNetwork.py:655
+#: openplotterNetwork.py:659
 msgid "running"
 msgstr "běží"
 
-#: openplotterNetwork.py:656
+#: openplotterNetwork.py:660
 msgid "stopped"
 msgstr "zastaveno"
 
-#: openplotterNetwork.py:670
+#: openplotterNetwork.py:674
 msgid "IP address\n"
 msgstr "IP adresa\n"
 
-#: openplotterNetwork.py:683
+#: openplotterNetwork.py:687
 msgid "Installing Wifi modules... "
 msgstr "Instalace modulů Wifi... "
 
-#: openplotterNetwork.py:685
+#: openplotterNetwork.py:689
 msgid "Done."
 msgstr "Hotovo."
 
-#: openplotterNetwork.py:723
+#: openplotterNetwork.py:727
 msgid "There are conflicts between server connections"
 msgstr "Byli nalezeny konflikty v připojení k serveru"
 
-#: openplotterNetwork.py:724
-msgid "No conflicts between servers connections"
-msgstr "Nebyli nalezeny žádné konflikty v připojení k serveru"
+#: openplotterNetwork.py:728
+msgid "No conflicts between server connections"
+msgstr "Mezi připojeními serveru nejsou žádné konflikty"
 
 #: ports.py:28
 msgid "VNC Remote Desktop"
