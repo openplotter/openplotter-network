@@ -1,4 +1,5 @@
 #!/bin/sh
+rfkill unblock all
 internet=auto
 router=
 sysctl -w net.ipv4.ip_forward=1
