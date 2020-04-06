@@ -1,3 +1,9 @@
+openplotter-network (2.1.4-stable) bionic; urgency=medium
+
+  * Fix unblock wifi
+
+ -- Sailoog <info@sailoog.com>  Mon, 06 Apr 2020 13:38:48 +0200
+
 openplotter-network (2.1.3-stable) bionic; urgency=medium
 
   * Unblock network devices
