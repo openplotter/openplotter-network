@@ -532,12 +532,13 @@ class MyFrame(wx.Frame):
 		
 	def on_share_button(self, e):
 		j = self.ap_device.GetValue()
+		share = self.share.GetValue()
 		for i in self.available_ap_device:
 			if i[0] == j:
 				text = i[4]
 				if self.bridge.GetValue():
 					text = 'br0'
-		process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/.openplotter/iptables.sh','auto',text])
+		process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/.openplotter/iptables.sh',share,text])
 
 	def on_wifi_apply2(self, e):
 		if self.AP_aktiv:

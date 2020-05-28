@@ -3,22 +3,43 @@ internet=$1
 router=$2
 
 base=auto
+baserouter=br0
 
-if [ $internet == $base ];
+#delete old filter
+    sudo iptables -t nat -F
+    sudo iptables -t mangle -F
+    sudo iptables -F
+    sudo iptables -X
+
+if [ $internet = $base ];
 then
-	internet=$(ip -4 route list 0/0 | head -n 1 | cut -d " " -f5)
+	internet=wlan0
+	iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+	iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
+	internet=wlan1
+	iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+	iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
+	internet=eth1
+	iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+	iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
+	internet=usb0
+	iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+	iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
+
+	if [ $router != $baserouter ];
+    then
+		internet=eth0
+		iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+		iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+		iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
+	fi
+	
+else
+	iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
+	iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
 fi
-
-#when the interface doesn't exists
-#result=$(ls /sys/class/net | grep "$internet")
-#if [ -z $result ]
-#then
-#	internet=$(ip -4 route list 0/0 | head -n 1 | cut -d " " -f5)
-#fi
-
-#echo "$internet"
-
-iptables -F
-iptables -t nat -A POSTROUTING -o "${internet}" -j MASQUERADE
-iptables -A FORWARD -i "${internet}" -o "${router}" -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -A FORWARD -i "${router}" -o "${internet}" -j ACCEPT
