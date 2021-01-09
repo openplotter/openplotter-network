@@ -15,8 +15,7 @@ Install [openplotter-settings](https://github.com/openplotter/openplotter-settin
 Install dependencies:
 
 ```
-sudo apt install hostapd dnsmasq bridge-utils dialog usbmuxd libnss-mdns avahi-utils libavahi-compat-libdnssd-dev rfkill
-sudo pip3 install pyric
+sudo apt install hostapd dnsmasq bridge-utils dialog usbmuxd libnss-mdns avahi-utils libavahi-compat-libdnssd-dev rfkill python3-pip
 ```
 
 Clone the repository:
