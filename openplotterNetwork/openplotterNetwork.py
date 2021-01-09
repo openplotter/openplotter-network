@@ -175,8 +175,6 @@ class MyFrame(wx.Frame):
 
 		self.share = wx.ComboBox(self.ap, choices=self.available_share, style=wx.CB_READONLY, size=(120, -1))
 		self.share_label = wx.StaticText(self.ap, label=_('Sharing Internet device'))
-		self.share_button = wx.Button(self.ap, label=_('Update Sharing'))
-		self.share_button.Bind(wx.EVT_BUTTON, self.on_share_button)		
 
 		h_share = wx.BoxSizer(wx.HORIZONTAL)
 		h_share.Add(self.share, 0)
@@ -219,9 +217,7 @@ class MyFrame(wx.Frame):
 		v_leftbox2 = wx.StaticBoxSizer(leftbox2, wx.VERTICAL)
 		v_leftbox2.AddSpacer(10)
 		v_leftbox2.Add(h_share, 0, wx.LEFT | wx.EXPAND, 10)
-		v_leftbox2.AddSpacer(5)
-		v_leftbox2.Add(self.share_button, 0, wx.LEFT, 10)
-		v_leftbox2.AddSpacer(10)
+		v_leftbox2.AddSpacer(12)
 		v_leftbox2.Add(h_ssid, 0, wx.LEFT | wx.EXPAND, 10)
 		v_leftbox2.AddSpacer(5)
 		v_leftbox2.Add(h_passw, 0, wx.LEFT | wx.EXPAND, 10)
@@ -373,14 +369,12 @@ class MyFrame(wx.Frame):
 
 	def ap_disable(self):
 		self.share.Disable()
-		self.share_button.Disable()
 		self.ssid.Disable()
 		self.passw.Disable()
 		self.wifi_channel.Disable()
 
 	def ap_enable(self):
 		self.share.Enable()
-		self.share_button.Enable()
 		self.ssid.Enable()
 		self.passw.Enable()
 		self.wifi_channel.Enable()
@@ -530,15 +524,6 @@ class MyFrame(wx.Frame):
 		for i in self.available_ap_device2:
 			self.ap_device.Append(i)
 		
-	def on_share_button(self, e):
-		j = self.ap_device.GetValue()
-		for i in self.available_ap_device:
-			if i[0] == j:
-				text = i[4]
-				if self.bridge.GetValue():
-					text = 'br0'
-		process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/.openplotter/iptables.sh','auto',text])
-
 	def on_wifi_apply2(self, e):
 		if self.AP_aktiv:
 			
