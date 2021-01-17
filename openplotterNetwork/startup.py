@@ -65,7 +65,7 @@ class Check():
 					wifi_pass=sline[1]
 		except: pass
 		if wifi_pass == '12345678':
-			red=_('Security warning: You are using the default WIFI Access Point password.\nPlease change password in OpenPlotter Network.')
+			red=' ↳'+_('Security warning: You are using the default WIFI Access Point password.\nPlease change password in OpenPlotter Network.')
 		else: green = _('changed')
 
 		return {'green': green,'black': black,'red': red}
