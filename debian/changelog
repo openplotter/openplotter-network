@@ -1,6 +1,7 @@
 openplotter-network (2.1.5-stable) bionic; urgency=medium
 
   * config iptables for different internet access
+  * Update translations
 
  -- Sailoog <info@sailoog.com>  Thu, 07 Jan 2021 16:29:26 +0100
 
