@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-# This file is part of Openplotter.
-# Copyright (C) 2019 by e-sailing <https://github.com/e-sailing/openplotter-network>
-# Copyright (C) 2019 by Sailoog <https://github.com/openplotter/openplotter-network>
+# This file is part of OpenPlotter.
+# Copyright (C) 2022 by e-sailing <https://github.com/e-sailing/openplotter-network>
+# Copyright (C) 2022 by Sailoog <https://github.com/openplotter/openplotter-network>
 
 # Openplotter is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
