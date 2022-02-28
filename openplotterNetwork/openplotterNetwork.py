@@ -170,6 +170,8 @@ class MyFrame(wx.Frame):
 		v_leftbox.Add(h_set, 0, wx.LEFT | wx.EXPAND, 8)
 		v_leftbox.AddStretchSpacer(1)
 		v_leftbox.Add(h_button0, 0, wx.ALL | wx.EXPAND, 5)
+
+		separator_label = wx.StaticText(self.ap, label='->')
 		
 		leftbox2 = wx.StaticBox(self.ap, label=_('Access Point Settings'))
 
@@ -226,8 +228,14 @@ class MyFrame(wx.Frame):
 		v_leftbox2.AddStretchSpacer(1)
 		v_leftbox2.Add(h_button, 0, wx.ALL | wx.EXPAND, 5)
 		
+		middle = wx.BoxSizer(wx.VERTICAL)
+		middle.AddStretchSpacer(1)
+		middle.Add(separator_label, 0, wx.EXPAND, 0)
+		middle.AddStretchSpacer(1)
+
 		main = wx.BoxSizer(wx.HORIZONTAL)
 		main.Add(v_leftbox, 1, wx.ALL | wx.EXPAND, 10)
+		main.Add(middle, 0, wx.EXPAND, 0)
 		main.Add(v_leftbox2, 1, wx.ALL | wx.EXPAND, 10)
 		
 		self.ap.SetSizer(main)
