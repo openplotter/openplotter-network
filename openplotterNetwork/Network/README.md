@@ -6,20 +6,15 @@ The additional packets to use eth0 in the same net as the AP are:
 sudo apt-get install bridge-utils
 
 When activating a network profile with "Apply 1" OpenPlotter: copies the selected setting from here to the directory /home/pi/.openplotter/Network
-OpenPlotter edit the individual settings as ssid password ... here.
+OpenPlotter edit the individual settings as ssid password ... there.
 Manual settings should be done here also.
 
 The "Apply 2" button copies some files into the system.
 
-(wlan9 is used for the AP. In the past it was wlan1 or uap0. Now you can use more wifi adapter. 
-But remember the internet connection could only work with the first gateway (use: "route -n" to see it))
-If the share network isn't set correctly the clients don't get internet access. 
-if you use the auto selection for sharing, the system will look at the start for the default gateway. 
-But this could change, if you connect to an ethernet later or plug in a mobile phone ...)
-You can change sharing devices while using openplotter.
-
-Some settings are done by a cronjob which is called once when booting.
-It starts the bash script /home/pi/.openplotter/start-ap-managed-wifi.sh
+(wlan9 is used for the AP. You can use more wifi adapter but remember the internet connection would work with the first gateway (use: "ip route" to see it)
+The network is shared to the clients (get internet access for the clients).
+wlan0 and wlan1 are blocked by nft to disallow others to get access to the raspberry (public marina wifi).
+If the ssid is declared private (file /home/pi/.openplotter/private_ssid.txt) it won't be blocked.
 
 Headless mode with android device as display (android will be on usb0)
 Use android device to connect to the rpi with usb cable.
@@ -34,18 +29,11 @@ Install realvnc.
 Start realvnc with ip address 172.20.10.3, openplotter.local.
 
 The raspbian standard wifi settings (in the upper right corner) often don't want to change from one marina to the next one.
-If you don't get the connection symbol you can "Turn Off Wifi" and "Turn On Wifi". To get it to work. (Wait an instant until the wlan list AP.)
+If you don't get the connection symbol you can "Turn Off Wifi" and "Turn On Wifi". To get it to work. (Wait an instant until the wlan list updates.)
 If you are connected over the AP use the
 bash file /home/pi/.openplotter/Network/restart_wlan0.sh
 
-Internet sharing
-To share the internet connection you have to switch to the network where internet is connected.
-If you have more than one internet connection, only the connection with the lowest default gateway matrix (first line of "route -n") work.
-
 Add ethernet port to the AP (bridge) is only needed when you want to connect a ethernet mfd (plotter), a ethernet radar or a pc.
-
-Some usb wifi have 5 GHz but the driver don't support AP mode with 5 GHz.
-There is no support for 5 GHz AP ac mode at the moment. 
 
 For rpi 3b 3b+ 4b you can use the internal wifi to act as AP and Station. This is good to save energy. But it isn't so realiable and it reduces speed.
 (see https://github.com/peebles/rpi3-wifi-station-ap-stretch)

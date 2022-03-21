@@ -41,7 +41,19 @@ def main():
 		fo.close()
 
 		fo = open('/etc/systemd/system/openplotter-network.service', "w")
-		fo.write( '[Service]\nExecStart='+conf2.home+'/.openplotter/start-ap-managed-wifi.sh\nStandardOutput=syslog\nStandardError=syslog\nWorkingDirectory='+conf2.home+'/.openplotter\nUser=root\n\n[Install]\nWantedBy=multi-user.target\n')
+		data = '[Unit]\n'
+		data += 'After=local-fs.target network-pre.target apparmor.service systemd-sysctl.service systemd-modules-load.service ifupdown-pre.service network.target\n'
+		data += '\n'
+		data += '[Service]\n'
+		data += 'ExecStart='+conf2.home+'/.openplotter/start-ap-managed-wifi.sh\n'
+		data += 'StandardOutput=syslog\n'
+		data += 'StandardError=syslog\n'
+		data += 'WorkingDirectory='+conf2.home+'/.openplotter\nUser=root\n'
+		data += '\n'
+		data += '[Install]\n'
+		data += 'WantedBy=multi-user.target\n'
+
+		fo.write(data)
 		fo.close()
 
 		fo = open(currentdir+'/Network/udev/rules.d/11-openplotter-usb0.rules', "w")

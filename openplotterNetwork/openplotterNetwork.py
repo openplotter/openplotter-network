@@ -56,21 +56,25 @@ class MyFrame(wx.Frame):
 		toolCheck = self.toolbar1.AddTool(104, _('Check Network'), wx.Bitmap(self.currentdir+"/data/check.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolCheck, toolCheck)
 		self.toolbar1.AddSeparator()
-		toolDrivers = self.toolbar1.AddTool(105, _('Install Wifi Drivers'), wx.Bitmap(self.currentdir+"/data/package.png"), shortHelp=_('This does only help for unrecognized usb wlan type:') + ' 8188eu,8188fu,8192eu,8192su,8812au,8822bu,mt7610,mt7612')
-		self.Bind(wx.EVT_TOOL, self.OnToolDrivers, toolDrivers)
+		#toolDrivers = self.toolbar1.AddTool(105, _('Install Wifi Drivers'), wx.Bitmap(self.currentdir+"/data/package.png"), shortHelp=_('This does only help for unrecognized usb wlan type:') + ' 8188eu,8188fu,8192eu,8192su,8812au,8822bu,mt7610,mt7612')
+		#self.Bind(wx.EVT_TOOL, self.OnToolDrivers, toolDrivers)
 
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
 		self.ap = wx.Panel(self.notebook)
+		self.client = wx.Panel(self.notebook)
 		self.output = wx.Panel(self.notebook)
-		self.notebook.AddPage(self.ap, _('Access Point'))
+		self.notebook.AddPage(self.ap, ' '+_('Access Point'))
+		self.notebook.AddPage(self.client, ' '+_('Wlan Client'))
 		self.notebook.AddPage(self.output, '')
 		self.il = wx.ImageList(24, 24)
 		img0 = self.il.Add(wx.Bitmap(self.currentdir+"/data/ap.png", wx.BITMAP_TYPE_PNG))
-		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
+		img1 = self.il.Add(wx.Bitmap(self.currentdir+"/data/wifi.png", wx.BITMAP_TYPE_PNG))
+		img2 = self.il.Add(wx.Bitmap(self.currentdir+"/data/output.png", wx.BITMAP_TYPE_PNG))
 		self.notebook.AssignImageList(self.il)
 		self.notebook.SetPageImage(0, img0)
 		self.notebook.SetPageImage(1, img1)
+		self.notebook.SetPageImage(2, img2)
 
 		vbox = wx.BoxSizer(wx.VERTICAL)
 		vbox.Add(self.toolbar1, 0, wx.EXPAND)
@@ -78,6 +82,7 @@ class MyFrame(wx.Frame):
 		self.SetSizer(vbox)
 
 		self.pageAp()
+		self.pageClient()
 		self.pageOutput()
 		self.read_wifi_conf()
 
@@ -133,7 +138,6 @@ class MyFrame(wx.Frame):
 			
 		leftbox = wx.StaticBox(self.ap, label=_('Network Mode')+'  '+self.rpimodel)
 	
-		self.available_share = []
 		self.available_ap_device2 = []
 
 		self.ap_device_label = wx.StaticText(self.ap, label=_('AP'))
@@ -174,15 +178,9 @@ class MyFrame(wx.Frame):
 		separator_label = wx.StaticText(self.ap, label='->')
 		
 		leftbox2 = wx.StaticBox(self.ap, label=_('Access Point Settings'))
+	
+		self.share = wx.CheckBox(self.ap, label=_('share internet'))
 
-		self.share = wx.ComboBox(self.ap, choices=self.available_share, style=wx.CB_READONLY, size=(120, -1))
-		self.share_label = wx.StaticText(self.ap, label=_('Sharing Internet device'))
-
-		h_share = wx.BoxSizer(wx.HORIZONTAL)
-		h_share.Add(self.share, 0)
-		h_share.AddSpacer(5)
-		h_share.Add(self.share_label, 0, wx.TOP | wx.BOTTOM, 5)
-		
 		self.ssid = wx.TextCtrl(self.ap, -1, size=(120, -1))
 		self.ssid_label = wx.StaticText(self.ap, label=_('SSID \nmaximum 32 characters'))
 
@@ -218,8 +216,8 @@ class MyFrame(wx.Frame):
 
 		v_leftbox2 = wx.StaticBoxSizer(leftbox2, wx.VERTICAL)
 		v_leftbox2.AddSpacer(10)
-		v_leftbox2.Add(h_share, 0, wx.LEFT | wx.EXPAND, 10)
-		v_leftbox2.AddSpacer(12)
+		v_leftbox2.Add(self.share, 0, wx.LEFT | wx.EXPAND, 6)
+		v_leftbox2.AddSpacer(9)
 		v_leftbox2.Add(h_ssid, 0, wx.LEFT | wx.EXPAND, 10)
 		v_leftbox2.AddSpacer(5)
 		v_leftbox2.Add(h_passw, 0, wx.LEFT | wx.EXPAND, 10)
@@ -243,7 +241,6 @@ class MyFrame(wx.Frame):
 	def read_wifi_conf(self):
 		self.conf_network = self.conf_folder + '/Network'
 		self.AP_aktiv = False
-		self.bak_share = ''
 		self.hostapd_interface = ''
 		self.hostapd_bridge = ''
 		#read settings from hostapd.conf  GHz, bridge, ssid, password, channel and check if AP is activ
@@ -321,7 +318,7 @@ class MyFrame(wx.Frame):
 			
 			self.on_ap_device()
 
-			#search shared device from iptables.sh
+			#share device ipforwar
 			
 			i=' '
 			try:
@@ -330,14 +327,12 @@ class MyFrame(wx.Frame):
 				wififile.close()
 			except:
 				bak=''
-			i=self.find_line_split(bak,"internet=",1)
-			if i!=None:
-				if i in self.available_share:
-					pass
-				else: self.share.Append(i)
-				self.share.SetValue(i)
+			i=self.find_line_split(bak,"share_internet=",1)
+			if i=="True":
+				self.share.SetValue(True)
 			else:
-				self.share.SetValue(_('none'))
+				self.share.SetValue(False)
+
 		
 		#on client only
 		else:
@@ -346,14 +341,17 @@ class MyFrame(wx.Frame):
 			self.on_ap_device()
 
 	def find_line_split_set(self,data,search,_setvalue,pos):
+		_setvalue.SetValue(self.find_line_split_set2(data,search,"=",pos))
+
+	def find_line_split_set2(self,data,search,splitstr,pos):
 		i=data.find(search)
 		if i>=0:
 			j=data[i:].find("\n")
 			if j==0:j=data[i:].length
 			line = data[i:i+j]
-			sline = line.split('=')
+			sline = line.split(splitstr)
 			if len(sline)>1:
-				_setvalue.SetValue(sline[pos])
+				return sline[pos]
 
 	def find_line_split(self,data,search,pos):
 		i=data.find(search)
@@ -471,18 +469,6 @@ class MyFrame(wx.Frame):
 		except:
 			pass
 
-		self.available_share = [_('none'),'auto']
-		unavailable_net = ['wlan9','lo']
-		if self.bridge.GetValue():
-			unavailable_net.append('eth0')
-
-		for i in network_info:
-			if not 'can' in i and not 'canable' in i and not i in unavailable_net: self.available_share.append(i)
-
-		self.share.Clear()
-		for i in self.available_share:
-			self.share.Append(i)
-		
 		type=''
 		phy=''
 		AP=-1
@@ -538,7 +524,7 @@ class MyFrame(wx.Frame):
 			passw = self.passw.GetValue()
 			ssid = self.ssid.GetValue()
 			channel = self.wifi_channel.GetValue()
-			share = self.share.GetValue()
+			share = str(self.share.GetValue())
 			
 			#check length
 			if self.AP_aktiv:
@@ -570,16 +556,15 @@ class MyFrame(wx.Frame):
 			#set start script
 			script_file = self.conf_network+'/.openplotter/start-ap-managed-wifi.sh'
 			if os.path.isfile(script_file):
-				if self.bak_share!=share:
-					wififile = open(script_file, 'r', 2000)
-					lines = wififile.readlines()
-					wififile.close()
+				wififile = open(script_file, 'r', 2000)
+				lines = wififile.readlines()
+				wififile.close()
 
-					wififile = open(script_file, 'w')
-					for line in lines:
-						if 0<=line.find("internet="): line = "internet="+share+"\n"
-						wififile.write(line)
-					wififile.close()
+				wififile = open(script_file, 'w')
+				for line in lines:
+					if 0<=line.find("share_internet="): line = "share_internet="+share+"\n"
+					wififile.write(line)
+				wififile.close()
 
 			#install files
 			process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/install.sh','install', self.currentdir, self.conf.home], cwd = self.conf_network)
@@ -669,17 +654,17 @@ class MyFrame(wx.Frame):
 		self.logger.WriteText(msg)
 		self.logger.ShowPosition(self.logger.GetLastPosition())
 
-	def OnToolDrivers(self, e):
-		self.logger.Clear()
-		self.notebook.ChangeSelection(1)
-		command = self.platform.admin+' install-wifi'
-		popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
-		for line in popen.stdout:
-			if not 'Warning' in line and not 'WARNING' in line:
-				self.logger.WriteText(line)
-				self.ShowStatusBarYELLOW(_('Installing Wifi modules... ')+line)
-				self.logger.ShowPosition(self.logger.GetLastPosition())
-		self.ShowStatusBarGREEN(_('Done.'))
+	#def OnToolDrivers(self, e):
+	#	self.logger.Clear()
+	#	self.notebook.ChangeSelection(1)
+	#	command = self.platform.admin+' install-wifi'
+	#	popen = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True, shell=True)
+	#	for line in popen.stdout:
+	#		if not 'Warning' in line and not 'WARNING' in line:
+	#			self.logger.WriteText(line)
+	#			self.ShowStatusBarYELLOW(_('Installing Wifi modules... ')+line)
+	#			self.logger.ShowPosition(self.logger.GetLastPosition())
+	#	self.ShowStatusBarGREEN(_('Done.'))
 
 	def OnToolAddresses(self, e):
 		allPorts = ports.Ports()
@@ -720,6 +705,235 @@ class MyFrame(wx.Frame):
 			self.ShowStatusBarRED(_('There are conflicts between server connections'))
 		else: self.ShowStatusBarGREEN(_('No conflicts between server connections'))
 		self.logger.ShowPosition(self.logger.GetLastPosition())
+
+	def pageClient(self):
+		self.conf_private_ssid_txt = self.conf_folder + '/private_ssid.conf'
+		try:
+			private_ssid = open(self.conf_private_ssid_txt, 'r', 2000)
+			bak = private_ssid.read()
+			private_ssid.close()
+		except:
+			bak = ''
+			
+		self.private_ssid_list = bak.split('\n')
+		self.private_ssid_list.remove('')
+
+		leftbox = wx.StaticBox(self.client, label=_('wlan0 Client'))
+	
+		self.client_ssid_label = wx.StaticText(self.client, label=_('SSID (Net Name)'))
+		self.client_ssid = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		self.add_ssid_label = "+"
+		self.add_ssid = wx.Button(self.client, -1, "+", size=(120, -1))
+		self.add_ssid.Bind(wx.EVT_BUTTON, self.on_add_ssid)
+
+		self.client_bitRate_label = wx.StaticText(self.client, label=_('Bit Rate'))
+		self.client_bitRate = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		self.client_linkQuality_label = wx.StaticText(self.client, label=_('Link Quality'))
+		self.client_linkQuality = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		self.client_signalLevel_label = wx.StaticText(self.client, label=_('Signal Level'))
+		self.client_signalLevel = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		h_ssid = wx.BoxSizer(wx.HORIZONTAL)
+		h_ssid.Add(self.client_ssid, 0, wx.LEFT, 5) 
+		h_ssid.Add(self.client_ssid_label, 0, wx.ALL, 6)
+
+		h_button = wx.BoxSizer(wx.HORIZONTAL)
+		h_button.Add(self.add_ssid, 0, wx.LEFT, 5)
+		
+		h_bitRate = wx.BoxSizer(wx.HORIZONTAL)
+		h_bitRate.Add(self.client_bitRate, 0, wx.LEFT, 5) 
+		h_bitRate.Add(self.client_bitRate_label, 0, wx.ALL, 6)
+		
+		h_linkQuality = wx.BoxSizer(wx.HORIZONTAL)
+		h_linkQuality.Add(self.client_linkQuality, 0, wx.LEFT, 5) 
+		h_linkQuality.Add(self.client_linkQuality_label, 0, wx.ALL, 6)
+		
+		h_signalLevel = wx.BoxSizer(wx.HORIZONTAL)
+		h_signalLevel.Add(self.client_signalLevel, 0, wx.LEFT, 5) 
+		h_signalLevel.Add(self.client_signalLevel_label, 0, wx.ALL, 6)
+
+		v_leftbox = wx.StaticBoxSizer(leftbox, wx.VERTICAL)
+		v_leftbox.AddSpacer(10)
+		v_leftbox.Add(h_ssid, 0, wx.LEFT, 10)
+		v_leftbox.Add(h_button, 0, wx.LEFT, 10)
+		v_leftbox.AddSpacer(10)
+		v_leftbox.Add(h_bitRate, 0, wx.LEFT, 10)
+		v_leftbox.AddSpacer(10)
+		v_leftbox.Add(h_linkQuality, 0, wx.LEFT, 10)
+		v_leftbox.AddSpacer(10)
+		v_leftbox.Add(h_signalLevel, 0, wx.LEFT, 10)
+		v_leftbox.AddStretchSpacer(1)
+
+		midbox = wx.StaticBox(self.client, label=_('wlan1 Client'))
+	
+		self.client_ssid1_label = wx.StaticText(self.client, label=_('SSID (Net Name)'))
+		self.client_ssid1 = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		self.add_ssid1 = wx.Button(self.client, -1, "+", size=(120, -1))
+		self.add_ssid1.Bind(wx.EVT_BUTTON, self.on_add_ssid1)
+
+		self.client_bitRate1_label = wx.StaticText(self.client, label=_('Bit Rate'))
+		self.client_bitRate1 = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		self.client_linkQuality1_label = wx.StaticText(self.client, label=_('Link Quality'))
+		self.client_linkQuality1 = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		self.client_signalLevel1_label = wx.StaticText(self.client, label=_('Signal Level'))
+		self.client_signalLevel1 = wx.TextCtrl(self.client, -1, style=wx.TE_READONLY, size=(120, -1))
+
+		h_ssid1 = wx.BoxSizer(wx.HORIZONTAL)
+		h_ssid1.Add(self.client_ssid1, 0, wx.LEFT, 5) 
+		h_ssid1.Add(self.client_ssid1_label, 0, wx.ALL, 6)
+
+		h_button1 = wx.BoxSizer(wx.HORIZONTAL)
+		h_button1.Add(self.add_ssid1, 0, wx.LEFT, 5)
+
+		h_bitRate1 = wx.BoxSizer(wx.HORIZONTAL)
+		h_bitRate1.Add(self.client_bitRate1, 0, wx.LEFT, 5) 
+		h_bitRate1.Add(self.client_bitRate1_label, 0, wx.ALL, 6)
+		
+		h_linkQuality1 = wx.BoxSizer(wx.HORIZONTAL)
+		h_linkQuality1.Add(self.client_linkQuality1, 0, wx.LEFT, 5) 
+		h_linkQuality1.Add(self.client_linkQuality1_label, 0, wx.ALL, 6)
+		
+		h_signalLevel1 = wx.BoxSizer(wx.HORIZONTAL)
+		h_signalLevel1.Add(self.client_signalLevel1, 0, wx.LEFT, 5) 
+		h_signalLevel1.Add(self.client_signalLevel1_label, 0, wx.ALL, 6)
+		
+		v_midbox = wx.StaticBoxSizer(midbox, wx.VERTICAL)
+		v_midbox.AddSpacer(10)
+		v_midbox.Add(h_ssid1, 0, wx.LEFT, 10)
+		v_midbox.Add(h_button1, 0, wx.LEFT, 10)
+		v_midbox.AddSpacer(10)
+		v_midbox.Add(h_bitRate1, 0, wx.LEFT, 10)
+		v_midbox.AddSpacer(10)
+		v_midbox.Add(h_linkQuality1, 0, wx.LEFT, 10)
+		v_midbox.AddSpacer(10)
+		v_midbox.Add(h_signalLevel1, 0, wx.LEFT, 10)
+		v_midbox.AddStretchSpacer(1)
+
+		rightbox = wx.StaticBox(self.client, label=_('Private Network'))
+
+		self.privateList = wx.ListBox(self.client,-1, choices = self.private_ssid_list, size =(-1,180), style=wx.LB_SINGLE)
+		self.Bind(wx.EVT_LISTBOX, self.OnCLICK)
+		self.Bind(wx.EVT_LISTBOX_DCLICK, self.OnDCLICK)
+	
+		self.remove_ssid_label = "-"
+		self.remove_ssid = wx.Button(self.client, -1, self.remove_ssid_label)
+		self.remove_ssid.Bind(wx.EVT_BUTTON, self.on_remove_ssid)
+
+		self.remove_ssid.Disable()
+
+		h_button2 = wx.BoxSizer(wx.HORIZONTAL)
+		h_button2.AddStretchSpacer(1)
+		h_button2.Add(self.remove_ssid, 0, wx.ALL | wx.EXPAND, 5)
+
+		v_rightbox = wx.StaticBoxSizer(rightbox, wx.VERTICAL)
+		v_rightbox.AddSpacer(10)
+		v_rightbox.Add(self.privateList, 0, wx.ALL | wx.EXPAND, 5)
+		v_rightbox.AddStretchSpacer(1)
+		v_rightbox.Add(h_button2, 0, wx.ALL | wx.EXPAND, 5)
+		
+		main = wx.BoxSizer(wx.HORIZONTAL)
+		main.Add(v_leftbox, 1, wx.ALL | wx.EXPAND, 10)
+		main.Add(v_midbox, 1, wx.ALL | wx.EXPAND, 10)
+		main.Add(v_rightbox, 1, wx.ALL | wx.EXPAND, 10)
+		
+		self.client.SetSizer(main)
+		self.read_wlan()
+		#self.privateList.SetSelection(0)
+
+	def read_wlan(self):
+		try:
+			network_info = subprocess.check_output('ip addr'.split()).decode(sys.stdin.encoding)
+		except:
+			pass
+		net=['wlan0','wlan1']
+
+		self.client_ssid.SetValue('----')
+		self.client_bitRate.SetValue('----')
+		self.client_linkQuality.SetValue('----')
+		self.client_signalLevel.SetValue('----')
+		self.add_ssid.Disable()
+
+		self.client_ssid1.SetValue('----')
+		self.client_bitRate1.SetValue('----')
+		self.client_linkQuality1.SetValue('----')
+		self.client_signalLevel1.SetValue('----')
+		self.add_ssid1.Disable()
+		
+		for i in network_info.split('\n'):
+			if net[0] in i: 
+				wlan_info = subprocess.check_output('iwconfig wlan0'.split()).decode(sys.stdin.encoding)
+				self.client_ssid.SetValue(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"')[1])
+				self.client_bitRate.SetValue(self.find_line_split_set2(wlan_info,"Rate","=",1).split("   ")[0])
+				self.client_linkQuality.SetValue(self.find_line_split_set2(wlan_info,"Quality","=",1).split(" ")[0])
+				self.client_signalLevel.SetValue(self.find_line_split_set2(wlan_info,"level","=",1))
+				self.add_ssid.Enable()
+
+			if net[1] in i: 
+				wlan_info = subprocess.check_output('iwconfig wlan1'.split()).decode(sys.stdin.encoding)
+				self.client_ssid1.SetValue(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"')[1])
+				self.client_bitRate1.SetValue(self.find_line_split_set2(wlan_info,"Rate","=",1).split("   ")[0])
+				self.client_linkQuality1.SetValue(self.find_line_split_set2(wlan_info,"Quality","=",1).split(" ")[0])
+				self.client_signalLevel1.SetValue(self.find_line_split_set2(wlan_info,"level","=",1))
+				self.add_ssid1.SetLabel = "Hallo"
+				self.add_ssid1.Enable()
+
+		self.conf_private_ssid_txt = self.conf_folder + '/private_ssid.conf'
+		try:
+			private_ssid = open(self.conf_private_ssid_txt, 'r', 2000)
+			bak = private_ssid.read()
+			private_ssid.close()
+		except:
+			bak = ''
+			
+		self.private_ssid_list = bak.split('\n')
+		self.private_ssid_list.remove('')
+
+		self.privateList.Set(self.private_ssid_list)
+		
+	def on_add_ssid(self, event):
+		self.appendName(self.client_ssid.GetValue())
+
+	def on_add_ssid1(self, event):
+		self.appendName(self.client_ssid1.GetValue())
+
+	def on_remove_ssid(self, event):
+		if self.privateList.GetSelection() == -1:
+			return
+		self.private_ssid_list.remove(self.private_ssid_list[self.privateList.GetSelection()])
+		try:
+			private_ssid = open(self.conf_private_ssid_txt, 'w')
+			for i in self.private_ssid_list:
+				if i != '':
+					private_ssid.write(i + '\n')
+			private_ssid.close()
+		except:
+			pass
+		self.read_wlan()
+		self.remove_ssid.Disable()	
+
+	def OnCLICK(self, event):
+		if self.privateList.GetSelection() != -1:
+			self.remove_ssid.Enable()
+
+	def OnDCLICK(self, event):
+		if self.privateList.GetSelection() != -1:
+			self.privateList.Deselect(self.privateList.GetSelection())
+			self.remove_ssid.Disable()			
+		
+	def appendName(self,name):
+		try:
+			private_ssid = open(self.conf_private_ssid_txt, 'a')
+			private_ssid.write(name + '\n')
+			private_ssid.close()
+		except:
+			pass
+		self.read_wlan()
 
 def main():
 	try:
