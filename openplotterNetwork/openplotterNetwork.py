@@ -866,22 +866,24 @@ class MyFrame(wx.Frame):
 		self.add_ssid1.Disable()
 		
 		for i in network_info.split('\n'):
-			if net[0] in i: 
+			if net[0] in i:
 				wlan_info = subprocess.check_output('iwconfig wlan0'.split()).decode(sys.stdin.encoding)
-				self.client_ssid.SetValue(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"')[1])
-				self.client_bitRate.SetValue(self.find_line_split_set2(wlan_info,"Rate","=",1).split("   ")[0])
-				self.client_linkQuality.SetValue(self.find_line_split_set2(wlan_info,"Quality","=",1).split(" ")[0])
-				self.client_signalLevel.SetValue(self.find_line_split_set2(wlan_info,"level","=",1))
-				self.add_ssid.Enable()
+				if len(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"'))>1: 
+					self.client_ssid.SetValue(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"')[1])
+					self.client_bitRate.SetValue(self.find_line_split_set2(wlan_info,"Rate","=",1).split("   ")[0])
+					self.client_linkQuality.SetValue(self.find_line_split_set2(wlan_info,"Quality","=",1).split(" ")[0])
+					self.client_signalLevel.SetValue(self.find_line_split_set2(wlan_info,"level","=",1))
+					self.add_ssid.Enable()
 
 			if net[1] in i: 
 				wlan_info = subprocess.check_output('iwconfig wlan1'.split()).decode(sys.stdin.encoding)
-				self.client_ssid1.SetValue(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"')[1])
-				self.client_bitRate1.SetValue(self.find_line_split_set2(wlan_info,"Rate","=",1).split("   ")[0])
-				self.client_linkQuality1.SetValue(self.find_line_split_set2(wlan_info,"Quality","=",1).split(" ")[0])
-				self.client_signalLevel1.SetValue(self.find_line_split_set2(wlan_info,"level","=",1))
-				self.add_ssid1.SetLabel = "Hallo"
-				self.add_ssid1.Enable()
+				if len(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"'))>1: 
+					self.client_ssid1.SetValue(self.find_line_split_set2(wlan_info,"ESSID",":",1).split('"')[1])
+					self.client_bitRate1.SetValue(self.find_line_split_set2(wlan_info,"Rate","=",1).split("   ")[0])
+					self.client_linkQuality1.SetValue(self.find_line_split_set2(wlan_info,"Quality","=",1).split(" ")[0])
+					self.client_signalLevel1.SetValue(self.find_line_split_set2(wlan_info,"level","=",1))
+					self.add_ssid1.SetLabel = "Hallo"
+					self.add_ssid1.Enable()
 
 		self.conf_private_ssid_txt = self.conf_folder + '/private_ssid.conf'
 		try:
