@@ -1,4 +1,5 @@
 #!/bin/sh
+echo install.sh start
 function disable_dhcp_server_and_ap {
 	erg=$(systemctl status dnsmasq | grep 'enabled;')
 	chrlen=${#erg}
@@ -98,12 +99,17 @@ else
 	cp dhcpcd.conf /etc
 	cp dnsmasq.conf /etc
 	cp .openplotter/start-ap-managed-wifi.sh $home/.openplotter
-	cp .openplotter/iptables.sh $home/.openplotter
+	cp .openplotter/wpa_cli_script.sh $home/.openplotter
 	cp .openplotter/start1.sh $home/.openplotter
 	chmod +x $home/.openplotter/start-ap-managed-wifi.sh
-	chmod +x $home/.openplotter/iptables.sh
+	chmod +x $home/.openplotter/wpa_cli_script.sh
 	chmod +x $home/.openplotter/start1.sh
-
+	
+	if [ ! -f $home/.openplotter/private_ssid.conf ]; then
+		touch $home/.openplotter/private_ssid.conf
+		chmod 666 $home/.openplotter/private_ssid.conf
+	fi
+	
 	cp hostapd/hostapd.conf /etc/hostapd
 #	sudo cp network/interfaces /etc/network
 #	sudo cp network/interfaces.d/ap /etc/network/interfaces.d
@@ -148,4 +154,5 @@ else
 	fi
 
 fi
+echo install.sh end
 

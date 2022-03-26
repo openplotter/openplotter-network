@@ -1,3 +1,9 @@
+openplotter-network (3.0.2-beta) bullseye; urgency=medium
+
+  * use nft instead of iptables
+
+ -- e-sailing <e.minus.sailing@gmail.com>  Wed, 16 Mar 2022 09:37:55 +0100
+
 openplotter-network (3.0.1-beta) bullseye; urgency=medium
 
   * beta

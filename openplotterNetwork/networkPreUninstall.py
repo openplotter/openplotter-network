@@ -35,6 +35,7 @@ def main():
 		print(_('Restoring network Debian defaults...'))
 		subprocess.call(['bash', currentdir+'/Network/hostname_dot_local.sh', 'n'])
 		subprocess.call(['cp', currentdir+'/Network/dhcpcd_default.conf', '/etc/dhcpcd.conf'])
+		subprocess.call(['cp', currentdir+'/Network/nftables_default.conf', '/etc/nftables.conf'])
 		subprocess.call(['rm', '-f', '/etc/network/interfaces.d/ap'])
 		subprocess.call(['rm', '-f', '/etc/udev/rules.d/72-wireless.rules'])
 		subprocess.call(['rm', '-f', '/etc/udev/rules.d/11-openplotter-usb0.rules'])
@@ -53,6 +54,9 @@ def main():
 		subprocess.call(['systemctl', 'stop', 'openplotter-network'])
 		subprocess.call(['rm', '-f', '/etc/systemd/system/openplotter-network.service'])
 		subprocess.call(['systemctl', 'daemon-reload'])
+		subprocess.call(['rm', conf2.home+'/.openplotter/start-ap-managed-wifi.sh'])
+		subprocess.call(['rm', conf2.home+'/.openplotter/start1.sh'])
+		subprocess.call(['rm', conf2.home+'/.openplotter/wpa_cli_script.sh'])
 		print(_('DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS'))
 	except Exception as e: print(_('FAILED: ')+str(e))
 
