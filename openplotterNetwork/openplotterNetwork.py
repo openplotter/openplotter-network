@@ -590,7 +590,7 @@ class MyFrame(wx.Frame):
 
 	def OnToolCheck(self, e):
 		self.logger.Clear()
-		self.notebook.ChangeSelection(1)
+		self.notebook.ChangeSelection(2)
 
 		msg = ''
 		msg1 = ''
@@ -673,7 +673,7 @@ class MyFrame(wx.Frame):
 		ip_info = subprocess.check_output(['hostname', '-I']).decode(sys.stdin.encoding)
 		ips = ip_info.split()
 		self.logger.Clear()
-		self.notebook.ChangeSelection(1)
+		self.notebook.ChangeSelection(2)
 		self.logger.BeginTextColour((55, 55, 55))
 		for i in usedPorts:
 			self.logger.BeginBold()
