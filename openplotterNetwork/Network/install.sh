@@ -75,6 +75,7 @@ if [[ "$response" = "uninstall" ]]; then
 	disable_dhcp_server_and_ap
 
 	cp dhcpcd.conf /etc
+	cp nftables/nftables.conf /etc
 	echo '#!/bin/sh' > $home/.openplotter/start-ap-managed-wifi.sh
 	#sudo cp network/interfaces /etc/network
 
@@ -98,6 +99,7 @@ if [[ "$response" = "uninstall" ]]; then
 else
 	cp dhcpcd.conf /etc
 	cp dnsmasq.conf /etc
+	cp nftables/nftables.conf /etc
 	cp .openplotter/start-ap-managed-wifi.sh $home/.openplotter
 	cp .openplotter/wpa_cli_script.sh $home/.openplotter
 	cp .openplotter/start1.sh $home/.openplotter

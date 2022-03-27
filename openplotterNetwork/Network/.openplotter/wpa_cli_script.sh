@@ -13,7 +13,8 @@ function work () {
 		echo $wlan exists
 
 		wlanHandle="$(sudo nft --handle --numeric list chain inet filter INPUT | grep usb0 | cut -d'#' -f 2 | cut -d' ' -f 3)"
-		wlan9 = "$(sudo nft list ruleset | grep wlan9)"
+		wlan9="$(sudo nft list ruleset | grep wlan9)"
+		br0="$(sudo nft list ruleset | grep br0)"
 		ssid="$(sudo wpa_cli status -i "$wlan" | grep "\bssid" | cut -d'=' -f 2)"
 		echo $wlan" handle:" $wlanHandle
 		echo "ssid:" $ssid
@@ -48,10 +49,12 @@ function work () {
 					sudo nft add rule inet filter INPUT iifname "eth1" accept
 					sudo nft add rule inet filter INPUT iifname "usb0" accept
 					if [ "$wlan9" ]; then
-						sudo nft add rule inet filter INPUT iifname "eth0" accept
 						sudo nft add rule inet filter INPUT iifname "wlan9" accept
 					else
 						sudo nft add rule inet filter INPUT iifname "br0" accept
+					fi
+					if [ -z "$br0" ]; then
+						sudo nft add rule inet filter INPUT iifname "eth0" accept
 					fi
 					sudo nft add rule inet filter INPUT ct state { established, related } accept
 					sudo nft add rule inet filter INPUT ct state invalid drop
