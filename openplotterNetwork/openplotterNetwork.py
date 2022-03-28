@@ -140,6 +140,9 @@ class MyFrame(wx.Frame):
 	
 		self.available_ap_device2 = []
 
+		self.wlan_security = wx.CheckBox(self.ap, label=_('activate wlan security (nft filter)'))
+		self.wlan_security.Bind(wx.EVT_CHECKBOX, self.on_wlan_security)
+
 		self.ap_device_label = wx.StaticText(self.ap, label=_('AP'))
 		self.ap_device = wx.ComboBox(self.ap, choices=self.available_ap_device2, style=wx.CB_READONLY, size=(265, -1))
 		self.ap_device.Bind(wx.EVT_COMBOBOX, self.on_ap_device)
@@ -170,6 +173,8 @@ class MyFrame(wx.Frame):
 
 		v_leftbox = wx.StaticBoxSizer(leftbox, wx.VERTICAL)
 		v_leftbox.AddSpacer(10)
+		v_leftbox.Add(self.wlan_security, 0, wx.LEFT, 8)	
+		v_leftbox.AddSpacer(15)
 		v_leftbox.Add(h_ap, 0, wx.LEFT, 10)
 		v_leftbox.Add(h_set, 0, wx.LEFT | wx.EXPAND, 8)
 		v_leftbox.AddStretchSpacer(1)
@@ -243,6 +248,21 @@ class MyFrame(wx.Frame):
 		self.AP_aktiv = False
 		self.hostapd_interface = ''
 		self.hostapd_bridge = ''
+
+		#security/share device ipforward
+		i=' '
+		try:
+			wififile = open(self.conf_network+'/.openplotter/start-ap-managed-wifi.sh', 'r', 2000)
+			bak = wififile.read()
+			wififile.close()
+		except:
+			bak=''
+		i=self.find_line_split(bak,"share_internet=",1)
+		self.share.SetValue(i=="True")
+		
+		i=self.find_line_split(bak,"nft_public_security=",1)
+		self.wlan_security.SetValue(i=="True")
+
 		#read settings from hostapd.conf  GHz, bridge, ssid, password, channel and check if AP is activ
 		try:
 			wififile = open(self.conf_network+'/hostapd/hostapd.conf', 'r', 2000)
@@ -317,22 +337,6 @@ class MyFrame(wx.Frame):
 				self.ap_device.SetStringSelection(_('none'))
 			
 			self.on_ap_device()
-
-			#share device ipforwar
-			
-			i=' '
-			try:
-				wififile = open(self.conf_network+'/.openplotter/start-ap-managed-wifi.sh', 'r', 2000)
-				bak = wififile.read()
-				wififile.close()
-			except:
-				bak=''
-			i=self.find_line_split(bak,"share_internet=",1)
-			if i=="True":
-				self.share.SetValue(True)
-			else:
-				self.share.SetValue(False)
-
 		
 		#on client only
 		else:
@@ -385,13 +389,18 @@ class MyFrame(wx.Frame):
 		self.passw.Enable()
 		self.wifi_channel.Enable()
 
+	def on_wlan_security(self, e=0):
+		pass
+
 	def on_ap_device(self, e=0):
 		j = self.ap_device.GetValue()
 		self.wifi_button_apply1.Enable()
 		self.wifi_button_apply.Disable()
 		self.ap_disable()
-		if _('none') == j: self.ap_disable1()
-		else: self.ap_enable1()
+		if _('none') == j: 
+			self.ap_disable1()
+		else: 
+			self.ap_enable1()
 		self.ap_5.Disable()
 		for i in self.available_ap_device:
 			if _('none') == j:
@@ -427,6 +436,8 @@ class MyFrame(wx.Frame):
 				else:
 					text += ' i'
 				text += ' '+self.currentdir
+
+				text += ' '
 				text2 = text.split()
 				if text2[1] ==  "none":
 					subprocess.call((self.platform.admin+' bash '+self.currentdir+'/Network/hostname_dot_local.sh n').split())
@@ -519,12 +530,31 @@ class MyFrame(wx.Frame):
 			self.ap_device.Append(i)
 		
 	def on_wifi_apply2(self, e):
+		share = str(self.share.GetValue())
+		security = str(self.wlan_security.GetValue())
+
+		if not self.AP_aktiv:
+			share = "False"
+		#set start script
+		script_file = self.conf_network+'/.openplotter/start-ap-managed-wifi.sh'
+		if os.path.isfile(script_file):
+			wififile = open(script_file, 'r', 2000)
+			lines = wififile.readlines()
+			wififile.close()
+
+			wififile = open(script_file, 'w')
+			for line in lines:
+				if 0<=line.find("share_internet="): line = "share_internet="+share+"\n"
+				if 0<=line.find("nft_public_security="): line = "nft_public_security="+security+"\n"
+				wififile.write(line)
+			wififile.close()
+
+
 		if self.AP_aktiv:
 			
 			passw = self.passw.GetValue()
 			ssid = self.ssid.GetValue()
 			channel = self.wifi_channel.GetValue()
-			share = str(self.share.GetValue())
 			
 			#check length
 			if self.AP_aktiv:
@@ -553,19 +583,6 @@ class MyFrame(wx.Frame):
 					wififile.write(line)
 				wififile.close()
 			
-			#set start script
-			script_file = self.conf_network+'/.openplotter/start-ap-managed-wifi.sh'
-			if os.path.isfile(script_file):
-				wififile = open(script_file, 'r', 2000)
-				lines = wififile.readlines()
-				wififile.close()
-
-				wififile = open(script_file, 'w')
-				for line in lines:
-					if 0<=line.find("share_internet="): line = "share_internet="+share+"\n"
-					wififile.write(line)
-				wififile.close()
-
 			#install files
 			process = subprocess.call([self.platform.admin, 'bash', self.currentdir+'/Network/install.sh','install', self.currentdir, self.conf.home], cwd = self.conf_network)
 			os.system('shutdown -r now')
@@ -898,11 +915,19 @@ class MyFrame(wx.Frame):
 
 		self.privateList.Set(self.private_ssid_list)
 		
+	def set_nft(self):
+		cwd1 = os.getcwd()
+		os.chdir(self.conf.home+'/.openplotter')
+		process = subprocess.call([self.platform.admin, 'bash', self.conf.home+'/.openplotter/wpa_cli_script.sh','none','CONNECTED'],cwd = self.conf.home+'/.openplotter')
+		os.chdir(cwd1)		
+		
 	def on_add_ssid(self, event):
 		self.appendName(self.client_ssid.GetValue())
+		self.set_nft()
 
 	def on_add_ssid1(self, event):
 		self.appendName(self.client_ssid1.GetValue())
+		self.set_nft()
 
 	def on_remove_ssid(self, event):
 		if self.privateList.GetSelection() == -1:
@@ -917,7 +942,8 @@ class MyFrame(wx.Frame):
 		except:
 			pass
 		self.read_wlan()
-		self.remove_ssid.Disable()	
+		self.remove_ssid.Disable()
+		self.set_nft()
 
 	def OnCLICK(self, event):
 		if self.privateList.GetSelection() != -1:
