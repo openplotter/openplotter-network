@@ -29,15 +29,18 @@ mkdir $targetfolder/nftables
 #echo $GHz
 #echo $extern
 
+cp "${loadfolder}/nftables_default.conf" "${targetfolder}/nftables/nftables_default.conf"
+cp "${loadfolder}/.openplotter/start-ap-managed-wifi.sh" "${targetfolder}/.openplotter/start-ap-managed-wifi.sh"
+cp "${loadfolder}/.openplotter/wpa_cli_script.sh" "${targetfolder}/.openplotter/wpa_cli_script.sh"
+
 if [ "$AP" = "none" ]; then
 	cp "${loadfolder}/dhcpcd_default.conf" "${targetfolder}/dhcpcd.conf"
-	cp "${loadfolder}/nftables_default.conf" "${targetfolder}/nftables/nftables.conf"
+	cp "${loadfolder}/.openplotter/start1.sh" "${targetfolder}/.openplotter/start1.sh"
+
 #	cp "${loadfolder}/network/interfaces_standard" "${targetfolder}/network/interfaces"	
 else
 	cp "${loadfolder}/udev/rules.d/11-openplotter-usb0.rules" "${targetfolder}/udev/rules.d/11-openplotter-usb0.rules"
 	cp "${loadfolder}/11-openplotter-usb0.sh" "${targetfolder}/11-openplotter-usb0.sh"
-	cp "${loadfolder}/.openplotter/wpa_cli_script.sh" "${targetfolder}/.openplotter/wpa_cli_script.sh"
-	cp "${loadfolder}/.openplotter/start-ap-managed-wifi.sh" "${targetfolder}/.openplotter/start-ap-managed-wifi.sh"
 #	cp "${loadfolder}/network/interfaces.d/ap_wlan9" "${targetfolder}/network/interfaces.d/ap"
 
 	if [ "$GHz" = "5" ]; then

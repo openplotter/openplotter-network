@@ -69,13 +69,21 @@ response=$1
 currentdir=$2
 home=$3
 
+cp $home/.openplotter/Network/dhcpcd.conf /etc
+cp $home/.openplotter/Network/.openplotter/start-ap-managed-wifi.sh $home/.openplotter
+cp $home/.openplotter/Network/.openplotter/wpa_cli_script.sh $home/.openplotter
+
+if grep -q "share_internet=True" "$home/.openplotter/Network/.openplotter/start-ap-managed-wifi.sh"; then
+	cp $home/.openplotter/Network/nftables/nftables.conf /etc
+else
+	cp $home/.openplotter/Network/nftables/nftables_default.conf /etc/nftables.conf
+fi
+
+
 #set back to default debian
 if [[ "$response" = "uninstall" ]]; then
 	#no AP (set back to original setting)
 	disable_dhcp_server_and_ap
-
-	cp dhcpcd.conf /etc
-	echo '#!/bin/sh' > $home/.openplotter/start-ap-managed-wifi.sh
 	#sudo cp network/interfaces /etc/network
 
 	delete_file /etc/network/interfaces.d/ap
@@ -96,11 +104,8 @@ if [[ "$response" = "uninstall" ]]; then
 	
 #set to access point
 else
-	cp dhcpcd.conf /etc
 	cp dnsmasq.conf /etc
-	cp .openplotter/start-ap-managed-wifi.sh $home/.openplotter
-	cp .openplotter/wpa_cli_script.sh $home/.openplotter
-	cp .openplotter/start1.sh $home/.openplotter
+	cp $home/.openplotter/Network/.openplotter/start1.sh $home/.openplotter
 	chmod +x $home/.openplotter/start-ap-managed-wifi.sh
 	chmod +x $home/.openplotter/wpa_cli_script.sh
 	chmod +x $home/.openplotter/start1.sh
@@ -110,7 +115,7 @@ else
 		chmod 666 $home/.openplotter/private_ssid.conf
 	fi
 	
-	cp hostapd/hostapd.conf /etc/hostapd
+	cp $home/.openplotter/Network/hostapd/hostapd.conf /etc/hostapd
 #	sudo cp network/interfaces /etc/network
 #	sudo cp network/interfaces.d/ap /etc/network/interfaces.d
 
@@ -120,17 +125,17 @@ else
 		cp $currentdir/Network/dhcpcd-hooks/10-wpa_supplicant_wlan9 /lib/dhcpcd/dhcpcd-hooks
 	fi
 
-	copy_file udev/rules.d/11-openplotter-usb0.rules /etc/udev/rules.d
+	copy_file $home/.openplotter/Network/udev/rules.d/11-openplotter-usb0.rules /etc/udev/rules.d
 
 	enable_dhcp_server_and_ap
 	
 	#bridge yes/no
-	if [ -e systemd/network/bridge-br0.network ]
+	if [ -e $home/.openplotter/Network/systemd/network/bridge-br0.network ]
 	then
 		#enable bridge
-		copy_file systemd/network/bridge-br0.network /etc/systemd/network
-		copy_file systemd/network/bridge-br0-slave.network /etc/systemd/network
-		copy_file systemd/network/bridge-br0.netdev /etc/systemd/network
+		copy_file $home/.openplotter/Network/systemd/network/bridge-br0.network /etc/systemd/network
+		copy_file $home/.openplotter/Network/systemd/network/bridge-br0-slave.network /etc/systemd/network
+		copy_file $home/.openplotter/Network/systemd/network/bridge-br0.netdev /etc/systemd/network
 		enable_bridge
 	else
 		disable_bridge
@@ -147,7 +152,7 @@ else
 		#echo $result2
 		if [ -z "$result" ]
 		then
-			cp udev/rules.d/72-wireless.rules /etc/udev/rules.d
+			cp $home/.openplotter/Network/udev/rules.d/72-wireless.rules /etc/udev/rules.d
 		else
 			delete_file /etc/udev/rules.d/72-wireless.rules
 		fi
