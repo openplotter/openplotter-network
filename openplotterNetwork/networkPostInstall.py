@@ -69,6 +69,7 @@ def main():
 		subprocess.call(['systemctl', 'daemon-reload'])
 		subprocess.call(['systemctl', 'unmask', 'hostapd.service'])
 		subprocess.call(['systemctl', 'enable', 'openplotter-network'])
+		subprocess.call(['systemctl', 'enable', 'nftables.service'])
 		if not os.path.exists('/etc/hostapd/hostapd.conf'):
 			subprocess.call(['systemctl', 'disable', 'hostapd'])
 		

@@ -51,6 +51,8 @@ def main():
 		subprocess.call(['systemctl', 'disable', 'hostapd'])
 		subprocess.call(['systemctl', 'disable', 'systemd-networkd'])
 		subprocess.call(['systemctl', 'disable', 'openplotter-network'])
+		subprocess.call(['systemctl', 'disable', 'nftables.service'])
+		subprocess.call(['systemctl', 'stop', 'nftables.service'])
 		subprocess.call(['systemctl', 'stop', 'openplotter-network'])
 		subprocess.call(['rm', '-f', '/etc/systemd/system/openplotter-network.service'])
 		subprocess.call(['systemctl', 'daemon-reload'])
