@@ -1,4 +1,4 @@
-openplotter-network (3.1.2-beta) bullseye; urgency=medium
+openplotter-network (3.1.4-beta) bullseye; urgency=medium
 
   * use nft instead of iptables by e-sailing <e.minus.sailing@gmail.com>
 
