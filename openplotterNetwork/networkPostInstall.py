@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-# This file is part of Openplotter.
-# Copyright (C) 2019 by e-sailing <https://github.com/e-sailing/openplotter-network>
-# Copyright (C) 2019 by Sailoog <https://github.com/openplotter/openplotter-network>
+# This file is part of OpenPlotter.
+# Copyright (C) 2022 by e-sailing <https://github.com/e-sailing/openplotter-network>
+# Copyright (C) 2022 by Sailoog <https://github.com/openplotter/openplotter-network>
 #
 # Openplotter is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -41,7 +41,19 @@ def main():
 		fo.close()
 
 		fo = open('/etc/systemd/system/openplotter-network.service', "w")
-		fo.write( '[Service]\nExecStart='+conf2.home+'/.openplotter/start-ap-managed-wifi.sh\nStandardOutput=syslog\nStandardError=syslog\nWorkingDirectory='+conf2.home+'/.openplotter\nUser=root\n\n[Install]\nWantedBy=multi-user.target\n')
+		data = '[Unit]\n'
+		data += 'After=local-fs.target network-pre.target apparmor.service systemd-sysctl.service systemd-modules-load.service ifupdown-pre.service network.target\n'
+		data += '\n'
+		data += '[Service]\n'
+		data += 'ExecStart='+conf2.home+'/.openplotter/start-ap-managed-wifi.sh\n'
+		data += 'StandardOutput=syslog\n'
+		data += 'StandardError=syslog\n'
+		data += 'WorkingDirectory='+conf2.home+'/.openplotter\nUser=root\n'
+		data += '\n'
+		data += '[Install]\n'
+		data += 'WantedBy=multi-user.target\n'
+
+		fo.write(data)
 		fo.close()
 
 		fo = open(currentdir+'/Network/udev/rules.d/11-openplotter-usb0.rules', "w")
@@ -57,6 +69,7 @@ def main():
 		subprocess.call(['systemctl', 'daemon-reload'])
 		subprocess.call(['systemctl', 'unmask', 'hostapd.service'])
 		subprocess.call(['systemctl', 'enable', 'openplotter-network'])
+		subprocess.call(['systemctl', 'enable', 'nftables.service'])
 		if not os.path.exists('/etc/hostapd/hostapd.conf'):
 			subprocess.call(['systemctl', 'disable', 'hostapd'])
 		

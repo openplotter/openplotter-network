@@ -21,6 +21,7 @@ mkdir $targetfolder/udev
 mkdir $targetfolder/udev/rules.d
 mkdir $targetfolder/systemd
 mkdir $targetfolder/systemd/network
+mkdir $targetfolder/nftables
 
 #echo $bridge
 #echo $AP
@@ -28,14 +29,18 @@ mkdir $targetfolder/systemd/network
 #echo $GHz
 #echo $extern
 
+cp "${loadfolder}/nftables_default.conf" "${targetfolder}/nftables/nftables_default.conf"
+cp "${loadfolder}/.openplotter/start-ap-managed-wifi.sh" "${targetfolder}/.openplotter/start-ap-managed-wifi.sh"
+cp "${loadfolder}/.openplotter/wpa_cli_script.sh" "${targetfolder}/.openplotter/wpa_cli_script.sh"
+
 if [ "$AP" = "none" ]; then
 	cp "${loadfolder}/dhcpcd_default.conf" "${targetfolder}/dhcpcd.conf"
+	cp "${loadfolder}/.openplotter/start1.sh" "${targetfolder}/.openplotter/start1.sh"
+
 #	cp "${loadfolder}/network/interfaces_standard" "${targetfolder}/network/interfaces"	
 else
 	cp "${loadfolder}/udev/rules.d/11-openplotter-usb0.rules" "${targetfolder}/udev/rules.d/11-openplotter-usb0.rules"
 	cp "${loadfolder}/11-openplotter-usb0.sh" "${targetfolder}/11-openplotter-usb0.sh"
-	cp "${loadfolder}/.openplotter/iptables.sh" "${targetfolder}/.openplotter/iptables.sh"
-	cp "${loadfolder}/.openplotter/start-ap-managed-wifi.sh" "${targetfolder}/.openplotter/start-ap-managed-wifi.sh"
 #	cp "${loadfolder}/network/interfaces.d/ap_wlan9" "${targetfolder}/network/interfaces.d/ap"
 
 	if [ "$GHz" = "5" ]; then
@@ -49,17 +54,19 @@ else
 		bash "${loadfolder}/hostapd_Bridge.sh" y
 		cp "${loadfolder}/dnsmasq_br0.conf" "${targetfolder}/dnsmasq.conf"
 		cp "${loadfolder}/dhcpcd_br0_wlan9.conf" "${targetfolder}/dhcpcd.conf"
+		cp "${loadfolder}/nftables_br0.conf" "${targetfolder}/nftables/nftables.conf"
 #		cp "${loadfolder}/network/interfaces_bridge_wlan9_eth0" "${targetfolder}/network/interfaces"
 		cp "${loadfolder}/systemd/network/bridge-br0.network" "${targetfolder}/systemd/network/bridge-br0.network"
 		cp "${loadfolder}/systemd/network/bridge-br0-slave.network" "${targetfolder}/systemd/network/bridge-br0-slave.network"
 		cp "${loadfolder}/systemd/network/bridge-br0.netdev" "${targetfolder}/systemd/network/bridge-br0.netdev"
-		bash "${loadfolder}/set-router.sh" "br0"
+#		bash "${loadfolder}/set-router.sh" "br0"
 	else
 		bash "${loadfolder}/hostapd_Bridge.sh" n
 		cp "${loadfolder}/dnsmasq_wlan9.conf" "${targetfolder}/dnsmasq.conf"
 		cp "${loadfolder}/dhcpcd_wlan9.conf" "${targetfolder}/dhcpcd.conf"
+		cp "${loadfolder}/nftables_wlan9.conf" "${targetfolder}/nftables/nftables.conf"
 #		cp "${loadfolder}/network/interfaces_standard" "${targetfolder}/network/interfaces"
-		bash "${loadfolder}/set-router.sh" "wlan9"
+#		bash "${loadfolder}/set-router.sh" "wlan9"
 	fi
 
 

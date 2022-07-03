@@ -1,37 +1,45 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: openplotter\n"
-"POT-Creation-Date: 2021-01-17 13:13+0100\n"
-"PO-Revision-Date: 2021-03-04 18:52\n"
+"POT-Creation-Date: 2022-05-24 19:33+0200\n"
+"PO-Revision-Date: 2022-07-03 12:46+0200\n"
 "Last-Translator: \n"
 "Language-Team: Italian\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Poedit-SearchPath-0: .\n"
 "X-Crowdin-Project: openplotter\n"
 "X-Crowdin-Project-ID: 289888\n"
 "X-Crowdin-Language: it\n"
 "X-Crowdin-File: openplotter-network.po\n"
 "X-Crowdin-File-ID: 14\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: data/openplotter-network.desktop:3 openplotterNetwork.py:38
+msgid "Network"
+msgstr "Rete"
+
+#: data/openplotter-network.desktop:5
+msgid "openplotter-network"
+msgstr ""
 
 #: networkPostInstall.py:30
 msgid "Installing python packages..."
 msgstr "Installazione pacchetti python..."
 
-#: networkPostInstall.py:33 networkPostInstall.py:51 networkPostInstall.py:63
-#: networkPostInstall.py:69 networkPreUninstall.py:31 networkPreUninstall.py:62
+#: networkPostInstall.py:33 networkPostInstall.py:63 networkPostInstall.py:76
+#: networkPostInstall.py:82 networkPreUninstall.py:31 networkPreUninstall.py:68
 msgid "DONE"
 msgstr "FATTO"
 
-#: networkPostInstall.py:34 networkPostInstall.py:52 networkPostInstall.py:64
-#: networkPostInstall.py:70 networkPreUninstall.py:32 networkPreUninstall.py:57
-#: networkPreUninstall.py:63
+#: networkPostInstall.py:34 networkPostInstall.py:64 networkPostInstall.py:77
+#: networkPostInstall.py:83 networkPreUninstall.py:32 networkPreUninstall.py:63
+#: networkPreUninstall.py:69
 msgid "FAILED: "
 msgstr "FALLITO: "
 
@@ -39,11 +47,11 @@ msgstr "FALLITO: "
 msgid "Editing config files..."
 msgstr "Modifica file di configurazione..."
 
-#: networkPostInstall.py:55
+#: networkPostInstall.py:67
 msgid "Enabling services..."
 msgstr ""
 
-#: networkPostInstall.py:66
+#: networkPostInstall.py:79
 msgid "Setting version..."
 msgstr "Impostazione versione..."
 
@@ -55,21 +63,17 @@ msgstr "Rimozione pacchetti python..."
 msgid "Restoring network Debian defaults..."
 msgstr "Ripristino della rete predefinita Debian..."
 
-#: networkPreUninstall.py:48
+#: networkPreUninstall.py:49
 msgid "Removing openplotter-network service..."
 msgstr "Rimozione del servizio openplotter-network..."
 
-#: networkPreUninstall.py:56
+#: networkPreUninstall.py:62
 msgid "DONE. PLEASE REBOOT TO RESTORE NETWORK SETTINGS"
 msgstr "FATTO. ESEGUIRE RIAVVIO PER RIPRISTINARE IMPOSTAZIONI DI RETE"
 
-#: networkPreUninstall.py:59
+#: networkPreUninstall.py:65
 msgid "Removing version..."
 msgstr "Rimozione versione..."
-
-#: openplotterNetwork.py:38
-msgid "Network"
-msgstr "Rete"
 
 #: openplotterNetwork.py:48
 msgid "Help"
@@ -87,118 +91,145 @@ msgstr "Indirizzi e porte"
 msgid "Check Network"
 msgstr "Controlla la Rete"
 
-#: openplotterNetwork.py:59
-msgid "Install Wifi Drivers"
-msgstr "Installa Driver WiFi"
-
-#: openplotterNetwork.py:59
-msgid "This does only help for unrecognized usb wlan type:"
-msgstr "Questo aiuta solo per gli adattatori usb WiFi non riconosciuti:"
-
-#: openplotterNetwork.py:66
+#: openplotterNetwork.py:67
 msgid "Access Point"
 msgstr "Access Point"
 
-#: openplotterNetwork.py:134
+#: openplotterNetwork.py:68
+msgid "Wlan Client"
+msgstr ""
+
+#: openplotterNetwork.py:139
 msgid "Network Mode"
 msgstr "Modalità Rete"
 
-#: openplotterNetwork.py:139
+#: openplotterNetwork.py:143
+msgid "activate wlan security (nft filter)"
+msgstr ""
+
+#: openplotterNetwork.py:146
 msgid "AP"
 msgstr "AP"
 
-#: openplotterNetwork.py:149
+#: openplotterNetwork.py:156
 msgid "5 GHz"
 msgstr "5GHz"
 
-#: openplotterNetwork.py:151
+#: openplotterNetwork.py:158
 msgid "Add Ethernet port to the AP"
 msgstr ""
 
-#: openplotterNetwork.py:174
+#: openplotterNetwork.py:185
 msgid "Access Point Settings"
 msgstr "Impostazioni Access Point"
 
-#: openplotterNetwork.py:177
-msgid "Sharing Internet device"
-msgstr "Condivisione dispositivo Internet"
+#: openplotterNetwork.py:187
+msgid "share internet"
+msgstr ""
 
-#: openplotterNetwork.py:185
-msgid "SSID \n"
+#: openplotterNetwork.py:190
+msgid ""
+"SSID \n"
 "maximum 32 characters"
-msgstr "SSID\n"
+msgstr ""
+"SSID\n"
 "massimo 32 caratteri"
 
-#: openplotterNetwork.py:193
-msgid "Password \n"
+#: openplotterNetwork.py:198
+msgid ""
+"Password \n"
 "minimum 8 characters required"
-msgstr "Password\n"
+msgstr ""
+"Password\n"
 "minimo 8 caratteri"
 
-#: openplotterNetwork.py:202
+#: openplotterNetwork.py:207
 msgid "Channel"
 msgstr "Canale"
 
-#: openplotterNetwork.py:312 openplotterNetwork.py:332
-#: openplotterNetwork.py:337 openplotterNetwork.py:387
-#: openplotterNetwork.py:391 openplotterNetwork.py:433
-#: openplotterNetwork.py:466 openplotterNetwork.py:484
-#: openplotterNetwork.py:614
+#: openplotterNetwork.py:337 openplotterNetwork.py:344
+#: openplotterNetwork.py:400 openplotterNetwork.py:406
+#: openplotterNetwork.py:450 openplotterNetwork.py:489
+#: openplotterNetwork.py:624
 msgid "none"
 msgstr "nessuno"
 
-#: openplotterNetwork.py:404
+#: openplotterNetwork.py:419
 msgid "Wait please... "
 msgstr "Attendere... "
 
-#: openplotterNetwork.py:538
+#: openplotterNetwork.py:562
 msgid "Your SSID must have a maximum of 32 characters and your password a minimum of 8."
 msgstr "Il tuo SSID deve avere un massimo di 32 caratteri e la password di un minimo di 8."
 
-#: openplotterNetwork.py:589
-msgid "OpenPlotter will reboot. If something goes wrong and you are on a headless system, you may not be able to reconnect again.\n\n"
+#: openplotterNetwork.py:599
+msgid ""
+"OpenPlotter will reboot. If something goes wrong and you are on a headless system, you may not be able to reconnect again.\n"
+"\n"
 "Are you sure?"
-msgstr "OpenPlotter si riavvierà. Se qualcosa va storto e sei su un sistema senza monitor, potresti non essere in grado di riconnetterti di nuovo.\n\n"
+msgstr ""
+"OpenPlotter si riavvierà. Se qualcosa va storto e sei su un sistema senza monitor, potresti non essere in grado di riconnetterti di nuovo.\n"
+"\n"
 "Sei sicuro?"
 
-#: openplotterNetwork.py:590
+#: openplotterNetwork.py:600
 msgid "Question"
 msgstr "Domanda"
 
-#: openplotterNetwork.py:613 openplotterNetwork.py:614
+#: openplotterNetwork.py:623 openplotterNetwork.py:624
 msgid "wifi access point: "
 msgstr "wifi access point: "
 
-#: openplotterNetwork.py:631
+#: openplotterNetwork.py:641
 msgid "wifi client: "
 msgstr "wifi client: "
 
-#: openplotterNetwork.py:644
+#: openplotterNetwork.py:654
 msgid "running"
 msgstr "in esecuzione"
 
-#: openplotterNetwork.py:645
+#: openplotterNetwork.py:655
 msgid "stopped"
 msgstr "arrestato"
 
-#: openplotterNetwork.py:659
+#: openplotterNetwork.py:669
 msgid "IP address\n"
 msgstr "Indirizzo IP\n"
 
-#: openplotterNetwork.py:672
-msgid "Installing Wifi modules... "
-msgstr "Installazione moduli WiFi... "
-
-#: openplotterNetwork.py:674
-msgid "Done."
-msgstr "Fatto."
-
-#: openplotterNetwork.py:712
+#: openplotterNetwork.py:722
 msgid "There are conflicts between server connections"
 msgstr "Ci sono conflitti tra le connessioni server"
 
-#: openplotterNetwork.py:713
+#: openplotterNetwork.py:723
 msgid "No conflicts between server connections"
+msgstr ""
+
+#: openplotterNetwork.py:738
+msgid "wlan0 Client"
+msgstr ""
+
+#: openplotterNetwork.py:740 openplotterNetwork.py:789
+msgid "SSID (Net Name)"
+msgstr ""
+
+#: openplotterNetwork.py:747 openplotterNetwork.py:795
+msgid "Bit Rate"
+msgstr ""
+
+#: openplotterNetwork.py:750 openplotterNetwork.py:798
+msgid "Link Quality"
+msgstr ""
+
+#: openplotterNetwork.py:753 openplotterNetwork.py:801
+msgid "Signal Level"
+msgstr ""
+
+#: openplotterNetwork.py:787
+msgid "wlan1 Client"
+msgstr ""
+
+#: openplotterNetwork.py:835
+msgid "Private Network"
 msgstr ""
 
 #: ports.py:28
@@ -210,12 +241,13 @@ msgid "Checking WIFI Access Point password..."
 msgstr "Verifica password WIFI Access Point..."
 
 #: startup.py:68
-msgid "Security warning: You are using the default WIFI Access Point password.\n"
+msgid ""
+"Security warning: You are using the default WIFI Access Point password.\n"
 "Please change password in OpenPlotter Network."
-msgstr "Avviso di sicurezza: stai utilizzando la password di default per l'Access Point WIFI.\n"
+msgstr ""
+"Avviso di sicurezza: stai utilizzando la password di default per l'Access Point WIFI.\n"
 "Cambia la password in OpenPlotter Network."
 
 #: startup.py:69
 msgid "changed"
 msgstr "modificato"
-

@@ -1,7 +1,7 @@
 #!/bin/bash
 #set -e
 
-# install-wifi - 19/10/2017 - by MrEngman.
+# install-wifi - 03/05/2021 - by MrEngman.
 
 UPDATE_SELF=${UPDATE_SELF:-1}
 UPDATE_URI="http://downloads.fars-robotics.net/wifi-drivers/install-wifi"
@@ -56,21 +56,21 @@ display_help() {
 	echo "# -h|--help  - display usage."
 	echo "#"
 	echo "# -c|--check [driver] [option]  - check if a driver is available, does not install it."
-	echo "#			 driver - specific driver to check for, one of: 8188eu, 8192eu, 8812au, mt7601, mt7610 or mt7612"
+	echo "#			 driver - specific driver to check for, one of: 8188eu, 8188fu, 8192eu, 8812au, 8821cu, 8822bu, mt7610 or mt7612"
 	echo "#	[option]:-	  blank - check driver for currently running kernel"
 	echo "#		     rpi-update - check driver for latest version of rpi-update"
 	echo "#		      commit-id - check driver for specific commit-id of rpi-update"
 	echo "#"
 	echo "# -u|--update [driver] [option] - update/install driver, can be used after running, but before rebooting, rpi-update"
 	echo "#                                 to update the driver to the one needed for the new kernel installed by rpi-update."
-	echo "#			 driver - specific driver to update/install, one of: 8188eu, 8192eu, 8812au, mt7601, mt7610 or mt7612"
+	echo "#			 driver - specific driver to update/install, one of: 8188eu, 8188fu, 8192eu, 8812au, 8821cu, 8822bu, mt7610 or mt7612"
 	echo "#	[option]:- 	  blank - update/install driver for currently running kernel"
 	echo "#		     rpi-update - update/install driver for latest version of rpi-update"
 	echo "#		      commit-id - update/install driver for specific commit-id of rpi-update"
 	echo "#"
 	echo "# driver [option] - install specific driver, enables installing the driver for a module not currently connected to"
 	echo "#		    the Pi, or installing a driver for a different module if you want to change your wifi module."
-	echo "#			 driver - specific driver to install, one of: 8188eu, 8192eu, 8812au, mt7601, mt7610 or mt7612"
+	echo "#			 driver - specific driver to install, one of: 8188eu, 8188fu, 8192eu, 8812au, 8821cu, 8822bu, mt7610 or mt7612"
 	echo "#	[option]:- 	  blank - update/install driver for currently running kernel"
 	echo "#		     rpi-update - update/install driver for latest version of rpi-update"
 	echo "#		      commit-id - update/install driver for specific commit-id of rpi-update"
@@ -85,7 +85,7 @@ display_help() {
 	echo "#	sudo install-wifi"
 	echo "#"
 	echo "#   If you want to change your wifi module to one using a different driver that is compatible with this script"
-	echo "#   you can install the driver for the new wifi module, one of: 8188eu, 8192eu, 8812au, mt7601, mt7610 or mt7612"
+	echo "#   you can install the driver for the new wifi module, one of: 8188eu, 8188fu, 8192eu, 8812au, 8821cu, 8822bu, mt7610 or mt7612"
 	echo "#   In this example it will install the 8192eu wifi module driver. After installing the driver shutdown the"
 	echo "#   Pi, remove the currently connected wifi module and connect the new 8192eu wifi module and restart your Pi"
 	echo "#   and it should start up with the new wifi adapter connected to your network."
@@ -128,19 +128,28 @@ fetch_driver() {
 	echo -n "Your wifi module is "
 	lsusb > .lsusb
 	# check for rtl8188eu compatible driver
-	if   cat .lsusb | grep -i '2357:010C\|056E:4008\|2001:3311\|0DF6:0076\|2001:3310\|2001:330F\|07B8:8179\|0BDA:0179\|0BDA:8179' ; then
+	if   cat .lsusb | grep -i '0BDA:FFEF\|2C4E:0102\|0B05:18F0\|7392:B811\|2357:0111\|2357:010C\|056E:4008\|2001:331B\|2001:3311\|0DF6:0076\|2001:3310\|2001:330F\|07B8:8179\|0BDA:0179\|0BDA:8179' ; then
 		driver=8188eu
-	# check for rtl8812au compatible driver
-	elif cat .lsusb | grep -i '2357:010E\|0411:025D\|2019:AB32\|7392:A813\|056E:4007\|0411:0242\|0846:9052\|056E:400F\|056E:400E\|0E66:0023\|2001:3318\|2001:3314\|04BB:0953\|7392:A812\|7392:A811\|0BDA:0823\|0BDA:0820\|0BDA:A811\|0BDA:8822\|0BDA:0821\|0BDA:0811\|2357:010E\|2357:0122\|148F:9097\|20F4:805B\|050D:1109\|2357:010D\|2357:0103\|2357:0101\|13B1:003F\|2001:3316\|2001:3315\|07B8:8812\|2019:AB30\|1740:0100\|1058:0632\|2001:3313\|0586:3426\|0E66:0022\|0B05:17D2\|0409:0408\|0789:016E\|04BB:0952\|0DF6:0074\|7392:A822\|2001:330E\|050D:1106\|0BDA:881C\|0BDA:881B\|0BDA:881A\|0BDA:8812' ; then
-		driver=8812au
+	# check for rtl8188fu compatible driver
+	elif cat .lsusb | grep -i '0BDA:F179' ; then
+		driver=8188fu
 	# check for rtl8192eu compatible driver
-	elif cat .lsusb | grep -i '2019:AB33\|2357:0109\|2357:0108\|2357:0107\|2001:3319\|0BDA:818C\|0BDA:818B' ; then
+	elif cat .lsusb | grep -i '2357:0126\|2019:AB33\|2357:0109\|2357:0108\|2357:0107\|2001:3319\|0BDA:818C\|0BDA:818B' ; then
 		driver=8192eu
-	# check for mt7601Usta compatible driver
-	elif cat .lsusb | grep -i '148F:7650\|0B05:17D3\|0E8D:760A\|0E8D:760B\|13D3:3431\|13D3:3434\|148F:6370\|148F:7601\|148F:760A\|148F:760B\|148F:760C\|148F:760D\|2001:3D04\|2717:4106\|2955:0001\|2955:1001\|2955:1003\|2A5F:1000\|7392:7710' ; then
-		driver=mt7601
+	# check for rtl8192su compatible driver
+	elif cat .lsusb | grep -i '5A57:0291\|0E0B:9063\|0009:21E7\|0DF6:006C\|0DF6:0061\|0409:02B6\|7392:7622\|07AA:0051\|050D:845A\|0BDA:8174\|13D3:3325\|13D3:3310\|13D3:3341\|13D3:3340\|13D3:3339\|04F2:AFF6\|04F2:AFF5\|04F2:AFF2\|0CDE:0030\|14B2:3302\|14B2:3301\|14B2:3300\|0DF6:0064\|0DF6:004C\|0DF6:0049\|0DF6:0058\|2019:4901\|2019:ED18\|13D3:3306\|0E66:0015\|06F8:E031\|1740:9605\|7392:7612\|07D1:3303\|07D1:3300\|07D1:3302\|050D:815F\|13D3:3309\|13D3:3336\|13D3:3335\|13D3:3334\|13D3:3333\|13D3:3342\|13D3:3311\|13D3:3323\|0EB0:9061\|1B75:8172\|0BDA:8192\|0BDA:8172\|0BDA:8175\|25D4:4CAB\|25D4:4CA1\|20F4:646B\|1690:0752\|0BDA:5077\|177F:0154\|0DF6:0063\|0DF6:005D\|0DF6:005B\|0DF6:004B\|0DF6:0059\|0DF6:0045\|0DF6:0057\|2019:ED16\|2019:AB28\|0789:0167\|06F8:E032\|06F8:E034\|0E66:0016\|1740:9603\|7392:7611\|07D1:3306\|2001:3306\|07AA:0047\|050D:11F1\|050D:945A\|0B05:1791\|0B05:1786\|1B75:8171\|083A:C512\|07B8:8188\|0BDA:C512\|0BDA:C047\|0BDA:8713\|0BDA:8712\|0BDA:8173\|0BDA:8171' ; then
+		driver=8192su
+	# check for rtl8812au compatible driver
+	elif cat .lsusb | grep -i '0846:9054\|20F4:809B\|20F4:809A\|2357:0106\|7392:A833\|7392:A834\|056E:400D\|056E:400B\|0B05:1853\|0B05:1852\|0B05:1817\|2001:331A\|0BDA:8813\|2357:0120\|2357:0122\|2357:011F\|2357:011E\|3823:6249\|056E:4007\|0411:029B\|0846:9052\|2019:AB32\|0411:0242\|056E:400F\|056E:400E\|0E66:0023\|2001:3318\|2001:3314\|04BB:0953\|7392:A813\|7392:A812\|7392:A811\|0BDA:0823\|0BDA:0820\|0BDA:A811\|0BDA:8822\|0BDA:0821\|0BDA:0811\|2604:0012\|148F:9097\|050D:1109\|0411:025D\|20F4:805B\|2357:0122\|2357:010F\|2357:010E\|2357:0115\|2357:010D\|2357:0103\|2357:0101\|13B1:003F\|2001:3316\|2001:3315\|2001:3313\|2001:330E\|0846:9051\|07B8:8812\|2019:AB30\|1740:0100\|1058:0632\|0586:3426\|0E66:0022\|0B05:17D2\|0409:0408\|0789:016E\|04BB:0952\|0DF6:0074\|7392:A822\|050D:1106\|0BDA:881C\|0BDA:881B\|0BDA:881A\|0BDA:8812' ; then
+		driver=8812au
+	# check for rtl8821cu compatible driver
+	elif cat .lsusb | grep -i '2001:331D\|0BDA:2006\|0BDA:8811\|0BDA:C811\|0BDA:C82B\|0BDA:C82A\|0BDA:C820\|0BDA:C821\|0BDA:B820\|0BDA:B82B' ; then
+		driver=8821cu
+	# check for rtl8822bu compatible driver
+	elif cat .lsusb | grep -i '13B1:0043\|2001:331E\|0846:9055\|20F4:808A\|0E66:0025\|2357:012D\|2357:0138\|2357:0115\|2001:331C\|0B05:1841\|0B05:184C\|0B05:1812\|7392:C822\|7392:B822\|0BDA:B812\|0BDA:B82C' ; then
+		driver=8822bu
 	# check for mt7610u compatible driver
-        elif cat .lsusb | grep -i '0E8D:7650\|0E8D:7630\|2357:0105\|0DF6:0079\|0BDB:1011\|7392:C711\|20F4:806B\|293C:5702\|057C:8502\|04BB:0951\|07B8:7610\|0586:3425\|2001:3D02\|2019:AB31\|0DF6:0075\|0B05:17DB\|0B05:17D1\|148F:760A\|148F:761A\|7392:B711\|7392:A711\|0E8D:7610\|13B1:003E\|148F:7610' ; then
+        elif cat .lsusb | grep -i '0E8D:7650\|0E8D:7630\|2357:0105\|0DF6:0079\|7392:C711\|20F4:806B\|293C:5702\|057C:8502\|04BB:0951\|07B8:7610\|0586:3425\|2001:3D02\|2019:AB31\|0DF6:0075\|0B05:17DB\|0B05:17D1\|148F:760A\|148F:761A\|7392:A711\|0E8D:7610\|13B1:003E\|148F:7610' ; then
 		driver=mt7610
 	# check for mt7612u compatible driver
 	elif cat .lsusb | grep -i '0E8D:7662\|0E8D:7632\|0E8D:7612\|0B05:17C9\|045E:02E6\|0B05:17EB\|0846:9053\|0B05:180B\|0846:9014\|7392:B711\|057C:8503\|0E8D:761B' ; then
@@ -152,7 +161,7 @@ fetch_driver() {
 		echo
 		echo "**** Unable to identify your wifi module ****"
 		echo
-		echo "The script only works for wifi modules using the rtl8188eu, rtl8192eu, rtl8812au, mt7601, mt7610 and mt7612 drivers."
+		echo "The script only works for wifi modules using the rtl8188eu, rtl8188fu, rtl8192eu, rtl8812au, rtl8821cu, 8822bu, mt7610 and mt7612 drivers."
 		echo
 		echo "Looking for your wifi module the script detected the following USB devices:-"
 		echo
@@ -175,6 +184,94 @@ fetch_driver() {
 
 check_driver() {
 
+#check Pi type
+Pi=""
+
+        echo
+        echo -n "Your Pi revision number is "
+        awk '/^Revision/ {sub("^100", "", $3); print $3}' /proc/cpuinfo > Pirevno
+
+# check for Pi 0 or 1
+	if   cat Pirevno | grep -i '0010\|0013\|900032' ; then
+		echo "You have a Pi B+ v1.2"
+		Pi=1
+	elif cat Pirevno | grep -i '0012\|0015\|900021' ; then
+		echo "You have a Pi A+ v1.1"
+		Pi=1
+	elif cat Pirevno | grep -i '900092\|920092' ; then
+		echo "You have a Pi 0 v1.2"
+		Pi=1
+	elif cat Pirevno | grep -i '900093\|920093' ; then
+		echo "You have a Pi 0 v1.3"
+		Pi=1
+	elif cat Pirevno | grep -i '9000c1' ; then
+		echo "You have a Pi 0 W v1.1"
+		Pi=1
+	elif   cat Pirevno | grep -i '0002\|0003' ; then
+		echo "You have a Pi B v1.0"
+		Pi=1
+	elif cat Pirevno | grep -i '0004\|0005\|0006' ; then
+		echo "You have a Pi B v2.0"
+		Pi=1
+	elif cat Pirevno | grep -i '0007\|0008\|0009' ; then
+		echo "You have a Pi A v2.0"
+		Pi=1
+	elif cat Pirevno | grep -i '000D\|000E\|000F' ; then
+		echo "You have a Pi B v2.0"
+		Pi=1
+# check for Pi 2 or 3
+	elif cat Pirevno | grep -i 'a01040' ; then
+		echo "You have a Pi 2B v1.0"
+		Pi=2
+	elif cat Pirevno | grep -i 'a01041\|a21041' ; then
+		echo "You have a Pi 2B v1.1"
+		Pi=2
+	elif cat Pirevno | grep -i 'a22042' ; then
+		echo "You have a Pi 2B v1.2"
+		Pi=2
+	elif cat Pirevno | grep -i 'a02082\|a22082\|a32082\|a52082' ; then
+		echo "You have a Pi 3B v1.2"
+		Pi=2
+	elif cat Pirevno | grep -i 'a22083' ; then
+		echo "You have a Pi 3B v1.3"
+		Pi=2
+	elif cat Pirevno | grep -i 'a020d3' ; then
+		echo "You have a Pi 3B+ v1.3"
+		Pi=2
+	elif cat Pirevno | grep -i '9020e0' ; then
+		echo "You have a Pi 3A+ v1.0"
+		Pi=2
+# check for Pi 4
+	elif cat Pirevno | grep -i 'a03111\|b03111\|c03111' ; then
+		echo "You have a Pi 4 v1.1"
+		Pi=4
+	elif cat Pirevno | grep -i 'a03112\|b03112\|c03112' ; then
+		echo "You have a Pi 4 v1.2"
+		Pi=4
+	elif cat Pirevno | grep -i 'b03114\|c03114\|d03114' ; then
+		echo "You have a Pi 4 v1.4"
+		Pi=4
+	elif cat Pirevno | grep -i 'c03130' ; then
+		echo "You have a Pi 400 v1.0"
+		Pi=4
+# check for Pi CM
+	elif cat Pirevno | grep -i '0011\|0014' ; then
+		echo "You have a Pi CM1 v1.0"
+		Pi=1
+	elif cat Pirevno | grep -i '900061' ; then
+		echo "You have a Pi CM v1.1"
+		Pi=2
+	elif cat Pirevno | grep -i 'a020a0\|a220a0' ; then
+		echo "You have a Pi CM3 v1.0"
+		Pi=2
+	elif cat Pirevno | grep -i 'a02100' ; then
+		echo "You have a Pi CM3+ v1.0"
+		Pi=2
+	else
+		echo "Processor type unknown - you do not appear to be running this script on a Raspberry Pi. Exiting the script"
+		exit 1
+        fi
+
 	if [[ $kernelcommit == "rpi-update" ]] ; then
 		rpi_firmware_commit_id=master
 	elif [[ $kernelcommit ]] ; then
@@ -182,27 +279,25 @@ check_driver() {
 	fi
 
 	if [[ $kernelcommit ]] ; then
-		# check if Pi2 B or earlier version of Pi and select the relevant kernel image
-		if (grep -Fq BCM2709 /proc/cpuinfo) ; then
-			pi=2
-			image=kernel7.img
-			uname=uname_string7
-                elif (grep -Fq ARMv7 /proc/cpuinfo) ; then
-                        pi=2
+                # check if Pi4, Pi2 B or earlier version of Pi and select the relevant kernel image
+                if   [[ $Pi == 4 ]] ; then
+			uname -r > .kname
+			if cat .kname | grep -i "\-v8" ; then
+				image=kernel8.img
+				uname=uname_string8
+			else
+				image=kernel7l.img
+				uname=uname_string7l
+			fi
+			rm .kname
+                elif [[ $Pi == 2 ]] ; then
                         image=kernel7.img
-			uname=uname_string7
-		elif (grep -Fq BCM2708 /proc/cpuinfo) ; then
-			pi=1
-			image=kernel.img
-			uname=uname_string
-                elif (grep -Fq ARMv6 /proc/cpuinfo) ; then
-                        pi=1
+                        uname=uname_string7
+                elif [[ $Pi == 1 ]] ; then
                         image=kernel.img
-			uname=uname_string
-		else
-			echo "Processor type unknown - you do not appear to be running this script on a Raspberry Pi. Exiting the script"
-			exit 1
-		fi
+                        uname=uname_string
+                fi
+
 
 		echo -n "Please wait ... checking the kernel revision and build you will have after running command 'sudo rpi-update"
 		if [[ $kernelcommit != "rpi-update" ]] ; then
@@ -213,8 +308,7 @@ check_driver() {
 
 # download uname string if it exists
 		if ! (wget -q https://github.com/Hexxeh/rpi-firmware/raw/$rpi_firmware_commit_id/$uname -O .uname_string) ; then
-		
-		
+
 # download the relevant kernel image if uname_string doesn't exist
 			if ! (wget -q https://github.com/Hexxeh/rpi-firmware/raw/$rpi_firmware_commit_id/$image -O .kernel) ; then
 				echo "Invalid commit-id, kernel not available for your version of the Pi, Pi $pi."
@@ -231,7 +325,7 @@ check_driver() {
 					if [ -f /usr/bin/mkknlimg ] ; then
 						rm /usr/bin/mkknlimg
 					fi
-					wget -q http://www.fars-robotics.net/mkknlimg1 -O /usr/bin/mkknlimg1
+					wget -q http://downloads.fars-robotics.net/mkknlimg1 -O /usr/bin/mkknlimg1
 					chmod +x /usr/bin/mkknlimg1
 				fi
 				mkknlimg1 .kernel .kernel1
@@ -271,7 +365,7 @@ check_driver() {
 		echo "There is a driver module available for this kernel revision."
 	else
 		if cat .wgetlog | grep -iq "404 Not Found" ; then
-			echo "A driver does not yet exist for this update."
+			echo "A driver does not exist for this update."
 		else
 			echo "The script cannot access fars-robotics to check a driver is available."
 		fi
@@ -282,7 +376,7 @@ check_driver() {
 
 install_driver() {
 
-	echo "Downloading the $driver driver."
+	echo "Downloading the $driver driver, $driver-$kernel-$build.tar.gz."
 
 	if (wget -q http://downloads.fars-robotics.net/wifi-drivers/$driver\-drivers/$driver\-$kernel\-$build.tar.gz -O wifi-driver.tar.gz) ; then
 		echo "Installing the $driver driver."
@@ -291,7 +385,7 @@ install_driver() {
 		rm install.sh > /dev/null 2>&1
 
 		module_dir="/lib/modules/$kernel+/kernel/drivers/net/wireless"
-		
+
 		if [ -f RT2870STA.dat ] ; then
 			mkdir -p /etc/Wireless/RT2870STA/
 			chown root:root RT2870STA.dat
@@ -302,11 +396,6 @@ install_driver() {
 			elif [ -f /etc/udev/rules.d/95-ralink.rules ] ; then
 				rm /etc/udev/rules.d/95-ralink.rules
 			fi
-		fi
-		
-		if [ -f $driver.conf ] ; then
-			cp $driver.conf /etc/modprobe.d/.
-			rm $driver.conf
 		fi
 
 		if [ -f mt7662u_sta.ko ] ; then
@@ -323,6 +412,7 @@ install_driver() {
 			rm $module_dir/mt7662u* > /dev/null 2>&1
 			driver1=mt7612u
 			chown root:root *.bin
+			chmod 644 *.bin
 			mv *.bin /lib/firmware
 		elif [ -f mt7610u_sta.ko ] ; then
 			rm $module_dir/mt7610u* > /dev/null 2>&1
@@ -331,18 +421,50 @@ install_driver() {
 			rm $module_dir/mt7610u* > /dev/null 2>&1
 			driver1=mt7610u
 			chown root:root *.bin
+			chmod 644 *.bin
 			mv *.bin /lib/firmware
-		elif [ -f mt7601Usta.ko ] ; then
-			driver1=mt7601Usta
+		elif [ -f 8822bu.ko ] ; then
+			driver1=8822bu
+		elif [ -f 8821cu.ko ] ; then
+			driver1=8821cu
 		elif [ -f 8812au.ko ] ; then
 			driver1=8812au
 		elif [ -f 8192eu.ko ] ; then
 			driver1=8192eu
+		elif [ -f r92su.ko ] ; then
+			driver1=r92su
 		elif [ -f 8188eu.ko ] ; then
 			driver1=8188eu
+		elif [ -f 8188fu.ko ] ; then
+			driver1=8188fu
+		elif [ -f rtl8188fu.ko ] ; then
+			driver1=rtl8188fu
+			rm $module_dir/$driver.ko > /dev/null 2>&1
+			chown root:root rtl8188fufw.bin
+			chmod 644 rtl8188fufw.bin
+			mv rtl8188fufw.bin /lib/firmware/rtlwifi/.
+		fi
+
+		if [ -f $driver1.conf ] ; then
+			echo "Installing driver config file $driver1.conf."
+			echo "mv $driver1.conf /etc/modprobe.d/."
+			chown root:root $driver1.conf
+			chmod 644 $driver1.conf
+			mv $driver1.conf /etc/modprobe.d/.
+		fi
+
+		if [ -f blacklist-mt76x2u.conf ] ; then
+			echo "Installing file to blacklist built-in mt7612 driver."
+			echo "mv blacklist-mt76x2u.conf /etc/modprobe.d/."
+			chown root:root blacklist-mt76x2u.conf
+			chmod 644 blacklist-mt76x2u.conf
+			mv blacklist-mt76x2u.conf /etc/modprobe.d/.
 		fi
 
 		echo "Installing driver module $driver1.ko."
+		echo "install -p -m 644 $driver1.ko $module_dir"
+		chown root:root $driver1.ko
+		chmod 644 $driver1.ko
 		install -p -m 644 $driver1.ko $module_dir
 		depmod $kernel+
 
@@ -361,10 +483,10 @@ install_driver() {
 			echo "Loading and running the $driver driver, $driver1.ko."
 			modprobe $driver1
 		fi
-		
+
 	else
 		echo
-		echo "A driver does not yet exist for this kernel."
+		echo "A driver does not exist for this kernel."
 	fi
 }
 
@@ -384,6 +506,7 @@ command=$0
 option=$1
 kernelcommit=$2
 
+Pirevno=""
 driver=""
 kernel=$(uname -r | tr -d '+')
 build=${build:-$(uname -v | awk '{print $1}' | tr -d '#')}
@@ -410,7 +533,7 @@ fi
 #fi
 
 case "$1" in
-	8188eu|8192eu|8812au|mt7601|mt7610|mt7612)
+	8188eu|8188fu|8192eu|8192su|8812au|8821cu|8822bu|mt7610|mt7612)
 		driver=$1
 		display_current
 		check_driver
@@ -418,7 +541,7 @@ case "$1" in
 		;;
 	-c|--check)
 		case "$2" in
-			8188eu|8192eu|8812au|mt7601|mt7610|mt7612)
+			8188eu|8188fu|8192eu|8192su|8812au|8821cu|8822bu|mt7610|mt7612)
 				driver=$2
 				kernelcommit=$3
 				;;
@@ -431,7 +554,7 @@ case "$1" in
 		;;
 	-u|--update)
 		case "$2" in
-			8188eu|8192eu|8812au|mt7601|mt7610|mt7612)
+			8188eu|8188fu|8192eu|8192su|8812au|8821cu|8822bu|mt7610|mt7612)
 				driver=$2
 				kernelcommit=$3
 				;;
@@ -455,7 +578,9 @@ case "$1" in
 		;; # proceed to install
 	*)
 		echo "unknown command: $1" >&2
-		~/$command --help
+		echo
+		read -n1 -r -p "Press any key to continue..."
+		display_help
 		exit 1
 		;;
 esac

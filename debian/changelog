@@ -1,3 +1,16 @@
+openplotter-network (3.1.7-stable) bullseye; urgency=medium
+
+  * use nft instead of iptables by e-sailing <e.minus.sailing@gmail.com>
+  * add wifi clients management by e-sailing <e.minus.sailing@gmail.com>
+
+ -- Sailoog <info@sailoog.com>  Sun, 03 Jul 2022 12:40:06 +0200
+
+openplotter-network (3.0.1-beta) bullseye; urgency=medium
+
+  * beta
+
+ -- Sailoog <info@sailoog.com>  Mon, 20 Feb 2022 19:16:35 +0100
+
 openplotter-network (2.1.5-stable) bionic; urgency=medium
 
   * config iptables for different internet access

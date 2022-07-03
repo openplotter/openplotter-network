@@ -11,7 +11,7 @@ response=$1
 
 if [[ "$response" =~ ^([yY][eE][sS]|[yY])+$ ]]; then
 	if grep -q -F "$hlname" /etc/hosts; then
-	  echo
+	  :
 	else
 	  oldline=$(grep -F '.local' /etc/hosts)
 	  
