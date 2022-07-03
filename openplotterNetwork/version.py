@@ -1,3 +1,3 @@
-version = '3.1.5'
+version = '3.1.7'
 codeName = 'STOPmaremortum'
-state = 'beta'
+state = 'stable'
