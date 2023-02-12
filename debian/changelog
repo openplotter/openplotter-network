@@ -1,3 +1,11 @@
+openplotter-network (3.2.0-stable) bullseye; urgency=medium
+
+  * Replace syslog by journal
+  * Add NTP server with chrony (removed ntp from settings app)
+  * Update translations
+
+ -- Sailoog <info@sailoog.com>  Sat, 11 Feb 2023 12:15:58 +0100
+
 openplotter-network (3.1.7-stable) bullseye; urgency=medium
 
   * use nft instead of iptables by e-sailing <e.minus.sailing@gmail.com>
