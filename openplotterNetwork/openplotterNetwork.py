@@ -56,8 +56,10 @@ class MyFrame(wx.Frame):
 		toolCheck = self.toolbar1.AddTool(104, _('Check Network'), wx.Bitmap(self.currentdir+"/data/check.png"))
 		self.Bind(wx.EVT_TOOL, self.OnToolCheck, toolCheck)
 		self.toolbar1.AddSeparator()
-		#toolDrivers = self.toolbar1.AddTool(105, _('Install Wifi Drivers'), wx.Bitmap(self.currentdir+"/data/package.png"), shortHelp=_('This does only help for unrecognized usb wlan type:') + ' 8188eu,8188fu,8192eu,8192su,8812au,8822bu,mt7610,mt7612')
-		#self.Bind(wx.EVT_TOOL, self.OnToolDrivers, toolDrivers)
+		toolTime = self.toolbar1.AddCheckTool(105, _('NTP server'), wx.Bitmap(self.currentdir+"/data/time.png"))
+		self.Bind(wx.EVT_TOOL, self.onToolTime, toolTime)
+		if os.path.exists('/etc/chrony/conf.d/openplotter.conf'): self.toolbar1.ToggleTool(105,True)
+		else: self.toolbar1.ToggleTool(105,False)
 
 		self.notebook = wx.Notebook(self)
 		self.notebook.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.onTabChange)
@@ -119,6 +121,18 @@ class MyFrame(wx.Frame):
 	def OnToolSettings(self, event): 
 		subprocess.call(['pkill', '-f', 'openplotter-settings'])
 		subprocess.Popen('openplotter-settings')
+
+	def onToolTime(self,e):
+		if self.toolbar1.GetToolState(105):
+			try: 
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'ntp', 'enable'])
+				self.ShowStatusBarGREEN(_('NTP server enabled'))
+			except Exception as e: ShowStatusBarRED('Error enabling NTP server: '+str(e))
+		else:
+			try:
+				subprocess.call([self.platform.admin, 'python3', self.currentdir+'/service.py', 'ntp', 'disable'])
+				self.ShowStatusBarGREEN(_('NTP server disabled'))
+			except Exception as e: ShowStatusBarRED('Error disabling NTP server: '+str(e))
 
 	def pageOutput(self):
 		self.logger = rt.RichTextCtrl(self.output, style=wx.TE_MULTILINE|wx.TE_READONLY|wx.TE_DONTWRAP|wx.LC_SORT_ASCENDING)
